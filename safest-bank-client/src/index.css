@@ -5,10 +5,42 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  border: 5px solid blueviolet;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+#app {
+  border: 5px solid blueviolet;
+}
+
+#navbar {
+  border-bottom: 5px solid blueviolet;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#navbar-module {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#navbar-module > * {
+  margin: 0 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#login-page {
+  padding: 10px;
+}
+
+#client-page {
+  padding: 10px;
 }

@@ -9,6 +9,11 @@ import {
 import AppLayout from "./layouts/AppLayout";
 import ErrorPage from "./pages/ErrorPage";
 import LoginPage from "./pages/LoginPage";
+import ProtectedPage from "./pages/ProtectedPage";
+import HomePage from "./pages/HomePage";
+import AuthProvider from "./components/auth/AuthProvider";
+import PasswordChangePage from "./pages/PasswordChangePage";
+import ClientDetailsPage from "./pages/ClientDetailsPage";
 
 const router = createBrowserRouter([
   {
@@ -19,24 +24,33 @@ const router = createBrowserRouter([
         errorElement: <ErrorPage />,
         children: [
           {
-            path: "/login",
-            element: <LoginPage />
+            path: "login",
+            element: <LoginPage />,
           },
-          // {
-          //   index: true,
-          //   path: "/home",
-          //   element: <HomePage />,
-          //   loader: accountDetailsLoader
-          // },
-          // {
-          //   path: "/password",
-          //   element: <ChangePasswordPage />
-          // },
-          // {
-          //   path: "/client/:clientId",
-          //   element: <ClientDetailsPage />,
-          //   loader: clientLoader
-          // }
+          {
+            element: <ProtectedPage />,
+            children: [
+              {
+                index: true,
+                path: "home",
+                element: <HomePage />,
+                //loader: accountDetailsLoader
+              },
+              {
+                path: "client",
+                element: <ClientDetailsPage />,
+                //loader: clientLoader
+              },
+              {
+                path: "password",
+                element: <PasswordChangePage />
+              },
+              {
+                path: "logout",
+                //action: logoutUser,
+              },
+            ]
+          }
         ]
       }
     ]
@@ -49,7 +63,9 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
   </React.StrictMode>
 );
 
