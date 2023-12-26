@@ -1,5 +1,4 @@
-﻿using SafestBankServer.Application.DTO;
-using SafestBankServer.Application.DTO.Auth;
+﻿using SafestBankServer.Application.DTO.Auth;
 using SafestBankServer.Application.DTO.Client;
 
 namespace SafestBankServer.Application.Auth;

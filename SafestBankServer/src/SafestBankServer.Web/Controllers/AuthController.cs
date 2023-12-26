@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SafestBankServer.Application.Auth;
-using SafestBankServer.Application.DTO;
 using SafestBankServer.Application.DTO.Auth;
 using SafestBankServer.Application.DTO.Client;
 

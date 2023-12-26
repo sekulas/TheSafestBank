@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using SafestBankServer.Application.DTO;
 using SafestBankServer.Application.DTO.Auth;
 using SafestBankServer.Application.DTO.Client;
 using SafestBankServer.Application.Exceptions.Auth;
@@ -36,7 +35,7 @@ internal sealed class AuthService : IAuthService
 
         var partialPassword = GetCurrentPartialPasswordForAClient(client);
         
-        if(!_passwordManager.VerifyPassword(clientLoginDto.GivenPassword, partialPassword))
+        if(!_passwordManager.VerifyPassword(clientLoginDto.Password, partialPassword))
         {
             throw new InvalidPassword("Invalid password.");
         }
