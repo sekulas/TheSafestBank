@@ -26,8 +26,8 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       console.log(data);
 
       if (!response.ok) {
-        openModal('Error', `Failed to log in. ${data.message}`);
-        throw new Error(`Failed to log in: ${data.message}`);
+        openModal('Error', `Failed to log in. ${data.title}`);
+        throw new Error(`Failed to log in: ${data.title}`);
       }
 
       setIsAuthenticated(true);

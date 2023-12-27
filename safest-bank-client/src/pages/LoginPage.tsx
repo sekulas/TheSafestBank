@@ -27,8 +27,8 @@ const LoginPage = () => {
       const data = await response.json();
 
       if (!response.ok) {
-        openModal('Error', `Failed to fetch password combination. ${data.message}`);
-        throw new Error(`Failed to fetch password combination: ${data.message}`);
+        openModal('Error', `Failed to fetch password combination. ${data.title}`);
+        throw new Error(`Failed to fetch password combination: ${data.title}`);
       }
 
       setPasswordMask(data);

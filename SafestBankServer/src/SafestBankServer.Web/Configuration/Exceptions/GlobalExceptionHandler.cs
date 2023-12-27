@@ -7,7 +7,7 @@ public class GlobalExceptionHandler : IExceptionHandler
 {
     public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
     {
-        (int statusCode, string message) = exception switch
+        (int statusCode, string title) = exception switch
         {
             BankClientNotFound e => (404, e.Message),
             InvalidPassword e => (400, e.Message),
@@ -15,7 +15,7 @@ public class GlobalExceptionHandler : IExceptionHandler
         };  
 
         httpContext.Response.StatusCode = statusCode;
-        await httpContext.Response.WriteAsJsonAsync(new { message });
+        await httpContext.Response.WriteAsJsonAsync(new { title });
 
         return true;
     }
