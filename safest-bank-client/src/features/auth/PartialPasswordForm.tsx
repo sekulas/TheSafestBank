@@ -20,11 +20,10 @@ const PartialPasswordForm: React.FC<{ mask: number[]; onSubmit: (password: strin
     <>
       <div id="partial-password-form">
         {inputValues.map((value, index) => (
-          <div>
+          <div key={index}>
             {index + 1}
             <br />
             <input className='partial-password-input'
-              key={index}
               type="password"
               maxLength={1}
               value={value}

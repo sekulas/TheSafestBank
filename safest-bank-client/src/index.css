@@ -5,15 +5,14 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  border: 5px solid blueviolet;
+  height: 100vh; 
+  box-sizing: border-box; 
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
-}
-
-#app {
-  border: 5px solid blueviolet;
 }
 
 #navbar {

@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
 using SafestBankServer.Application.Auth;
 using SafestBankServer.Application.DTO.Auth;
 using SafestBankServer.Application.DTO.Client;
+using System.Security.Claims;
 
 namespace SafestBankServer.Web.Auth;
 
@@ -26,6 +28,24 @@ public class AuthController : ControllerBase
     public async Task<ActionResult<BankClientDto>> LoginAsync([FromBody] ClientLoginDto clientLoginDto)
     {
         var result = await _authService.LoginAsync(clientLoginDto);
+        await HttpContext.SignInAsync("Session", 
+            new ClaimsPrincipal
+            (
+                new ClaimsIdentity
+                (
+                    new Claim[] 
+                    { 
+                        new Claim(ClaimTypes.Sid, Guid.NewGuid().ToString())
+                    }, 
+                    "Session"
+                )
+            ),
+            new AuthenticationProperties
+            {
+                IsPersistent = true,
+            }
+        );
+
         return Ok(result);
     }
 }
