@@ -1,8 +1,8 @@
 import { useState } from 'react';
 
 const PartialPasswordForm: React.FC<{ mask: number[]; onSubmit: (password: string) => void }> = ({ mask, onSubmit }) => {
-  const maxInput = Math.ceil(Math.max(...mask) / 5) * 5;
-  const [inputValues, setInputValues] = useState<string[]>(Array(maxInput).fill(''));
+  const fullPasswordInput = (Math.ceil(mask[mask.length - 1] / 5) + 1) * 5;
+  const [inputValues, setInputValues] = useState<string[]>(Array(fullPasswordInput).fill(''));
 
   const handleChange = (index: number, value: string) => {
     const newInputValues = [...inputValues];
@@ -11,7 +11,7 @@ const PartialPasswordForm: React.FC<{ mask: number[]; onSubmit: (password: strin
   };
 
   const handleInternalSubmit = () => {
-    const selectedValues = mask.map((index) => inputValues[index - 1]);
+    const selectedValues = mask.map((index) => inputValues[index]);
     const joinedPassword = selectedValues.join('');
     onSubmit(joinedPassword);
   };
@@ -29,7 +29,7 @@ const PartialPasswordForm: React.FC<{ mask: number[]; onSubmit: (password: strin
               maxLength={1}
               value={value}
               onChange={(e) => handleChange(index, e.target.value)}
-              disabled={!mask.includes(index + 1)}
+              disabled={!mask.includes(index)}
             />
           </div>
         ))}
