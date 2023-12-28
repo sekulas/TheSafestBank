@@ -1,4 +1,55 @@
+import { useContext, useEffect, useState } from "react";
+import API_ENDPOINTS from "../services/TheSafestBankApi/safestBankServerApiEndpoints";
+import ModalContext from "../features/modal/context/ModalContext";
+import AuthContext from "../features/auth/context/AuthContext";
+
 const HomePage = () => {
+  const { openModal, openSpinner, closeSpinner } = useContext(ModalContext);
+  const { logout } = useContext(AuthContext);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        openSpinner();
+        console.log('Fetching data...')
+        const response = await fetch(API_ENDPOINTS.GET_CLIENT, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include',
+        });
+
+        console.log(response)
+
+        if (!response.ok) {
+          if (response.status === 405) {
+            logout();
+            openModal('Error', `Client session has expired. Please log in again.`);
+            throw new Error(`Client session has expired. Please log in again.`);
+          }
+
+          const data = await response.json();
+          openModal('Error', `Failed to get the client data. ${data.title}`);
+          throw new Error(`Failed to get the client data: ${data.title}`);
+        }
+
+        const data = await response.json();
+
+
+        console.log(data);
+
+      } catch (error) {
+        console.error(error);
+      } finally {
+        closeSpinner();
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <div id="home-page">
       <h1>Home Page</h1>

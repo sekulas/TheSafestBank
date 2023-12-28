@@ -3,6 +3,7 @@ using Microsoft.Extensions.Options;
 using SafestBankServer.Application;
 using SafestBankServer.Infrastructure;
 using SafestBankServer.Web.Configuration;
+using System.Security.Claims;
 
 namespace SafestBankServer.Web;
 public static class Program {
@@ -64,7 +65,7 @@ public static class Program {
     private static void AddCookieAuth(this IServiceCollection services)
     {
 
-        services.AddAuthentication()
+        services.AddAuthentication("Session")
             .AddCookie("Session", opt =>
             {
                 opt.Cookie.Name = ".TheSafestBank.Session";
@@ -74,8 +75,20 @@ public static class Program {
                 opt.Cookie.IsEssential = true;
                 opt.Cookie.SameSite = SameSiteMode.Strict;
                 opt.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-                opt.ExpireTimeSpan = TimeSpan.FromMinutes(1);
+                opt.ExpireTimeSpan = TimeSpan.FromSeconds(60);
+                opt.LoginPath = "/api/auth/password";
             });
+
+        services.AddAuthorization(builder =>
+        {
+            builder.AddPolicy("SessionPolicy", policy =>
+            {
+                policy.RequireAuthenticatedUser()
+                    .AddAuthenticationSchemes("Session")
+                    .RequireClaim(ClaimTypes.Sid);
+            });
+        });
+        
 
         //options.Cookie.HttpOnly = true;
         //options.Cookie.SecurePolicy = CookieSecurePolicy.Always;

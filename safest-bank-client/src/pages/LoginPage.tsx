@@ -4,16 +4,16 @@ import AuthContext from '../features/auth/context/AuthContext';
 import API_ENDPOINTS, { IFetchPasswordMaskRequest } from '../services/TheSafestBankApi/safestBankServerApiEndpoints';
 import PartialPasswordForm from '../features/auth/PartialPasswordForm';
 import ModalContext from '../features/modal/context/ModalContext';
-import Modal from '../features/modal/Modal';
 
 const LoginPage = () => {
   const [clientNumber, setClientNumber] = useState<string>('');
   const [passwordMask, setPasswordMask] = useState<number[] | null>(null);
   const { isAuthenticated, login } = useContext(AuthContext);
-  const { openModal } = useContext(ModalContext);
+  const { openModal, openSpinner, closeSpinner } = useContext(ModalContext);
 
   const handleSubmitClientNumber = async () => {
     try {
+      openSpinner();
       const requestBody: IFetchPasswordMaskRequest = { clientNumber: clientNumber };
 
       const response = await fetch(API_ENDPOINTS.FETCH_PASSWORD_MASK, {
@@ -35,6 +35,8 @@ const LoginPage = () => {
       console.log(data);
     } catch (error) {
       console.error(error);
+    } finally {
+      closeSpinner();
     }
   };
 
@@ -68,7 +70,6 @@ const LoginPage = () => {
                   <button className="main-action-button" onClick={handleSubmitClientNumber}>Submit Client Number</button>
                 </>
               )}
-              <Modal />
               {passwordMask && (
                 <>
                   <h3>Provide the following letters of the password for the client with number: "{clientNumber}"</h3>

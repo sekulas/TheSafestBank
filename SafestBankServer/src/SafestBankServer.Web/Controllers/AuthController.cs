@@ -48,4 +48,17 @@ public class AuthController : ControllerBase
 
         return Ok(result);
     }
+
+    [HttpPost("logout")]
+    public async Task<ActionResult> LogoutAsync()
+    {
+        await HttpContext.SignOutAsync("Session",
+            new AuthenticationProperties
+            {
+                IsPersistent = true,
+            }
+        );
+
+        return Ok();
+    }
 }
