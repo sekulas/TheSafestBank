@@ -39,6 +39,12 @@ public class AuthController : ControllerBase
         return Ok(result);
     }
 
+    [HttpGet("login")]
+    public Task UnauthorizedAccess()
+    {
+        throw new UnauthorizedAccessException("Your session has expired - please log in.");
+    }
+
     [Authorize(Policy = "SessionPolicy")]
     [HttpPost("logout")]
     public async Task<ActionResult> LogoutAsync()

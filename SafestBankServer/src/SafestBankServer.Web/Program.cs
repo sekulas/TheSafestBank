@@ -1,5 +1,4 @@
 using SafestBankServer.Application;
-using SafestBankServer.Application.Auth.Passwords;
 using SafestBankServer.Infrastructure;
 using SafestBankServer.Web.Configuration;
 using SafestBankServer.Web.Configuration.CookieAuth;
@@ -78,8 +77,8 @@ public static class Program {
                 opt.Cookie.IsEssential = true;
                 opt.Cookie.SameSite = SameSiteMode.Strict;
                 opt.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-                opt.ExpireTimeSpan = cookieAuthOptions.CookieExpirationTime; //COOKIE
-                opt.LoginPath = "/api/auth/password";
+                opt.LoginPath = "/api/auth/login";
+                opt.ExpireTimeSpan = cookieAuthOptions.CookieExpirationTime;
                 opt.EventsType = typeof(CustomCookieAuthenticationEvents);
             });
         services.AddScoped<CustomCookieAuthenticationEvents>();

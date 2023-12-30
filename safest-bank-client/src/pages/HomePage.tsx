@@ -21,22 +21,14 @@ const HomePage = () => {
           credentials: 'include',
         });
 
-        console.log(response)
-
-        if (!response.ok) {
-          if (response.status === 405) {
-            logout();
-            openModal('Error', `Client session has expired. Please log in again.`);
-            throw new Error(`Client session has expired. Please log in again.`);
-          }
-
-          const data = await response.json();
-          openModal('Error', `Failed to get the client data. ${data.title}`);
-          throw new Error(`Failed to get the client data: ${data.title}`);
-        }
-
         const data = await response.json();
-
+        console.log(data)
+        console.log(response)
+        if (!response.ok) {
+          openModal('Error', `Failed to get the client data. ${data.message}`);
+          logout();
+          throw new Error(`Failed to get the client data: ${data.message}`);
+        }
 
         console.log(data);
 
