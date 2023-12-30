@@ -1,8 +1,8 @@
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.Extensions.Options;
 using SafestBankServer.Application;
+using SafestBankServer.Application.Auth.Passwords;
 using SafestBankServer.Infrastructure;
 using SafestBankServer.Web.Configuration;
+using SafestBankServer.Web.Configuration.CookieAuth;
 using System.Security.Claims;
 
 namespace SafestBankServer.Web;
@@ -16,6 +16,8 @@ public static class Program {
             .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
             .AddJsonFile("appsettings.json", false)
             .Build();
+
+        builder.Services.AddMemoryCache();
 
         builder.Services.AddApplication();
         builder.Services.AddInfrastructure(configuration);
@@ -64,6 +66,7 @@ public static class Program {
 
     private static void AddCookieAuth(this IServiceCollection services)
     {
+        var cookieAuthOptions = services.BuildServiceProvider().GetRequiredService<CookieAuthOptions>();
 
         services.AddAuthentication("Session")
             .AddCookie("Session", opt =>
@@ -75,9 +78,11 @@ public static class Program {
                 opt.Cookie.IsEssential = true;
                 opt.Cookie.SameSite = SameSiteMode.Strict;
                 opt.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-                opt.ExpireTimeSpan = TimeSpan.FromSeconds(60);
+                opt.ExpireTimeSpan = cookieAuthOptions.CookieExpirationTime; //COOKIE
                 opt.LoginPath = "/api/auth/password";
+                opt.EventsType = typeof(CustomCookieAuthenticationEvents);
             });
+        services.AddScoped<CustomCookieAuthenticationEvents>();
 
         services.AddAuthorization(builder =>
         {
