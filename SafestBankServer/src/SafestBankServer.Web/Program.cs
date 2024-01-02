@@ -92,40 +92,6 @@ public static class Program {
                     .RequireClaim(ClaimTypes.Sid);
             });
         });
-        
-
-        //options.Cookie.HttpOnly = true;
-        //options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-        //options.Cookie.SameSite = SameSiteMode.Strict;
-        //options.Cookie.MaxAge = TimeSpan.FromDays(1); // Adjust as needed
-        //options.LoginPath = "/api/auth/login"; // Specify your login endpoint
-
-        //services.AddAuthorization(options =>
-        //{
-        //    options.AddPolicy("SessionPolicy", policy =>
-        //    {
-        //        policy.RequireAuthenticatedUser();
-        //    });
-        //});
-
-        //services.ConfigureApplicationCookie(options =>
-        //{
-        //    options.Cookie.Name = ".TheSafestBank.Session";
-        //    options.Cookie.HttpOnly = true;
-        //    options.ExpireTimeSpan = TimeSpan.FromMinutes(1);
-        //    options.LoginPath = "api/auth/login";
-        //    //options.AccessDeniedPath = "/auth/access-denied";
-        //    //options.SlidingExpiration = true;
-        //});
-
-        //services.AddSession(options =>
-        //{
-        //    options.Cookie.Name = ".TheSafestBank.Session";
-        //    options.IdleTimeout = TimeSpan.FromMinutes(5);
-        //    options.Cookie.HttpOnly = true;
-        //    options.Cookie.IsEssential = true;
-        //});
-
     }
 
 }

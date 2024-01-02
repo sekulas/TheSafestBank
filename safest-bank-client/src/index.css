@@ -44,10 +44,6 @@ code {
   margin: 20px;
 }
 
-#client-page {
-  padding: 10px;
-}
-
 #partial-password-form {
   display: flex;
   align-items: center;
@@ -96,8 +92,19 @@ input {
   cursor: pointer;
 }
 
-.warning-activity-button {
+.warning-action-button {
   background-color: #ff9800;
+  border-radius: 5px;
+  border: none;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  font-size: 1em;
+  cursor: pointer;
+}
+
+.silent-action-button {
+  background-color: blueviolet;
   border-radius: 5px;
   border: none;
   color: white;
@@ -169,3 +176,61 @@ input {
   50%   {transform:scaleY(-1) rotate(0deg)}
   100%  {transform:scaleY(-1) rotate(-135deg)}
 }
+
+#home-page {
+  display: flex;
+  height: 100%;
+}
+
+#transaction-menu {
+  display: flex;
+  flex-direction: column;
+  border-right: 5px solid blueviolet;
+  padding: 10px;
+  height: 100%;
+}
+
+.show-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.show-container > * {
+  margin: 10px;
+}
+
+.show-container > button {
+  margin: 10;
+  border-radius: 5px;
+  background-color: orange;
+  border: none;
+  color: white;
+  text-align: center;
+  cursor: pointer;
+  padding: 5px;
+}
+
+#transaction-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  align-items: start;
+}
+
+#transaction-list > *{
+  border-bottom: 2px solid blueviolet;
+  width: 100%;
+}
+
+#transaction-list-title {
+  margin: 0px;
+  padding-left: 10px;
+  display: block;
+  font-size: 1.5em;
+  font-weight: bold;
+  border-bottom: 5px solid blueviolet;
+}
+

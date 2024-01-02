@@ -6,7 +6,7 @@ const ProtectedPage = () => {
   const { isAuthenticated } = useContext(AuthContext);
 
   return (
-    <div id="client-page">
+    <>
       {
         isAuthenticated ? (
           <Outlet />
@@ -14,7 +14,7 @@ const ProtectedPage = () => {
           <Navigate to="/login" />
         )
       }
-    </div >
+    </>
   );
 };
 

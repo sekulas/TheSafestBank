@@ -1,12 +1,13 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import API_ENDPOINTS from "../services/TheSafestBankApi/safestBankServerApiEndpoints";
 import ModalContext from "../features/modal/context/ModalContext";
 import AuthContext from "../features/auth/context/AuthContext";
+import TransactionMenu from "../features/transactions/components/TransactionMenu";
+import TransactionList from "../features/transactions/components/TransactionList";
 
 const HomePage = () => {
   const { openModal, openSpinner, closeSpinner } = useContext(ModalContext);
   const { logout } = useContext(AuthContext);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,7 +45,8 @@ const HomePage = () => {
 
   return (
     <div id="home-page">
-      <h1>Home Page</h1>
+      <TransactionMenu />
+      <TransactionList />
     </div>
   );
 }
