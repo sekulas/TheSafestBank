@@ -1,5 +1,5 @@
 import { ReactNode, useContext, useState } from 'react';
-import AuthContext, { IAuthContext } from './AuthContext';
+import AuthContext, { IAuthContext, IBankClient } from './AuthContext';
 import API_ENDPOINTS, { ILoginRequest } from '../../../services/TheSafestBankApi/safestBankServerApiEndpoints';
 import ModalContext from '../../modal/context/ModalContext';
 import { Navigate } from 'react-router-dom';
@@ -25,17 +25,15 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         credentials: 'include',
       });
 
-      const data = await response.json();
-
       if (!response.ok) {
+        const data = await response.json();
         openModal('Error', `Failed to log in. ${data.message}`);
         throw new Error(`Failed to log in: ${data.message}`);
       }
 
       setIsAuthenticated(true);
-      setClientId(data.clientId);
-      setName(data.name);
-      setSurname(data.surname);
+      console.log('Logged in successfully!');
+      console.log(response);
       <Navigate to="/" />
     } catch (error) {
       console.error(error);
@@ -57,9 +55,7 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       });
 
       setIsAuthenticated(false);
-      setClientId('');
-      setName('');
-      setSurname('');
+      setClientData(null);
       <Navigate to="/login" />
     } catch (error) {
       console.error(error);
@@ -69,6 +65,19 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     }
   }
 
+  const setClientData = async (data: IBankClient | null) => {
+    if (!data) {
+      setClientId("");
+      setName("");
+      setSurname("");
+      return;
+    }
+
+    setClientId(data.clientId);
+    setName(data.name);
+    setSurname(data.surname);
+  }
+
   const contextValue: IAuthContext = {
     isAuthenticated,
     clientId,
@@ -76,6 +85,7 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     surname,
     login,
     logout,
+    setClientData,
   };
 
 

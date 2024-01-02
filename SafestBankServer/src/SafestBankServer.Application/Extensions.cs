@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using SafestBankServer.Application.Auth;
 using SafestBankServer.Application.Auth.Passwords;
+using SafestBankServer.Application.Client;
 using SafestBankServer.Application.Configuration;
 using SafestBankServer.Core.Auth.Passwords;
 
@@ -15,6 +16,7 @@ public static class Extensions
         services.AddAutoMapper(cfg => cfg.AddProfile<MainMappingProfile>());
         services.AddScoped<IPasswordManager, PasswordManager>();
         services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IClientService, ClientService>();
 
         return services;
     }

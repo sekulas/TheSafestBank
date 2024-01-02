@@ -1,15 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SafestBankServer.Core.Auth;
 using SafestBankServer.Core.Auth.Passwords;
 using SafestBankServer.Core.Client;
 using SafestBankServer.Infrastructure.EF.Contexts;
 
 namespace SafestBankServer.Infrastructure.Auth;
-internal sealed class AuthRepository : IAuthRepository
+internal sealed class ClientRepository : IClientRepository
 {
     private readonly SafestBankDbContext _dbContext;
 
-    public AuthRepository(SafestBankDbContext dbContext)
+    public ClientRepository(SafestBankDbContext dbContext)
     {
         _dbContext = dbContext;
     }

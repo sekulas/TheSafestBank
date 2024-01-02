@@ -1,7 +1,5 @@
-﻿using SafestBankServer.Core.Client;
-
-namespace SafestBankServer.Core.Auth;
-public interface IAuthRepository
+﻿namespace SafestBankServer.Core.Client;
+public interface IClientRepository
 {
     Task<BankClient?> GetClientByNumberAsync(string clientNumber);
     Task UpdateClientAsync(BankClient client);

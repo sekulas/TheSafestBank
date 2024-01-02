@@ -7,7 +7,7 @@ import TransactionList from "../features/transactions/components/TransactionList
 
 const HomePage = () => {
   const { openModal, openSpinner, closeSpinner } = useContext(ModalContext);
-  const { logout } = useContext(AuthContext);
+  const { setClientData, logout } = useContext(AuthContext);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,7 +32,7 @@ const HomePage = () => {
         }
 
         console.log(data);
-
+        setClientData(data);
       } catch (error) {
         console.error(error);
       } finally {
