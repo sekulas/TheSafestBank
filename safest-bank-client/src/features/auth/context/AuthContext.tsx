@@ -1,11 +1,11 @@
 import { createContext } from 'react';
 
-interface IAuthContext {
+export interface IAuthContext {
   isAuthenticated: boolean;
   clientId: string;
   name: string;
   surname: string;
-  login: () => void;
+  login: (clientNumber: string, password: string) => void;
   logout: () => void;
 }
 

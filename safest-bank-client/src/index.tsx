@@ -11,9 +11,10 @@ import ErrorPage from "./pages/ErrorPage";
 import LoginPage from "./pages/LoginPage";
 import ProtectedPage from "./pages/ProtectedPage";
 import HomePage from "./pages/HomePage";
-import AuthProvider from "./components/auth/AuthProvider";
+import AuthProvider from "./features/auth/context/AuthProvider";
 import PasswordChangePage from "./pages/PasswordChangePage";
 import ClientDetailsPage from "./pages/ClientDetailsPage";
+import ModalProvider from "./features/modal/context/ModalProvider";
 
 const router = createBrowserRouter([
   {
@@ -32,7 +33,6 @@ const router = createBrowserRouter([
             children: [
               {
                 index: true,
-                path: "home",
                 element: <HomePage />,
                 //loader: accountDetailsLoader
               },
@@ -63,12 +63,16 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <AuthProvider>
-      <RouterProvider router={router} />
-    </AuthProvider>
+    <ModalProvider>
+      <AuthProvider>
+        <RouterProvider router={router} />
+      </AuthProvider>
+    </ModalProvider>
   </React.StrictMode>
 );
 
+
+//TODO - TO REMOVE
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals

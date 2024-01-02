@@ -1,62 +1,82 @@
 import { useState, ChangeEvent, useContext } from 'react';
-import { Form, Navigate } from 'react-router-dom';
-import AuthContext from '../context/AuthContext';
+import { Navigate } from 'react-router-dom';
+import AuthContext from '../features/auth/context/AuthContext';
+import API_ENDPOINTS, { IFetchPasswordMaskRequest } from '../services/TheSafestBankApi/safestBankServerApiEndpoints';
+import PartialPasswordForm from '../features/auth/PartialPasswordForm';
+import ModalContext from '../features/modal/context/ModalContext';
 
 const LoginPage = () => {
-  const [clientId, setClientId] = useState<string>('');
-  const [passwordCombination, setPasswordCombination] = useState<string>('');
-  const [enteredPassword, setEnteredPassword] = useState<string>('');
+  const [clientNumber, setClientNumber] = useState<string>('');
+  const [passwordMask, setPasswordMask] = useState<number[] | null>(null);
   const { isAuthenticated, login } = useContext(AuthContext);
+  const { openModal, openSpinner, closeSpinner } = useContext(ModalContext);
 
+  const handleSubmitClientNumber = async () => {
+    try {
+      openSpinner();
+      const requestBody: IFetchPasswordMaskRequest = { clientNumber: clientNumber };
 
-  const handleClientIdChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setClientId(event.target.value);
+      const response = await fetch(API_ENDPOINTS.FETCH_PASSWORD_MASK, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        openModal('Error', `Failed to fetch password combination. ${data.message}`);
+        throw new Error(`Failed to fetch password combination: ${data.message}`);
+      }
+
+      setPasswordMask(data);
+      console.log(data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      closeSpinner();
+    }
   };
 
-  const handleSubmitClientId = () => {
-    // Send the Client ID to the server and receive the password combination
-    // Simulate server response for demonstration purposes
-    const fakeServerResponse = 'abc';
-    setPasswordCombination(fakeServerResponse);
+  const handleClientNumberChange = async (event: ChangeEvent<HTMLInputElement>) => {
+    setClientNumber(event.target.value);
   };
 
-  const handlePasswordChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setEnteredPassword(event.target.value);
-  };
-
-  const handleLogin = () => {
-    login();
+  const handleLogin = async (password: string) => {
+    login(clientNumber, password);
   };
 
   return (
     <>
       {
         isAuthenticated ? (
-          <Navigate to="/home" />
+          <Navigate to="/" />
         )
           : (
             <div id="login-page">
               <h1>Login</h1>
-              <input
-                type="text"
-                placeholder="Client ID"
-                value={clientId}
-                onChange={handleClientIdChange}
-              />
-              <button onClick={handleSubmitClientId}>Submit Client ID</button>
-
-              {passwordCombination && (
+              {!passwordMask && (
                 <>
-                  <h2>Password</h2>
-                  <Form method="post">
-                    <input
-                      type="password"
-                      placeholder="Enter password"
-                      value={enteredPassword}
-                      onChange={handlePasswordChange}
-                    />
-                    <button onClick={handleLogin}>Login</button>
-                  </Form>
+                  <h3>Provide the client number:</h3>
+                  <input
+                    type="text"
+                    placeholder="Client number"
+                    value={clientNumber}
+                    onChange={handleClientNumberChange}
+                  />
+                  <br />
+                  <button className="main-action-button" onClick={handleSubmitClientNumber}>Submit Client Number</button>
+                </>
+              )}
+              {passwordMask && (
+                <>
+                  <h3>Provide the following letters of the password for the client with number: "{clientNumber}"</h3>
+                  <PartialPasswordForm
+                    mask={passwordMask}
+                    onSubmit={handleLogin}
+                  />
                 </>
               )}
             </div>

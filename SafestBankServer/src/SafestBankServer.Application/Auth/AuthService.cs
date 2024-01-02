@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using SafestBankServer.Application.DTO;
 using SafestBankServer.Application.DTO.Auth;
 using SafestBankServer.Application.DTO.Client;
 using SafestBankServer.Application.Exceptions.Auth;
@@ -24,7 +23,7 @@ internal sealed class AuthService : IAuthService
         var client = await _authRepository.GetClientByNumberAsync(clientNumberDto.ClientNumber) 
             ?? throw new BankClientNotFound("Cannot find a client.");
 
-        var partialPassword = GetCurrentPartialPasswordForAClient(client);
+        var partialPassword = await GetCurrentPartialPasswordForAClient(client);
 
         return partialPassword.Mask;
     }
@@ -34,22 +33,22 @@ internal sealed class AuthService : IAuthService
         var client = await _authRepository.GetClientByNumberAsync(clientLoginDto.ClientNumber) 
             ?? throw new BankClientNotFound("Cannot find a client.");
 
-        var partialPassword = GetCurrentPartialPasswordForAClient(client);
+        var partialPassword = await GetCurrentPartialPasswordForAClient(client);
         
-        if(!_passwordManager.VerifyPassword(clientLoginDto.GivenPassword, partialPassword))
+        if(!_passwordManager.VerifyPassword(clientLoginDto.Password, partialPassword))
         {
             throw new InvalidPassword("Invalid password.");
         }
 
         partialPassword.PasswordStatus = PasswordStatus.USED;
-        _authRepository.UpdateClientAsync(client);
+        await _authRepository.UpdateClientAsync(client);
 
         var clientDto = _mapper.Map<BankClientDto>(client);
 
         return clientDto;
     }
 
-    private PartialPassword GetCurrentPartialPasswordForAClient(BankClient client)
+    private async Task<PartialPassword> GetCurrentPartialPasswordForAClient(BankClient client)
     {
         var partialPasswords = client.PartialPasswords.ToList();
 
@@ -68,7 +67,7 @@ internal sealed class AuthService : IAuthService
             partialPasswords[randomIndex].PasswordStatus = PasswordStatus.HAS_TO_BE_USED;
             partialPassword = partialPasswords[randomIndex];
 
-            _authRepository.UpdateClientAsync(client);
+            await _authRepository.UpdateClientAsync(client);
         }
 
         return partialPassword;
