@@ -1,11 +1,14 @@
 ﻿using SafestBankServer.Core.Auth.Passwords;
 using SafestBankServer.Core.Client.Data;
+using SafestBankServer.Core.Transaction;
 
 namespace SafestBankServer.Core.Client;
 public class BankClient
 {
     public Guid Id { get; protected set; } = Guid.NewGuid();
     public string ClientNumber { get; protected set; }
+    public string AccountNumber { get; protected set; }
+    public decimal Balance { get; set; }
     public string Name { get; protected set; }
     public string Surname { get; protected set; }
     public string PESEL { get; protected set; }
@@ -15,10 +18,13 @@ public class BankClient
     public virtual IList<PartialPassword> PartialPasswords{ get; set; }
     public Guid IdentityCardId { get; set; }
     public virtual IdentityCard IdentityCard { get; set; }
+    public virtual IList<ClientTransaction>? Transactions { get; set; }
 
-    public BankClient(string clientNumber, string name, string surname, string pESEL, string email)
+    public BankClient(string clientNumber, string accountNumber, decimal balance, string name, string surname, string pESEL, string email)
     {
         ClientNumber = clientNumber;
+        AccountNumber = accountNumber;
+        Balance = balance;
         Name = name;
         Surname = surname;
         PESEL = pESEL;

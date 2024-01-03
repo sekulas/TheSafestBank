@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using SafestBankServer.Application.Auth;
 using SafestBankServer.Application.DTO.Auth;
-using SafestBankServer.Application.DTO.Client;
 using SafestBankServer.Web.Configuration.CookieAuth;
 using System.Security.Claims;
 
@@ -32,11 +31,12 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("login")]
-    public async Task<ActionResult<BankClientDto>> LoginAsync([FromBody] ClientLoginDto clientLoginDto)
+    public async Task<ActionResult> LoginAsync([FromBody] ClientLoginDto clientLoginDto)
     {
-        var result = await _authService.LoginAsync(clientLoginDto);
+        await _authService.LoginAsync(clientLoginDto);
         await GenerateSessionForUser(clientLoginDto.ClientNumber);
-        return Ok(result);
+
+        return Ok();
     }
 
     [HttpGet("login")]

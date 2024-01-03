@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using SafestBankServer.Core.Auth;
+using SafestBankServer.Core.Client;
+using SafestBankServer.Core.Transaction;
 using SafestBankServer.Infrastructure.Auth;
+using SafestBankServer.Infrastructure.Client;
 using SafestBankServer.Infrastructure.Database.Configuration;
 using SafestBankServer.Infrastructure.EF.Contexts;
 
@@ -14,7 +16,8 @@ public static class Extensions
         IConfiguration configuration
     )
     {
-        services.AddScoped<IAuthRepository, AuthRepository>();
+        services.AddScoped<IClientRepository, ClientRepository>();
+        services.AddScoped<ITransactionRepository, TransactionRepository>();
 
         var dbSettings = configuration.GetSection(nameof(DatabaseOptions)).Get<DatabaseOptions>();
 

@@ -5,6 +5,7 @@ const API_ENDPOINTS = {
   LOGIN: `${API_BASE_URL}/auth/login`,
   LOGOUT: `${API_BASE_URL}/auth/logout`,
   GET_CLIENT: `${API_BASE_URL}/client`,
+  MAKE_TRANSACTION: `${API_BASE_URL}/transaction`,
 };
 
 export default API_ENDPOINTS;
@@ -16,4 +17,10 @@ export interface IFetchPasswordMaskRequest {
 export interface ILoginRequest {
   clientNumber: string;
   password: string;
+};
+
+export interface IMakeTransactionRequest {
+  recipientAccountNumber: string;
+  amount: number;
+  title: string;
 };

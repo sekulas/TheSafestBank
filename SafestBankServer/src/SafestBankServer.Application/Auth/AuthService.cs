@@ -1,26 +1,22 @@
 ﻿using AutoMapper;
 using SafestBankServer.Application.DTO.Auth;
-using SafestBankServer.Application.DTO.Client;
 using SafestBankServer.Application.Exceptions.Auth;
-using SafestBankServer.Core.Auth;
 using SafestBankServer.Core.Auth.Passwords;
 using SafestBankServer.Core.Client;
 
 namespace SafestBankServer.Application.Auth;
 internal sealed class AuthService : IAuthService
 {
-    private readonly IAuthRepository _authRepository;
+    private readonly IClientRepository _clientRepository;
     private readonly IPasswordManager _passwordManager;
-    private readonly IMapper _mapper;
-    public AuthService(IAuthRepository authRepository, IMapper mapper, IPasswordManager passwordManager)
+    public AuthService(IClientRepository clientRepository, IPasswordManager passwordManager)
     {
-        _authRepository = authRepository;
+        _clientRepository = clientRepository;
         _passwordManager = passwordManager;
-        _mapper = mapper;
     }
     public async Task<int[]> GetPasswordMaskAsync(ClientNumberDto clientNumberDto)
     {
-        var client = await _authRepository.GetClientByNumberAsync(clientNumberDto.ClientNumber) 
+        var client = await _clientRepository.GetClientByNumberAsync(clientNumberDto.ClientNumber) 
             ?? throw new BankClientNotFound("Cannot find a client.");
 
         var partialPassword = await GetCurrentPartialPasswordForAClient(client);
@@ -28,9 +24,9 @@ internal sealed class AuthService : IAuthService
         return partialPassword.Mask;
     }
 
-    public async Task<BankClientDto> LoginAsync(ClientLoginDto clientLoginDto)
+    public async Task LoginAsync(ClientLoginDto clientLoginDto)
     {
-        var client = await _authRepository.GetClientByNumberAsync(clientLoginDto.ClientNumber) 
+        var client = await _clientRepository.GetClientByNumberAsync(clientLoginDto.ClientNumber) 
             ?? throw new BankClientNotFound("Cannot find a client.");
 
         var partialPassword = await GetCurrentPartialPasswordForAClient(client);
@@ -41,11 +37,9 @@ internal sealed class AuthService : IAuthService
         }
 
         partialPassword.PasswordStatus = PasswordStatus.USED;
-        await _authRepository.UpdateClientAsync(client);
+        await _clientRepository.UpdateClientAsync(client);
 
-        var clientDto = _mapper.Map<BankClientDto>(client);
-
-        return clientDto;
+        return;
     }
 
     private async Task<PartialPassword> GetCurrentPartialPasswordForAClient(BankClient client)
@@ -67,7 +61,7 @@ internal sealed class AuthService : IAuthService
             partialPasswords[randomIndex].PasswordStatus = PasswordStatus.HAS_TO_BE_USED;
             partialPassword = partialPasswords[randomIndex];
 
-            await _authRepository.UpdateClientAsync(client);
+            await _clientRepository.UpdateClientAsync(client);
         }
 
         return partialPassword;

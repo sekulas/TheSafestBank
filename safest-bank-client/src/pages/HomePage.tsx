@@ -1,37 +1,38 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import API_ENDPOINTS from "../services/TheSafestBankApi/safestBankServerApiEndpoints";
 import ModalContext from "../features/modal/context/ModalContext";
 import AuthContext from "../features/auth/context/AuthContext";
+import TransactionMenu from "../features/transactions/components/TransactionMenu";
+import TransactionList from "../features/transactions/components/TransactionList";
 
 const HomePage = () => {
   const { openModal, openSpinner, closeSpinner } = useContext(ModalContext);
-  const { logout } = useContext(AuthContext);
-  const [loading, setLoading] = useState(true);
+  const { setClientData, logout } = useContext(AuthContext);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         openSpinner();
-        console.log('Fetching data...')
+        console.log("Fetching data...");
         const response = await fetch(API_ENDPOINTS.GET_CLIENT, {
-          method: 'GET',
+          method: "GET",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
-          credentials: 'include',
+          credentials: "include",
         });
 
         const data = await response.json();
-        console.log(data)
-        console.log(response)
+        console.log(data);
+        console.log(response);
         if (!response.ok) {
-          openModal('Error', `Failed to get the client data. ${data.message}`);
+          openModal("Error", `Failed to get the client data. ${data.message}`);
           logout();
           throw new Error(`Failed to get the client data: ${data.message}`);
         }
 
         console.log(data);
-
+        setClientData(data);
       } catch (error) {
         console.error(error);
       } finally {
@@ -44,9 +45,10 @@ const HomePage = () => {
 
   return (
     <div id="home-page">
-      <h1>Home Page</h1>
+      <TransactionMenu />
+      <TransactionList />
     </div>
   );
-}
+};
 
 export default HomePage;

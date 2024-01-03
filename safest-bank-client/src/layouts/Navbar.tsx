@@ -17,7 +17,7 @@ const Navbar = () => {
             <PersonIcon />
             {name.toUpperCase()} {surname.toUpperCase()}
           </Link>
-          <button className="warning-activity-button" onClick={logout}>Logout</button>
+          <button className="warning-action-button" onClick={logout}>Logout</button>
         </div>
       }
     </div>

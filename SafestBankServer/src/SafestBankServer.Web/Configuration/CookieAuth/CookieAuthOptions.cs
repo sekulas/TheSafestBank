@@ -2,5 +2,5 @@
 
 public class CookieAuthOptions
 {
-    public TimeSpan CookieExpirationTime { get; } = new TimeSpan(0, 0, 10);
+    public TimeSpan CookieExpirationTime { get; } = new TimeSpan(0, 1, 0);
 }

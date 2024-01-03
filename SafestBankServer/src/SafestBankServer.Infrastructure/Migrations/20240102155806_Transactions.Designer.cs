@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SafestBankServer.Infrastructure.EF.Contexts;
@@ -11,9 +12,11 @@ using SafestBankServer.Infrastructure.EF.Contexts;
 namespace SafestBankServer.Infrastructure.Migrations
 {
     [DbContext(typeof(SafestBankDbContext))]
-    partial class SafestBankDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240102155806_Transactions")]
+    partial class Transactions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -55,183 +58,183 @@ namespace SafestBankServer.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("79ad984e-f4f3-45d9-acd7-d2ea5af6cf22"),
-                            BankClientId = new Guid("789b48f2-b9d4-4bf0-990e-ca32b54fdbc2"),
-                            Mask = new[] { 4, 6, 10 },
-                            PartialPasswordHash = new byte[] { 112, 185, 247, 67 },
+                            Id = new Guid("10a82069-be59-4dcd-b46d-d4e9498fe435"),
+                            BankClientId = new Guid("a2eb23c2-17b3-4157-bfe3-a667a3e6916d"),
+                            Mask = new[] { 7, 8, 9 },
+                            PartialPasswordHash = new byte[] { 135, 60, 132, 147 },
                             PasswordStatus = 2,
-                            Salt = new byte[] { 169, 181, 1, 21 }
+                            Salt = new byte[] { 244, 161, 61, 25 }
                         },
                         new
                         {
-                            Id = new Guid("29c74bc3-5965-446c-9925-8810eeb7ff79"),
-                            BankClientId = new Guid("789b48f2-b9d4-4bf0-990e-ca32b54fdbc2"),
-                            Mask = new[] { 1, 5, 6 },
-                            PartialPasswordHash = new byte[] { 22, 18, 145, 128 },
+                            Id = new Guid("e49b6c43-f479-4157-95af-01e9f3370ce2"),
+                            BankClientId = new Guid("a2eb23c2-17b3-4157-bfe3-a667a3e6916d"),
+                            Mask = new[] { 0, 4, 7 },
+                            PartialPasswordHash = new byte[] { 250, 28, 72, 187 },
                             PasswordStatus = 1,
-                            Salt = new byte[] { 37, 173, 223, 142 }
+                            Salt = new byte[] { 95, 19, 203, 99 }
                         },
                         new
                         {
-                            Id = new Guid("e7d281c3-ea9a-46bf-8373-273702a504ba"),
-                            BankClientId = new Guid("789b48f2-b9d4-4bf0-990e-ca32b54fdbc2"),
-                            Mask = new[] { 2, 5, 8 },
-                            PartialPasswordHash = new byte[] { 176, 192, 9, 19 },
+                            Id = new Guid("153a513f-e1fb-4ece-8970-77237a599000"),
+                            BankClientId = new Guid("a2eb23c2-17b3-4157-bfe3-a667a3e6916d"),
+                            Mask = new[] { 2, 4, 10 },
+                            PartialPasswordHash = new byte[] { 132, 139, 109, 171 },
                             PasswordStatus = 1,
-                            Salt = new byte[] { 233, 184, 68, 92 }
+                            Salt = new byte[] { 228, 86, 8, 80 }
                         },
                         new
                         {
-                            Id = new Guid("15a5e670-4f6c-4174-abaf-b395b744d233"),
-                            BankClientId = new Guid("789b48f2-b9d4-4bf0-990e-ca32b54fdbc2"),
-                            Mask = new[] { 2, 5, 9 },
-                            PartialPasswordHash = new byte[] { 65, 109, 53, 84 },
+                            Id = new Guid("c0da7376-4781-42b6-9c85-d92568489b8a"),
+                            BankClientId = new Guid("a2eb23c2-17b3-4157-bfe3-a667a3e6916d"),
+                            Mask = new[] { 5, 6, 10 },
+                            PartialPasswordHash = new byte[] { 90, 21, 186, 70 },
                             PasswordStatus = 1,
-                            Salt = new byte[] { 2, 32, 33, 104 }
+                            Salt = new byte[] { 171, 209, 101, 61 }
                         },
                         new
                         {
-                            Id = new Guid("b835fb63-04a1-496f-84e3-7ca15823e38c"),
-                            BankClientId = new Guid("789b48f2-b9d4-4bf0-990e-ca32b54fdbc2"),
-                            Mask = new[] { 5, 9, 10 },
-                            PartialPasswordHash = new byte[] { 108, 77, 191, 18 },
-                            PasswordStatus = 1,
-                            Salt = new byte[] { 76, 15, 79, 100 }
-                        },
-                        new
-                        {
-                            Id = new Guid("e7d119e2-8f73-4475-be0d-043b85be977c"),
-                            BankClientId = new Guid("789b48f2-b9d4-4bf0-990e-ca32b54fdbc2"),
-                            Mask = new[] { 1, 2, 5 },
-                            PartialPasswordHash = new byte[] { 95, 245, 60, 229 },
-                            PasswordStatus = 1,
-                            Salt = new byte[] { 72, 197, 6, 37 }
-                        },
-                        new
-                        {
-                            Id = new Guid("5317307f-f31a-4ea1-9a6e-9b847f8eb19f"),
-                            BankClientId = new Guid("789b48f2-b9d4-4bf0-990e-ca32b54fdbc2"),
-                            Mask = new[] { 1, 2, 7 },
-                            PartialPasswordHash = new byte[] { 232, 32, 78, 37 },
-                            PasswordStatus = 1,
-                            Salt = new byte[] { 133, 101, 195, 121 }
-                        },
-                        new
-                        {
-                            Id = new Guid("07b7067a-49c0-4cbd-bf95-18384e09d5b5"),
-                            BankClientId = new Guid("789b48f2-b9d4-4bf0-990e-ca32b54fdbc2"),
-                            Mask = new[] { 0, 2, 4 },
-                            PartialPasswordHash = new byte[] { 213, 94, 241, 66 },
-                            PasswordStatus = 1,
-                            Salt = new byte[] { 154, 188, 76, 27 }
-                        },
-                        new
-                        {
-                            Id = new Guid("d8af05aa-f489-4cdf-bdb5-1f7904d11733"),
-                            BankClientId = new Guid("789b48f2-b9d4-4bf0-990e-ca32b54fdbc2"),
-                            Mask = new[] { 2, 4, 7 },
-                            PartialPasswordHash = new byte[] { 48, 72, 108, 53 },
-                            PasswordStatus = 1,
-                            Salt = new byte[] { 61, 141, 216, 50 }
-                        },
-                        new
-                        {
-                            Id = new Guid("8f7404b6-ecbe-44dd-9dcb-9a3880905d2d"),
-                            BankClientId = new Guid("789b48f2-b9d4-4bf0-990e-ca32b54fdbc2"),
-                            Mask = new[] { 3, 6, 8 },
-                            PartialPasswordHash = new byte[] { 91, 77, 74, 230 },
-                            PasswordStatus = 1,
-                            Salt = new byte[] { 237, 75, 161, 154 }
-                        },
-                        new
-                        {
-                            Id = new Guid("f6adb44a-d4af-488a-a112-6ca3e70ba642"),
-                            BankClientId = new Guid("59126f13-5104-4814-a296-8534024c624e"),
-                            Mask = new[] { 0, 3, 7 },
-                            PartialPasswordHash = new byte[] { 14, 249, 168, 204 },
-                            PasswordStatus = 2,
-                            Salt = new byte[] { 79, 54, 134, 219 }
-                        },
-                        new
-                        {
-                            Id = new Guid("2cc4f663-51c6-4fc3-83eb-007f08a2b2e6"),
-                            BankClientId = new Guid("59126f13-5104-4814-a296-8534024c624e"),
-                            Mask = new[] { 3, 8, 9 },
-                            PartialPasswordHash = new byte[] { 138, 23, 174, 134 },
-                            PasswordStatus = 1,
-                            Salt = new byte[] { 84, 79, 48, 92 }
-                        },
-                        new
-                        {
-                            Id = new Guid("b3362ca4-274c-465b-bc96-1ec8ec38d4c8"),
-                            BankClientId = new Guid("59126f13-5104-4814-a296-8534024c624e"),
-                            Mask = new[] { 5, 7, 8 },
-                            PartialPasswordHash = new byte[] { 175, 31, 198, 148 },
-                            PasswordStatus = 1,
-                            Salt = new byte[] { 74, 166, 78, 195 }
-                        },
-                        new
-                        {
-                            Id = new Guid("d17d746f-b5dd-431d-87b4-9359a090064c"),
-                            BankClientId = new Guid("59126f13-5104-4814-a296-8534024c624e"),
-                            Mask = new[] { 0, 8, 9 },
-                            PartialPasswordHash = new byte[] { 202, 51, 108, 194 },
-                            PasswordStatus = 1,
-                            Salt = new byte[] { 20, 31, 66, 210 }
-                        },
-                        new
-                        {
-                            Id = new Guid("406d649f-2319-4986-852a-1cc5715ce06d"),
-                            BankClientId = new Guid("59126f13-5104-4814-a296-8534024c624e"),
-                            Mask = new[] { 4, 5, 6 },
-                            PartialPasswordHash = new byte[] { 209, 55, 167, 10 },
-                            PasswordStatus = 1,
-                            Salt = new byte[] { 149, 71, 80, 171 }
-                        },
-                        new
-                        {
-                            Id = new Guid("a6217b73-0a2a-4ffa-953b-86999129e7ba"),
-                            BankClientId = new Guid("59126f13-5104-4814-a296-8534024c624e"),
-                            Mask = new[] { 4, 5, 7 },
-                            PartialPasswordHash = new byte[] { 93, 107, 43, 21 },
-                            PasswordStatus = 1,
-                            Salt = new byte[] { 58, 7, 131, 129 }
-                        },
-                        new
-                        {
-                            Id = new Guid("f6fa1e15-8ca5-48c8-9e36-b3cbdd12ee45"),
-                            BankClientId = new Guid("59126f13-5104-4814-a296-8534024c624e"),
+                            Id = new Guid("63fc53fd-03c9-41c3-9a4f-e1e18163929b"),
+                            BankClientId = new Guid("a2eb23c2-17b3-4157-bfe3-a667a3e6916d"),
                             Mask = new[] { 4, 5, 9 },
-                            PartialPasswordHash = new byte[] { 25, 88, 126, 86 },
+                            PartialPasswordHash = new byte[] { 175, 31, 21, 186 },
                             PasswordStatus = 1,
-                            Salt = new byte[] { 11, 209, 81, 255 }
+                            Salt = new byte[] { 63, 113, 27, 208 }
                         },
                         new
                         {
-                            Id = new Guid("354659d8-f210-44ee-b375-b975e8978496"),
-                            BankClientId = new Guid("59126f13-5104-4814-a296-8534024c624e"),
-                            Mask = new[] { 0, 1, 10 },
-                            PartialPasswordHash = new byte[] { 140, 38, 228, 83 },
+                            Id = new Guid("a31ae437-d3d8-4b6e-8506-c04f74f67d92"),
+                            BankClientId = new Guid("a2eb23c2-17b3-4157-bfe3-a667a3e6916d"),
+                            Mask = new[] { 1, 3, 4 },
+                            PartialPasswordHash = new byte[] { 206, 21, 193, 42 },
                             PasswordStatus = 1,
-                            Salt = new byte[] { 119, 53, 182, 221 }
+                            Salt = new byte[] { 71, 70, 80, 61 }
                         },
                         new
                         {
-                            Id = new Guid("d059924c-b531-4d1a-b82d-904ac97e01ea"),
-                            BankClientId = new Guid("59126f13-5104-4814-a296-8534024c624e"),
-                            Mask = new[] { 1, 2, 4 },
-                            PartialPasswordHash = new byte[] { 123, 247, 10, 99 },
+                            Id = new Guid("0b0629de-92f1-44a7-9e5a-0ef49ba13500"),
+                            BankClientId = new Guid("a2eb23c2-17b3-4157-bfe3-a667a3e6916d"),
+                            Mask = new[] { 2, 5, 10 },
+                            PartialPasswordHash = new byte[] { 226, 45, 250, 112 },
                             PasswordStatus = 1,
-                            Salt = new byte[] { 231, 0, 41, 68 }
+                            Salt = new byte[] { 194, 5, 158, 192 }
                         },
                         new
                         {
-                            Id = new Guid("54680887-a3b1-46ee-a3aa-dd0e2e6fd6fe"),
-                            BankClientId = new Guid("59126f13-5104-4814-a296-8534024c624e"),
-                            Mask = new[] { 2, 6, 9 },
-                            PartialPasswordHash = new byte[] { 226, 41, 101, 169 },
+                            Id = new Guid("2be2486d-f795-4239-a614-b36c358b4ed8"),
+                            BankClientId = new Guid("a2eb23c2-17b3-4157-bfe3-a667a3e6916d"),
+                            Mask = new[] { 1, 7, 9 },
+                            PartialPasswordHash = new byte[] { 159, 14, 244, 241 },
                             PasswordStatus = 1,
-                            Salt = new byte[] { 196, 109, 140, 9 }
+                            Salt = new byte[] { 182, 24, 107, 161 }
+                        },
+                        new
+                        {
+                            Id = new Guid("637c6a10-3b0f-4916-ba20-0b2c9fbf23a3"),
+                            BankClientId = new Guid("a2eb23c2-17b3-4157-bfe3-a667a3e6916d"),
+                            Mask = new[] { 3, 5, 9 },
+                            PartialPasswordHash = new byte[] { 89, 21, 155, 151 },
+                            PasswordStatus = 1,
+                            Salt = new byte[] { 121, 190, 7, 201 }
+                        },
+                        new
+                        {
+                            Id = new Guid("c37821f0-66f1-45a5-812e-18713da4f5a7"),
+                            BankClientId = new Guid("a2eb23c2-17b3-4157-bfe3-a667a3e6916d"),
+                            Mask = new[] { 1, 5, 10 },
+                            PartialPasswordHash = new byte[] { 170, 58, 225, 34 },
+                            PasswordStatus = 1,
+                            Salt = new byte[] { 4, 57, 126, 234 }
+                        },
+                        new
+                        {
+                            Id = new Guid("21bf0a36-9079-495b-bc85-48a9faa8193f"),
+                            BankClientId = new Guid("e2e1327d-f75a-4577-88f9-1f73744f4a85"),
+                            Mask = new[] { 2, 4, 7 },
+                            PartialPasswordHash = new byte[] { 228, 199, 199, 105 },
+                            PasswordStatus = 2,
+                            Salt = new byte[] { 222, 184, 217, 249 }
+                        },
+                        new
+                        {
+                            Id = new Guid("2eac6f41-b854-43b9-b999-5d3add68143a"),
+                            BankClientId = new Guid("e2e1327d-f75a-4577-88f9-1f73744f4a85"),
+                            Mask = new[] { 3, 5, 10 },
+                            PartialPasswordHash = new byte[] { 255, 10, 21, 79 },
+                            PasswordStatus = 1,
+                            Salt = new byte[] { 113, 175, 108, 170 }
+                        },
+                        new
+                        {
+                            Id = new Guid("76342a6a-8626-484a-ade1-3dddfe1d2f8b"),
+                            BankClientId = new Guid("e2e1327d-f75a-4577-88f9-1f73744f4a85"),
+                            Mask = new[] { 2, 7, 10 },
+                            PartialPasswordHash = new byte[] { 187, 207, 56, 52 },
+                            PasswordStatus = 1,
+                            Salt = new byte[] { 227, 39, 171, 13 }
+                        },
+                        new
+                        {
+                            Id = new Guid("63f49d44-b8fc-4951-9542-714f3db189ed"),
+                            BankClientId = new Guid("e2e1327d-f75a-4577-88f9-1f73744f4a85"),
+                            Mask = new[] { 1, 5, 9 },
+                            PartialPasswordHash = new byte[] { 18, 173, 248, 176 },
+                            PasswordStatus = 1,
+                            Salt = new byte[] { 219, 193, 103, 8 }
+                        },
+                        new
+                        {
+                            Id = new Guid("26c6db5e-ea58-4e06-8c78-dfb3f3fe8a1f"),
+                            BankClientId = new Guid("e2e1327d-f75a-4577-88f9-1f73744f4a85"),
+                            Mask = new[] { 3, 4, 8 },
+                            PartialPasswordHash = new byte[] { 217, 138, 254, 28 },
+                            PasswordStatus = 1,
+                            Salt = new byte[] { 147, 47, 3, 238 }
+                        },
+                        new
+                        {
+                            Id = new Guid("1b2b0c0f-8c7b-40e8-b2d1-22947c12a84e"),
+                            BankClientId = new Guid("e2e1327d-f75a-4577-88f9-1f73744f4a85"),
+                            Mask = new[] { 0, 3, 6 },
+                            PartialPasswordHash = new byte[] { 30, 0, 72, 53 },
+                            PasswordStatus = 1,
+                            Salt = new byte[] { 145, 98, 72, 132 }
+                        },
+                        new
+                        {
+                            Id = new Guid("8b509a2d-2caf-40a5-871f-f37f06046963"),
+                            BankClientId = new Guid("e2e1327d-f75a-4577-88f9-1f73744f4a85"),
+                            Mask = new[] { 2, 7, 9 },
+                            PartialPasswordHash = new byte[] { 17, 115, 140, 96 },
+                            PasswordStatus = 1,
+                            Salt = new byte[] { 207, 189, 179, 94 }
+                        },
+                        new
+                        {
+                            Id = new Guid("96abd29a-08c0-46c8-b7fa-0104a02111a6"),
+                            BankClientId = new Guid("e2e1327d-f75a-4577-88f9-1f73744f4a85"),
+                            Mask = new[] { 0, 1, 9 },
+                            PartialPasswordHash = new byte[] { 200, 183, 85, 199 },
+                            PasswordStatus = 1,
+                            Salt = new byte[] { 213, 197, 89, 210 }
+                        },
+                        new
+                        {
+                            Id = new Guid("8f00684f-352f-4a65-927a-e027f3425063"),
+                            BankClientId = new Guid("e2e1327d-f75a-4577-88f9-1f73744f4a85"),
+                            Mask = new[] { 3, 4, 10 },
+                            PartialPasswordHash = new byte[] { 62, 244, 253, 59 },
+                            PasswordStatus = 1,
+                            Salt = new byte[] { 235, 227, 79, 93 }
+                        },
+                        new
+                        {
+                            Id = new Guid("ea04a126-8896-455e-ad38-5de192aea2c6"),
+                            BankClientId = new Guid("e2e1327d-f75a-4577-88f9-1f73744f4a85"),
+                            Mask = new[] { 5, 6, 7 },
+                            PartialPasswordHash = new byte[] { 90, 126, 120, 5 },
+                            PasswordStatus = 1,
+                            Salt = new byte[] { 21, 242, 41, 12 }
                         });
                 });
 
@@ -281,26 +284,26 @@ namespace SafestBankServer.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("789b48f2-b9d4-4bf0-990e-ca32b54fdbc2"),
+                            Id = new Guid("a2eb23c2-17b3-4157-bfe3-a667a3e6916d"),
                             AccountNumber = "12345678901234567890123456",
-                            AddressId = new Guid("36905ecd-7515-46e3-b28d-2d6ede1b51b6"),
+                            AddressId = new Guid("616401ac-853f-4981-8c88-3a6476e1af05"),
                             Balance = 1000.0m,
                             ClientNumber = "1",
                             Email = "sekula.sebastian.kontakt@gmail.com",
-                            IdentityCardId = new Guid("90d5f5b2-4f6d-4d75-b609-de55d3a41c7e"),
+                            IdentityCardId = new Guid("fa98850b-1502-4269-b8a1-ec6d3899f313"),
                             Name = "Sebastian",
                             PESEL = "12345678901",
                             Surname = "Sekula"
                         },
                         new
                         {
-                            Id = new Guid("59126f13-5104-4814-a296-8534024c624e"),
+                            Id = new Guid("e2e1327d-f75a-4577-88f9-1f73744f4a85"),
                             AccountNumber = "22345678901234567890123456",
-                            AddressId = new Guid("26dcc92f-f0b3-4e5f-868d-ac968fd98548"),
+                            AddressId = new Guid("6b3f302b-ff04-4c63-acc3-62911a3595b3"),
                             Balance = 1000.0m,
                             ClientNumber = "2",
                             Email = "bob@gmail.com",
-                            IdentityCardId = new Guid("46b7afe8-29f1-4d30-949e-a674131bf1ce"),
+                            IdentityCardId = new Guid("459ef917-bd84-452e-8e26-b69f43e3cdbe"),
                             Name = "Bob",
                             PESEL = "22345678901",
                             Surname = "Bobowski"
@@ -346,8 +349,8 @@ namespace SafestBankServer.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("36905ecd-7515-46e3-b28d-2d6ede1b51b6"),
-                            BankClientId = new Guid("789b48f2-b9d4-4bf0-990e-ca32b54fdbc2"),
+                            Id = new Guid("616401ac-853f-4981-8c88-3a6476e1af05"),
+                            BankClientId = new Guid("a2eb23c2-17b3-4157-bfe3-a667a3e6916d"),
                             City = "Warszawa",
                             Country = "Poland",
                             HouseNumber = "39",
@@ -356,8 +359,8 @@ namespace SafestBankServer.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("26dcc92f-f0b3-4e5f-868d-ac968fd98548"),
-                            BankClientId = new Guid("59126f13-5104-4814-a296-8534024c624e"),
+                            Id = new Guid("6b3f302b-ff04-4c63-acc3-62911a3595b3"),
+                            BankClientId = new Guid("e2e1327d-f75a-4577-88f9-1f73744f4a85"),
                             City = "Warszawa",
                             Country = "Poland",
                             HouseNumber = "39",
@@ -401,8 +404,8 @@ namespace SafestBankServer.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("90d5f5b2-4f6d-4d75-b609-de55d3a41c7e"),
-                            BankClientId = new Guid("789b48f2-b9d4-4bf0-990e-ca32b54fdbc2"),
+                            Id = new Guid("fa98850b-1502-4269-b8a1-ec6d3899f313"),
+                            BankClientId = new Guid("a2eb23c2-17b3-4157-bfe3-a667a3e6916d"),
                             CountryOfIssue = "Polska",
                             Number = "12121212",
                             Serie = "RXA",
@@ -410,8 +413,8 @@ namespace SafestBankServer.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("46b7afe8-29f1-4d30-949e-a674131bf1ce"),
-                            BankClientId = new Guid("59126f13-5104-4814-a296-8534024c624e"),
+                            Id = new Guid("459ef917-bd84-452e-8e26-b69f43e3cdbe"),
+                            BankClientId = new Guid("e2e1327d-f75a-4577-88f9-1f73744f4a85"),
                             CountryOfIssue = "Polska",
                             Number = "22121212",
                             Serie = "RXA",
@@ -431,38 +434,14 @@ namespace SafestBankServer.Infrastructure.Migrations
                     b.Property<Guid?>("BankClientId")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("RecipientAccountNumber")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<DateOnly>("Date")
+                        .HasColumnType("date");
 
                     b.Property<Guid>("RecipientId")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("RecipientName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("RecipientSurname")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("SenderAccountNumber")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<Guid>("SenderId")
                         .HasColumnType("uuid");
-
-                    b.Property<string>("SenderName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("SenderSurname")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("Time")
-                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -472,7 +451,7 @@ namespace SafestBankServer.Infrastructure.Migrations
 
                     b.HasIndex("BankClientId");
 
-                    b.ToTable("ClientTransactions");
+                    b.ToTable("ClientTransaction");
                 });
 
             modelBuilder.Entity("SafestBankServer.Core.Auth.Passwords.PartialPassword", b =>
