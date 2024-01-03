@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
 using SafestBankServer.Application.Exceptions.Auth;
+using SafestBankServer.Application.Exceptions.Transaction;
 
 namespace SafestBankServer.Web.Configuration.Exceptions;
 
@@ -12,6 +13,7 @@ public class GlobalExceptionHandler : IExceptionHandler
             BankClientNotFound e => (404, e.Message),
             InvalidPassword e => (400, e.Message),
             UnauthorizedAccessException e => (401, e.Message),
+            NotEnoughMoney e => (402, e.Message),
             _ => (500, "Internal Server Error")
         };  
 

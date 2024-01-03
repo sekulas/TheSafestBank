@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using SafestBankServer.Application.Auth;
 using SafestBankServer.Application.DTO.Auth;
-using SafestBankServer.Application.DTO.Client;
 using SafestBankServer.Web.Configuration.CookieAuth;
 using System.Security.Claims;
 

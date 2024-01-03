@@ -1,4 +1,5 @@
-﻿using SafestBankServer.Application.DTO.Auth;
+﻿using AutoMapper;
+using SafestBankServer.Application.DTO.Auth;
 using SafestBankServer.Application.Exceptions.Auth;
 using SafestBankServer.Core.Auth.Passwords;
 using SafestBankServer.Core.Client;
@@ -6,16 +7,16 @@ using SafestBankServer.Core.Client;
 namespace SafestBankServer.Application.Auth;
 internal sealed class AuthService : IAuthService
 {
-    private readonly IClientRepository _authRepository;
+    private readonly IClientRepository _clientRepository;
     private readonly IPasswordManager _passwordManager;
-    public AuthService(IClientRepository authRepository, IPasswordManager passwordManager)
+    public AuthService(IClientRepository clientRepository, IPasswordManager passwordManager)
     {
-        _authRepository = authRepository;
+        _clientRepository = clientRepository;
         _passwordManager = passwordManager;
     }
     public async Task<int[]> GetPasswordMaskAsync(ClientNumberDto clientNumberDto)
     {
-        var client = await _authRepository.GetClientByNumberAsync(clientNumberDto.ClientNumber) 
+        var client = await _clientRepository.GetClientByNumberAsync(clientNumberDto.ClientNumber) 
             ?? throw new BankClientNotFound("Cannot find a client.");
 
         var partialPassword = await GetCurrentPartialPasswordForAClient(client);
@@ -25,7 +26,7 @@ internal sealed class AuthService : IAuthService
 
     public async Task LoginAsync(ClientLoginDto clientLoginDto)
     {
-        var client = await _authRepository.GetClientByNumberAsync(clientLoginDto.ClientNumber) 
+        var client = await _clientRepository.GetClientByNumberAsync(clientLoginDto.ClientNumber) 
             ?? throw new BankClientNotFound("Cannot find a client.");
 
         var partialPassword = await GetCurrentPartialPasswordForAClient(client);
@@ -36,7 +37,7 @@ internal sealed class AuthService : IAuthService
         }
 
         partialPassword.PasswordStatus = PasswordStatus.USED;
-        await _authRepository.UpdateClientAsync(client);
+        await _clientRepository.UpdateClientAsync(client);
 
         return;
     }
@@ -60,7 +61,7 @@ internal sealed class AuthService : IAuthService
             partialPasswords[randomIndex].PasswordStatus = PasswordStatus.HAS_TO_BE_USED;
             partialPassword = partialPasswords[randomIndex];
 
-            await _authRepository.UpdateClientAsync(client);
+            await _clientRepository.UpdateClientAsync(client);
         }
 
         return partialPassword;
