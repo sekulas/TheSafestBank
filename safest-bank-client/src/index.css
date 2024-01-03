@@ -7,6 +7,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   height: 100vh; 
   box-sizing: border-box; 
+  border: 5px solid blueviolet;
 }
 
 code {
@@ -15,7 +16,7 @@ code {
 }
 
 #navbar {
-  border: 5px solid blueviolet;
+  border-bottom: 5px solid blueviolet;
   padding: 10px;
   display: flex;
   justify-content: space-between;
@@ -213,14 +214,11 @@ input {
 #home-page {
   display: flex;
   height: 100%;
-  border-left: 5px solid blueviolet;
-  border-right: 5px solid blueviolet;
 }
 
 #transaction-menu {
   display: flex;
   flex-direction: column;
-  border-right: 5px solid blueviolet;
   padding: 10px;
   height: 100%;
 }
@@ -252,6 +250,9 @@ input {
   align-items: center;
   width: 100%;
   align-items: start;
+  max-height: 88vh;  
+  overflow-y: auto;
+  border-left: 5px solid blueviolet;
 }
 
 #transaction-list > *{
@@ -260,12 +261,16 @@ input {
 }
 
 #transaction-list-title {
+  position: sticky;
+  top: 0;
   margin: 0px;
   padding-left: 10px;
   display: block;
   font-size: 1.5em;
   font-weight: bold;
   border-bottom: 5px solid blueviolet;
+  background-color: white;
+  box-shadow: 0 4px 2px -2px gray;
 }
 
 .transaction-item {

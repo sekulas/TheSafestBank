@@ -14,41 +14,11 @@ const MakeTransactionModal = ({ closeModal }: { closeModal: () => void }) => {
     useContext(AuthContext);
 
   const makeTransaction = async () => {
-    if (
-      !recipientAccountNumber ||
-      !amount ||
-      !title ||
-      getDecimalPlaces(amount) > 2 ||
-      Number(amount) <= 0
-    ) {
-      openModal(
-        "Not all fields has been filled correctly.",
-        "Please fill all the fields and remember - account number and amount of money can only contain numbers and must be positive. Additionally, amount of money can only contain two decimal places which are separated by the '.' sign."
-      );
+    if (!isValidTransaction()) {
       return;
     }
 
-    if (recipientAccountNumber.includes(" ")) {
-      recipientAccountNumber.replace(" ", "");
-    }
-
-    if (recipientAccountNumber.length !== 26) {
-      openModal(
-        "Account number must contain 26 digits.",
-        "Please provide a correct account number."
-      );
-      return;
-    }
-
-    if (balance < Number(amount)) {
-      openModal(
-        "You don't have enough money to make this transaction.",
-        "Please provide a smaller amount of money"
-      );
-      return;
-    }
-
-    const transaction: IMakeTransactionRequest = {
+    const transaction = {
       recipientAccountNumber,
       amount: Number(amount),
       title,
@@ -70,29 +40,69 @@ const MakeTransactionModal = ({ closeModal }: { closeModal: () => void }) => {
       const data = await response.json();
 
       if (!response.ok) {
-        openModal("Error", `Failed to make transaction. ${data.message}`);
-        if (response.status === 401) {
-          logout();
-        }
-        closeModal();
+        handleTransactionError(data.message, response.status);
       } else {
         setTransactions([data, ...transactions]);
         closeModal();
       }
     } catch (error) {
-      openModal("Error", `Failed to make transaction. ${error}`);
+      handleTransactionError((error as Error).message);
     } finally {
       closeSpinner();
     }
   };
 
+  const isValidTransaction = () => {
+    if (
+      !recipientAccountNumber ||
+      !amount ||
+      !title ||
+      getDecimalPlaces(amount) > 2 ||
+      Number(amount) <= 0
+    ) {
+      openModal(
+        "Not all fields have been filled correctly.",
+        "Please fill all the fields and remember - account number and amount of money can only contain numbers and must be positive. Additionally, the amount of money can only contain two decimal places which are separated by the '.' sign."
+      );
+      return false;
+    }
+
+    if (recipientAccountNumber.includes(" ")) {
+      recipientAccountNumber.replace(" ", "");
+    }
+
+    if (recipientAccountNumber.length !== 26) {
+      openModal(
+        "Account number must contain 26 digits.",
+        "Please provide a correct account number."
+      );
+      return false;
+    }
+
+    if (balance < Number(amount)) {
+      openModal(
+        "You don't have enough money to make this transaction.",
+        "Please provide a smaller amount of money"
+      );
+      return false;
+    }
+
+    return true;
+  };
+
+  const handleTransactionError = (errorMessage: string, statusCode: number | null = null) => {
+    openModal("Error", `Failed to make transaction. ${errorMessage}`);
+    if (statusCode === 401) {
+      logout();
+    }
+    closeModal();
+  };
+
   const getDecimalPlaces = (amount: string) => {
     const decimalPlaces = amount.split(".")[1];
-    if (decimalPlaces) {
-      return decimalPlaces.length;
-    }
-    return 0;
+    return decimalPlaces ? decimalPlaces.length : 0;
   };
+
 
   return (
     <div className="modal-opened">
