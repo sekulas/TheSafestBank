@@ -13,20 +13,20 @@ const HomePage = () => {
     const fetchData = async () => {
       try {
         openSpinner();
-        console.log('Fetching data...')
+        console.log("Fetching data...");
         const response = await fetch(API_ENDPOINTS.GET_CLIENT, {
-          method: 'GET',
+          method: "GET",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
-          credentials: 'include',
+          credentials: "include",
         });
 
         const data = await response.json();
-        console.log(data)
-        console.log(response)
+        console.log(data);
+        console.log(response);
         if (!response.ok) {
-          openModal('Error', `Failed to get the client data. ${data.message}`);
+          openModal("Error", `Failed to get the client data. ${data.message}`);
           logout();
           throw new Error(`Failed to get the client data: ${data.message}`);
         }
@@ -49,6 +49,6 @@ const HomePage = () => {
       <TransactionList />
     </div>
   );
-}
+};
 
 export default HomePage;

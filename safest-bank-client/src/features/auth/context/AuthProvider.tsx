@@ -1,14 +1,22 @@
 import { ReactNode, useContext, useState } from 'react';
-import AuthContext, { IAuthContext, IBankClient } from './AuthContext';
+import AuthContext, { IAddress, IAuthContext, IBankClient, IIdentityCard, ITransaction } from './AuthContext';
 import API_ENDPOINTS, { ILoginRequest } from '../../../services/TheSafestBankApi/safestBankServerApiEndpoints';
 import ModalContext from '../../modal/context/ModalContext';
 import { Navigate } from 'react-router-dom';
 
 const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [clientId, setClientId] = useState("");
+  const [clientNumber, setClientNumber] = useState("");
+  const [accountNumber, setAccountNumber] = useState("");
+  const [balance, setBalance] = useState(0);
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
+  const [pesel, setPesel] = useState("");
+  const [email, setEmail] = useState("");
+  const [address, setAddress] = useState<IAddress>({ country: "", city: "", street: "", houseNumber: "", zipCode: "" });
+  const [identityCard, setIdentityCard] = useState<IIdentityCard>({ type: "", serie: "", number: "", countryOfIssue: "" });
+  const [transactions, setTransactions] = useState<ITransaction[]>([]);
+
   const { openModal, openSpinner, closeSpinner } = useContext(ModalContext);
 
   const login = async (clientNumber: string, password: string) => {
@@ -67,25 +75,48 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   const setClientData = async (data: IBankClient | null) => {
     if (!data) {
-      setClientId("");
+      setIsAuthenticated(false);
+      setClientNumber("");
+      setAccountNumber("");
+      setBalance(0);
       setName("");
       setSurname("");
+      setPesel("");
+      setEmail("");
+      setAddress({ country: "", city: "", street: "", houseNumber: "", zipCode: "" });
+      setIdentityCard({ type: "", serie: "", number: "", countryOfIssue: "" });
+      setTransactions([]);
       return;
     }
 
-    setClientId(data.clientId);
+    setClientNumber(data.clientNumber);
+    setAccountNumber(data.accountNumber);
+    setBalance(data.balance);
     setName(data.name);
     setSurname(data.surname);
+    setPesel(data.pesel);
+    setEmail(data.email);
+    setAddress(data.address);
+    setIdentityCard(data.identityCard);
+    setTransactions(data.transactions);
   }
 
   const contextValue: IAuthContext = {
     isAuthenticated,
-    clientId,
+    clientNumber,
+    accountNumber,
+    balance,
     name,
     surname,
+    pesel,
+    email,
+    address,
+    identityCard,
+    transactions,
     login,
     logout,
     setClientData,
+    setTransactions,
   };
 
 
