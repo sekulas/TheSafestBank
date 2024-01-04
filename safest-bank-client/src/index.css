@@ -160,7 +160,7 @@ input {
   height: 80%;
   align-items: center;
   justify-content: center;
-  z-index: 2;
+  z-index: 3;
 }
 
 .modal-overlay {
@@ -194,6 +194,7 @@ input {
   animation:
     l20-1 0.8s infinite linear alternate,
     l20-2 1.6s infinite linear;
+  z-index:2
 }
 @keyframes l20-1{
    0%    {clip-path: polygon(50% 50%,0       0,  50%   0%,  50%    0%, 50%    0%, 50%    0%, 50%    0% )}
@@ -308,4 +309,14 @@ input {
   justify-content: space-around;
   align-items: center;
   margin-top: 30px;
+}
+
+#client-details-page > * {
+  display: flex;
+  border-bottom: 2px solid blueviolet;
+  padding: 10px;
+}
+
+#client-details-page > * > * {
+  margin-right: 16rem;
 }
