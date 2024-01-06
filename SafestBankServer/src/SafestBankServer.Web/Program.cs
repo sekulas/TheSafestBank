@@ -89,7 +89,7 @@ public static class Program {
             {
                 policy.RequireAuthenticatedUser()
                     .AddAuthenticationSchemes("Session")
-                    .RequireClaim(ClaimTypes.Sid);
+                    .RequireClaim("id");
             });
         });
     }

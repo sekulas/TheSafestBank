@@ -58,7 +58,7 @@ public class AuthController : ControllerBase
     {
         //TODO - GENERATE SESSION ID IN A BETTER WAY
         //COOKIE TIMESPAN
-        var claim = new Claim(ClaimTypes.Sid, Guid.NewGuid().ToString());
+        var claim = new Claim("id", Guid.NewGuid().ToString());
         await SignInUserAsync(claim);
         CacheUserId(claim.Value, clientNumber, _cookieAuthOptions.CookieExpirationTime);
     }

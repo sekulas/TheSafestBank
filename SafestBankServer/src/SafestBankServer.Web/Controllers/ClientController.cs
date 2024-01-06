@@ -23,7 +23,7 @@ public class ClientController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<BankClientDto>> GetClient()
     {
-        var sid = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid)?.Value
+        var sid = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "id")?.Value
             ?? throw new UnauthorizedAccessException("Your session has expired - please log in.");
 
         var clientNumber = _cache.Get<string>(sid)

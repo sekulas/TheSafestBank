@@ -16,8 +16,8 @@ public class CustomCookieAuthenticationEvents : CookieAuthenticationEvents
 
     public override async Task ValidatePrincipal(CookieValidatePrincipalContext context)
     {
-        var principal = context.Principal; //COOKIE SID
-        var sid = principal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid)?.Value;
+        var principal = context.Principal;
+        var sid = principal.Claims.FirstOrDefault(c => c.Type == "id")?.Value;
 
         if (sid == null)
         {

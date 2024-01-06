@@ -23,7 +23,7 @@ public class TransactionController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<ClientTransactionDto>> MakeTransaction([FromBody] MakeTransactionDto transaction)
     {
-        var sid = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid)?.Value
+        var sid = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "id")?.Value
             ?? throw new UnauthorizedAccessException("Your session has expired - please log in.");
 
         var clientNumber = _cache.Get<string>(sid)
