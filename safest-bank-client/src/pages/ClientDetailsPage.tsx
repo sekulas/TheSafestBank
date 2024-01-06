@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import AuthContext from "../features/auth/context/AuthContext";
+import ShowHideComponent from "../features/showing-info/ShowHideComponent";
 
 const ClientDetailsPage = () => {
   const { name, surname, clientNumber, identityCard, email, address } = useContext(AuthContext)
@@ -8,25 +9,30 @@ const ClientDetailsPage = () => {
 
       <div id="client-details">
         <div>
-          <p>NAME AND SURNAME</p>
-          <h1>{name} {surname}</h1>
+          <h2>CLIENT DATA</h2>
+          <h5>NAME AND SURNAME</h5>
+          <p>{name} {surname}</p>
         </div>
         <div>
-          <p>CLIENT NUMBER</p>
-          <h1>{clientNumber}</h1>
+          <h5>CLIENT NUMBER</h5>
+          <ShowHideComponent>
+            {clientNumber}
+          </ShowHideComponent>
         </div>
       </div>
 
       <div id="client-identity-card-details">
         <div>
           <h2>IDENTITY CARD DETAILS</h2>
-          <p>TYPE AND SERIE</p>
-          <h1>{identityCard.type}</h1>
-          <h1>{identityCard.serie} {identityCard.number}</h1>
+          <h5>TYPE AND SERIE</h5>
+          <p>{identityCard.type}</p>
+          <ShowHideComponent>
+            {identityCard.serie} {identityCard.number}
+          </ShowHideComponent>
         </div>
         <div>
-          <p>COUNTRY OF ISSUE</p>
-          <h1>{identityCard.countryOfIssue}</h1>
+          <h5>COUNTRY OF ISSUE</h5>
+          <p>{identityCard.countryOfIssue}</p>
         </div>
 
       </div>
@@ -34,16 +40,20 @@ const ClientDetailsPage = () => {
       <div id="client-contact-details">
         <div>
           <h2>CONTACT</h2>
-          <p>E-MAIL</p>
-          <h1>{email}</h1>
+          <h5>E-MAIL</h5>
+          <ShowHideComponent>
+            {email}
+          </ShowHideComponent>
         </div>
       </div>
 
       <div id="client-address-details">
         <div>
           <h2>ADDRESS</h2>
-          <p>ADRESS OF RESIDENCE</p>
-          <h1>{address.street} {address.houseNumber}, {address.zipCode}, {address.city}, {address.country}</h1>
+          <h5>ADRESS OF RESIDENCE</h5>
+          <ShowHideComponent>
+            {address.street} {address.houseNumber}, {address.zipCode}, {address.city}, {address.country}
+          </ShowHideComponent>
         </div>
       </div>
 

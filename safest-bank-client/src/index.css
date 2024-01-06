@@ -227,12 +227,9 @@ input {
 .show-container {
   display: flex;
   justify-content: space-between;
+  width: 20rem;
   align-items: center;
   margin-bottom: 20px;
-}
-
-.show-container > p {
-  margin-right: 10px;
 }
 
 .show-container > button {
@@ -319,4 +316,15 @@ input {
 
 #client-details-page > * > * {
   margin-right: 16rem;
+}
+
+.hiding-block {
+  background-color: gray;
+  width: 100%;
+  margin-right: 10px;
+  color: gray;
+}
+
+.hiding-block > * {
+  margin-right: 10px;
 }
