@@ -117,6 +117,7 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     logout,
     setClientData,
     setTransactions,
+    setBalance
   };
 
 

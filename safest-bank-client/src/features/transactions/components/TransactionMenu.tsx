@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import MakeTransactionModal from "./MakeTransactionModal";
 import AuthContext from "../../auth/context/AuthContext";
+import ShowHideComponent from "../../showing-info/ShowHideComponent";
 
 const TransactionMenu = () => {
   const [isTransactionModalOpen, setIsTransactionModalOpen] = useState(false);
@@ -17,15 +18,14 @@ const TransactionMenu = () => {
     <div id="transaction-menu">
       <div>
         <h2>ACCOUNT NUMBER</h2>
-        <div className="show-container">
-          <p>{accountNumber}</p>
-          <button className="show-button">Show</button>
-        </div>
+        <ShowHideComponent>
+          {accountNumber}
+        </ShowHideComponent>
+
         <h2>AVAILABLE MONEY</h2>
-        <div className="show-container">
-          <p>{balance}</p>
-          <button className="show-button">Show</button>
-        </div>
+        <ShowHideComponent>
+          {balance}
+        </ShowHideComponent>
       </div>
       <button id="make-transfer-button" className="silent-action-button" onClick={openTransactionModal}>
         Make transaction

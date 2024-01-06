@@ -37,6 +37,8 @@ public class CustomCookieAuthenticationEvents : CookieAuthenticationEvents
             return;
         }
 
+        //TODO GENERATE NEW SESSION ID
+
         _cache.Set(sid, clientNumber, _cookieAuthOptions.CookieExpirationTime);
 
         await Task.CompletedTask;

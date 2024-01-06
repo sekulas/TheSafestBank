@@ -14,7 +14,7 @@ const LoginPage = () => {
   const handleSubmitClientNumber = async () => {
     try {
       openSpinner();
-      const requestBody: IFetchPasswordMaskRequest = { clientNumber: clientNumber };
+      const requestBody: IFetchPasswordMaskRequest = { clientNumber };
 
       const response = await fetch(API_ENDPOINTS.FETCH_PASSWORD_MASK, {
         method: 'POST',
@@ -27,24 +27,27 @@ const LoginPage = () => {
       const data = await response.json();
 
       if (!response.ok) {
-        openModal('Error', `Failed to fetch password combination. ${data.message}`);
-        throw new Error(`Failed to fetch password combination: ${data.message}`);
+        handleRequestError(data.message);
+      } else {
+        setPasswordMask(data);
       }
-
-      setPasswordMask(data);
-      console.log(data);
     } catch (error) {
-      console.error(error);
+      handleRequestError((error as Error).message);
     } finally {
       closeSpinner();
     }
   };
 
-  const handleClientNumberChange = async (event: ChangeEvent<HTMLInputElement>) => {
+  const handleRequestError = (errorMessage: string) => {
+    openModal('Error', `Failed to fetch password combination. ${errorMessage}`);
+  };
+
+
+  const handleClientNumberChange = (event: ChangeEvent<HTMLInputElement>) => {
     setClientNumber(event.target.value);
   };
 
-  const handleLogin = async (password: string) => {
+  const handleLogin = (password: string) => {
     login(clientNumber, password);
   };
 

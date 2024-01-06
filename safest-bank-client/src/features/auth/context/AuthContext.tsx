@@ -16,6 +16,7 @@ export interface IAuthContext {
   logout: () => void;
   setClientData: (data: IBankClient | null) => void;
   setTransactions: (transactions: ITransaction[]) => void;
+  setBalance: (balance: number) => void;
 }
 
 export interface IBankClient {
@@ -74,6 +75,7 @@ const AuthContext = createContext<IAuthContext>({
   logout: () => { },
   setClientData: () => { },
   setTransactions: () => { },
+  setBalance: () => { },
 } as IAuthContext);
 
 export default AuthContext;

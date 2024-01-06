@@ -7,6 +7,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   height: 100vh; 
   box-sizing: border-box; 
+  border: 5px solid blueviolet;
 }
 
 code {
@@ -15,7 +16,7 @@ code {
 }
 
 #navbar {
-  border: 5px solid blueviolet;
+  border-bottom: 5px solid blueviolet;
   padding: 10px;
   display: flex;
   justify-content: space-between;
@@ -159,7 +160,7 @@ input {
   height: 80%;
   align-items: center;
   justify-content: center;
-  z-index: 2;
+  z-index: 3;
 }
 
 .modal-overlay {
@@ -193,6 +194,7 @@ input {
   animation:
     l20-1 0.8s infinite linear alternate,
     l20-2 1.6s infinite linear;
+  z-index:2
 }
 @keyframes l20-1{
    0%    {clip-path: polygon(50% 50%,0       0,  50%   0%,  50%    0%, 50%    0%, 50%    0%, 50%    0% )}
@@ -213,14 +215,11 @@ input {
 #home-page {
   display: flex;
   height: 100%;
-  border-left: 5px solid blueviolet;
-  border-right: 5px solid blueviolet;
 }
 
 #transaction-menu {
   display: flex;
   flex-direction: column;
-  border-right: 5px solid blueviolet;
   padding: 10px;
   height: 100%;
 }
@@ -228,12 +227,9 @@ input {
 .show-container {
   display: flex;
   justify-content: space-between;
+  width: 20rem;
   align-items: center;
   margin-bottom: 20px;
-}
-
-.show-container > p {
-  margin-right: 10px;
 }
 
 .show-container > button {
@@ -252,6 +248,9 @@ input {
   align-items: center;
   width: 100%;
   align-items: start;
+  max-height: 88vh;  
+  overflow-y: auto;
+  border-left: 5px solid blueviolet;
 }
 
 #transaction-list > *{
@@ -260,12 +259,16 @@ input {
 }
 
 #transaction-list-title {
+  position: sticky;
+  top: 0;
   margin: 0px;
   padding-left: 10px;
   display: block;
   font-size: 1.5em;
   font-weight: bold;
   border-bottom: 5px solid blueviolet;
+  background-color: white;
+  box-shadow: 0 4px 2px -2px gray;
 }
 
 .transaction-item {
@@ -303,4 +306,25 @@ input {
   justify-content: space-around;
   align-items: center;
   margin-top: 30px;
+}
+
+#client-details-page > * {
+  display: flex;
+  border-bottom: 2px solid blueviolet;
+  padding: 10px;
+}
+
+#client-details-page > * > * {
+  margin-right: 16rem;
+}
+
+.hiding-block {
+  background-color: gray;
+  width: 100%;
+  margin-right: 10px;
+  color: gray;
+}
+
+.hiding-block > * {
+  margin-right: 10px;
 }

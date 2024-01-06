@@ -23,18 +23,14 @@ const HomePage = () => {
         });
 
         const data = await response.json();
-        console.log(data);
-        console.log(response);
-        if (!response.ok) {
-          openModal("Error", `Failed to get the client data. ${data.message}`);
-          logout();
-          throw new Error(`Failed to get the client data: ${data.message}`);
-        }
 
-        console.log(data);
-        setClientData(data);
+        if (!response.ok) {
+          handleError(data.message);
+        } else {
+          setClientData(data);
+        }
       } catch (error) {
-        console.error(error);
+        handleError((error as Error).message);
       } finally {
         closeSpinner();
       }
@@ -42,6 +38,11 @@ const HomePage = () => {
 
     fetchData();
   }, []);
+
+  const handleError = (message: string) => {
+    openModal("Error", `Failed to get the client data. ${message}`);
+    logout();
+  };
 
   return (
     <div id="home-page">
