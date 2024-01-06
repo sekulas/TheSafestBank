@@ -11,6 +11,8 @@ public static class Program {
     {
         var builder = WebApplication.CreateBuilder(args);
 
+        builder.RemoveServerHeader();
+
         var configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
             .AddJsonFile("appsettings.json", false)
@@ -93,6 +95,14 @@ public static class Program {
             });
 
             builder.DefaultPolicy = builder.GetPolicy("SessionPolicy")!;
+        });
+    }
+
+    private static void RemoveServerHeader(this WebApplicationBuilder builder)
+    {
+        builder.WebHost.ConfigureKestrel(options =>
+        {
+            options.AddServerHeader = false;
         });
     }
 
