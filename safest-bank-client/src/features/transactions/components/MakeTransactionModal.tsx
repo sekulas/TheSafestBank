@@ -10,7 +10,7 @@ const MakeTransactionModal = ({ closeModal }: { closeModal: () => void }) => {
   const [amount, setAmount] = useState("");
   const [title, setTitle] = useState("");
   const { openModal, openSpinner, closeSpinner } = useContext(ModalContext);
-  const { balance, transactions, setTransactions, logout } =
+  const { balance, transactions, setTransactions, setBalance, logout } =
     useContext(AuthContext);
 
   const makeTransaction = async () => {
@@ -43,6 +43,7 @@ const MakeTransactionModal = ({ closeModal }: { closeModal: () => void }) => {
         handleTransactionError(data.message, response.status);
       } else {
         setTransactions([data, ...transactions]);
+        setBalance(balance - Number(amount));
         closeModal();
       }
     } catch (error) {
