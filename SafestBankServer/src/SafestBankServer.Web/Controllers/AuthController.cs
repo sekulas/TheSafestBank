@@ -11,6 +11,7 @@ namespace SafestBankServer.Web.Auth;
 
 [Route("api/auth")]
 [ApiController]
+[Authorize]
 public class AuthController : ControllerBase
 {
     private readonly IAuthService _authService;
@@ -23,6 +24,7 @@ public class AuthController : ControllerBase
         _cookieAuthOptions = cookieAuthOptions;
     }
 
+    [AllowAnonymous]
     [HttpPost("password")]
     public async Task<ActionResult<int[]>> GetPasswordMaskAsync([FromBody] ClientNumberDto clientNumberDto)
     {
@@ -30,6 +32,7 @@ public class AuthController : ControllerBase
         return Ok(passwordMask);
     }
 
+    [AllowAnonymous]
     [HttpPost("login")]
     public async Task<ActionResult> LoginAsync([FromBody] ClientLoginDto clientLoginDto)
     {
@@ -39,13 +42,13 @@ public class AuthController : ControllerBase
         return Ok();
     }
 
+    [AllowAnonymous]
     [HttpGet("login")]
     public Task UnauthorizedAccess()
     {
         throw new UnauthorizedAccessException("Your session has expired - please log in.");
     }
 
-    [Authorize(Policy = "SessionPolicy")]
     [HttpPost("logout")]
     public async Task<ActionResult> LogoutAsync()
     {

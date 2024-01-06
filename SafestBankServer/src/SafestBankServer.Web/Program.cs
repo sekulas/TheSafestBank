@@ -91,6 +91,8 @@ public static class Program {
                     .AddAuthenticationSchemes("Session")
                     .RequireClaim("id");
             });
+
+            builder.DefaultPolicy = builder.GetPolicy("SessionPolicy")!;
         });
     }
 

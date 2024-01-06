@@ -9,7 +9,7 @@ namespace SafestBankServer.Web.Controllers;
 
 [Route("api/client")]
 [ApiController]
-[Authorize(Policy="SessionPolicy")]
+[Authorize]
 public class ClientController : ControllerBase
 {
     private readonly IMemoryCache _cache;
