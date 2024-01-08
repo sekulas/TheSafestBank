@@ -88,6 +88,14 @@ const MakeTransactionModal = ({ closeModal }: { closeModal: () => void }) => {
       return false;
     }
 
+    if (title.length > 100 || new RegExp("[^a-zA-Z0-9 .-]").test(title)) {
+      openModal(
+        "Title must contain only letters, digits, spaces, dots and dashes and must be shorter than 100 characters.",
+        "Please provide a correct title."
+      );
+      return false;
+    }
+
     return true;
   };
 
@@ -112,6 +120,7 @@ const MakeTransactionModal = ({ closeModal }: { closeModal: () => void }) => {
         <h2>Make a transaction</h2>
         <p>Provide the following information:</p>
         <div id="transaction-form">
+          <input id="RequestVerificationToken" type="hidden" value="@requestToken" />
           <div className="transaction-field">
             <label htmlFor="recipient">Recipient account number:</label>
             <input
