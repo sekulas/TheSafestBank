@@ -37,6 +37,8 @@ internal sealed class ClientRepository : IClientRepository
             return null;
         }
 
+        CheckIfClientIsBlocked(client);
+
         client.PartialPasswords = await _dbContext.PartialPasswords
             .Where(x => x.BankClientId == client.Id)
             .ToListAsync();
@@ -66,6 +68,8 @@ internal sealed class ClientRepository : IClientRepository
         {
             return null;
         }
+
+        CheckIfClientIsBlocked(client);
 
         client.PartialPasswords = await _dbContext.PartialPasswords
             .Where(x => x.BankClientId == client.Id)
@@ -98,6 +102,8 @@ internal sealed class ClientRepository : IClientRepository
             return null;
         }
 
+        CheckIfClientIsBlocked(client);
+
         client.PartialPasswords = await _dbContext.PartialPasswords
             .Where(x => x.BankClientId == client.Id)
             .ToListAsync();
@@ -111,5 +117,13 @@ internal sealed class ClientRepository : IClientRepository
     {
         _dbContext.BankClients.Update(client);
         await _dbContext.SaveChangesAsync();
+    }
+
+    private void CheckIfClientIsBlocked(BankClient client)
+    {
+        if(client.IsBlocked)
+        {
+            throw new UnauthorizedAccessException("Your account has been blocked. Please contact with the support.");
+        }
     }
 }
