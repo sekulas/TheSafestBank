@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using SafestBankServer.Application.DTO.Transaction;
 using SafestBankServer.Application.Transaction;
-using System.Security.Claims;
 
 namespace SafestBankServer.Web.Controllers;
 

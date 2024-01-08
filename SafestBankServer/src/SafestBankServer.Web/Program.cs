@@ -1,8 +1,8 @@
+using Microsoft.AspNetCore.Mvc;
 using SafestBankServer.Application;
 using SafestBankServer.Infrastructure;
 using SafestBankServer.Web.Configuration;
 using SafestBankServer.Web.Configuration.CookieAuth;
-using System.Security.Claims;
 
 namespace SafestBankServer.Web;
 public static class Program {
@@ -26,7 +26,19 @@ public static class Program {
 
         builder.Services.AddCookieAuth();
 
-        builder.Services.AddControllers();
+        builder.Services.AddControllers()
+            .ConfigureApiBehaviorOptions(options =>
+            {
+                var builtInFactory = options.InvalidModelStateResponseFactory;
+
+                options.InvalidModelStateResponseFactory = context =>
+                {
+                    //TODO - CHANGE MESSAGE, ADD LOGGING i usun ten interpolated string
+                    context.ModelState.Values.SelectMany(v => v.Errors).ToList().ForEach(e => Console.WriteLine(e.ErrorMessage));
+                    var result = new BadRequestObjectResult(new { message = "Bad request before even getting to the controller." });
+                    return result;
+                };
+            });
 
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
