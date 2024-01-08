@@ -17,8 +17,9 @@ internal sealed class TransactionService : ITransactionService
         _transactionRepository = transactionRepository;
         _mapper = mapper;
     }
-    public async Task<ClientTransactionDto> MakeTransaction(string senderNumber, string recipantAccountNumber, decimal amount, string title)
+    public async Task<ClientTransactionDto> MakeTransaction(Guid senderId, string recipantAccountNumber, decimal amount, string title)
     {
+        //TODO CZY NIE SPRAWDZAC TEGO W DTO?
         if(recipantAccountNumber.Length != 26)
         {
             throw new InvalidTransaction("Invalid recipant of the transaction.");
@@ -29,7 +30,7 @@ internal sealed class TransactionService : ITransactionService
             throw new InvalidTransaction("You can't make a transaction with more than 2 decimal places.");
         }
 
-        var sender = await _clientRepository.GetClientByNumberAsync(senderNumber)
+        var sender = await _clientRepository.GetClientByIdAsync(senderId)
             ?? throw new UnauthorizedAccessException("Your session has expired - please log in.");
 
         if(sender.Balance < amount)

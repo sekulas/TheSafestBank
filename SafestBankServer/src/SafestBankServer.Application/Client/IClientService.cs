@@ -3,5 +3,5 @@
 namespace SafestBankServer.Application.Client;
 public interface IClientService
 {
-    Task<BankClientDto> GetClientAsync(string clientNumber);
+    Task<BankClientDto> GetClientAsync(Guid clientId);
 }

@@ -16,7 +16,37 @@ internal sealed class ClientRepository : IClientRepository
         _transactionRepository = transactionRepository;
     }
 
-    public async Task<BankClient?> GetClientByNumberAsync(string clientNumber)
+    public async Task<BankClient?> GetClientByIdAsync(Guid clientId)
+    {
+        BankClient? client = null;
+        try
+        {
+            client = await _dbContext.BankClients
+                .Include(x => x.IdentityCard)
+                .Include(x => x.Address)
+                .Where(x => x.Id == clientId)
+                .FirstOrDefaultAsync();
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+
+        if(client is null)
+        {
+            return null;
+        }
+
+        client.PartialPasswords = await _dbContext.PartialPasswords
+            .Where(x => x.BankClientId == client.Id)
+            .ToListAsync();
+
+        client.Transactions = await _transactionRepository.GetClientTransactions(client.Id);
+
+        return client;
+    }
+
+    public async Task<BankClient?> GetClientByClientNumberAsync(string clientNumber)
     {
         BankClient? client = null;
         try

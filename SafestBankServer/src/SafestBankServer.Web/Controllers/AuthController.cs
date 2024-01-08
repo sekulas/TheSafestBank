@@ -5,6 +5,7 @@ using Microsoft.Extensions.Caching.Memory;
 using SafestBankServer.Application.Auth;
 using SafestBankServer.Application.DTO.Auth;
 using SafestBankServer.Web.Configuration.CookieAuth;
+using SafestBankServer.Web.Configuration.Session;
 using System.Security.Claims;
 
 namespace SafestBankServer.Web.Auth;
@@ -15,13 +16,11 @@ namespace SafestBankServer.Web.Auth;
 public class AuthController : ControllerBase
 {
     private readonly IAuthService _authService;
-    private readonly IMemoryCache _cache;
-    private readonly CookieAuthOptions _cookieAuthOptions;
-    public AuthController(IAuthService authRepository, IMemoryCache cache, CookieAuthOptions cookieAuthOptions)
+    private readonly SessionManager _sessionManager;
+    public AuthController(IAuthService authRepository, SessionManager sessionManager)
     {
         _authService = authRepository;
-        _cache = cache;
-        _cookieAuthOptions = cookieAuthOptions;
+        _sessionManager = sessionManager;
     }
 
     [AllowAnonymous]
@@ -36,8 +35,8 @@ public class AuthController : ControllerBase
     [HttpPost("login")]
     public async Task<ActionResult> LoginAsync([FromBody] ClientLoginDto clientLoginDto)
     {
-        await _authService.LoginAsync(clientLoginDto);
-        await GenerateSessionForUser(clientLoginDto.ClientNumber);
+        var clientId = await _authService.LoginAsync(clientLoginDto);
+        await _sessionManager.GenerateSession(HttpContext, clientId);
 
         return Ok();
     }
@@ -52,30 +51,8 @@ public class AuthController : ControllerBase
     [HttpPost("logout")]
     public async Task<ActionResult> LogoutAsync()
     {
-        await HttpContext.SignOutAsync("Session");
+        await _sessionManager.EndSession(HttpContext);
 
         return Ok();
-    }
-
-    private async Task GenerateSessionForUser(string clientNumber)
-    {
-        //TODO - GENERATE SESSION ID IN A BETTER WAY
-        //COOKIE TIMESPAN
-        var claim = new Claim("id", Guid.NewGuid().ToString());
-        await SignInUserAsync(claim);
-        CacheUserId(claim.Value, clientNumber, _cookieAuthOptions.CookieExpirationTime);
-    }
-
-    private async Task SignInUserAsync(Claim claim)
-    {
-        var claimsIdentity = new ClaimsIdentity(new[] { claim }, "Session");
-        var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
-
-        await HttpContext.SignInAsync("Session", claimsPrincipal);
-    }
-
-    private void CacheUserId(string sessionId, string clientNumber, TimeSpan expirationTime)
-    {
-        _cache.Set(sessionId, clientNumber, expirationTime);
     }
 }

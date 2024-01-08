@@ -13,9 +13,9 @@ internal sealed class ClientService : IClientService
          _clientRepository = clientRepository;
         _mapper = mapper;
     }
-    public async Task<BankClientDto> GetClientAsync(string clientNumber)
+    public async Task<BankClientDto> GetClientAsync(Guid clientId)
     {
-        var client = await _clientRepository.GetClientByNumberAsync(clientNumber)
+        var client = await _clientRepository.GetClientByIdAsync(clientId)
             ?? throw new BankClientNotFound("Cannot find a client.");
 
         var clientDto = _mapper.Map<BankClientDto>(client);

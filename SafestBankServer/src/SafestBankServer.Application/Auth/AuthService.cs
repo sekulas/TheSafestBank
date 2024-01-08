@@ -16,7 +16,7 @@ internal sealed class AuthService : IAuthService
     }
     public async Task<int[]> GetPasswordMaskAsync(ClientNumberDto clientNumberDto)
     {
-        var client = await _clientRepository.GetClientByNumberAsync(clientNumberDto.ClientNumber) 
+        var client = await _clientRepository.GetClientByClientNumberAsync(clientNumberDto.ClientNumber) 
             ?? throw new BankClientNotFound("Cannot find a client.");
 
         var partialPassword = await GetCurrentPartialPasswordForAClient(client);
@@ -24,9 +24,9 @@ internal sealed class AuthService : IAuthService
         return partialPassword.Mask;
     }
 
-    public async Task LoginAsync(ClientLoginDto clientLoginDto)
+    public async Task<Guid> LoginAsync(ClientLoginDto clientLoginDto)
     {
-        var client = await _clientRepository.GetClientByNumberAsync(clientLoginDto.ClientNumber) 
+        var client = await _clientRepository.GetClientByClientNumberAsync(clientLoginDto.ClientNumber) 
             ?? throw new BankClientNotFound("Cannot find a client.");
 
         var partialPassword = await GetCurrentPartialPasswordForAClient(client);
@@ -39,7 +39,7 @@ internal sealed class AuthService : IAuthService
         partialPassword.PasswordStatus = PasswordStatus.USED;
         await _clientRepository.UpdateClientAsync(client);
 
-        return;
+        return client.Id;
     }
 
     private async Task<PartialPassword> GetCurrentPartialPasswordForAClient(BankClient client)

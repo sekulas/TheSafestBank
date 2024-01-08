@@ -3,6 +3,7 @@ using SafestBankServer.Application;
 using SafestBankServer.Infrastructure;
 using SafestBankServer.Web.Configuration;
 using SafestBankServer.Web.Configuration.CookieAuth;
+using SafestBankServer.Web.Configuration.Session;
 
 namespace SafestBankServer.Web;
 public static class Program {
@@ -79,7 +80,7 @@ public static class Program {
 
     private static void AddCookieAuth(this IServiceCollection services)
     {
-        var cookieAuthOptions = services.BuildServiceProvider().GetRequiredService<CookieAuthOptions>();
+        var sessionConfiguration = services.BuildServiceProvider().GetRequiredService<SessionConfiguration>();
 
         services.AddAuthentication("Session")
             .AddCookie("Session", opt =>
@@ -92,10 +93,10 @@ public static class Program {
                 opt.Cookie.SameSite = SameSiteMode.Strict;
                 opt.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                 opt.LoginPath = "/api/auth/login";
-                opt.ExpireTimeSpan = cookieAuthOptions.CookieExpirationTime;
-                opt.EventsType = typeof(CustomCookieAuthenticationEvents);
+                opt.ExpireTimeSpan = sessionConfiguration.SessionExpirationTime;
+                opt.EventsType = typeof(SessionAuthenticationEvent);
             });
-        services.AddScoped<CustomCookieAuthenticationEvents>();
+        services.AddScoped<SessionAuthenticationEvent>();
 
         services.AddAuthorization(builder =>
         {
