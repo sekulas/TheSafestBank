@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SafestBankServer.Application.DTO.PasswordReset;
-using SafestBankServer.Application.PasswordReset;
+using SafestBankServer.Application.Features.PasswordReset;
+using SafestBankServer.Application.Features.PasswordReset.DTO;
 
 namespace SafestBankServer.Web.Controllers;
 

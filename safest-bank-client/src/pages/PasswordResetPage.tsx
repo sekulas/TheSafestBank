@@ -67,7 +67,7 @@ const PasswordResetPage = () => {
         const data = await response.json();
         throw new Error(`Failed reset password. ${data.message}`);
       }
-      openModal('Success', 'Password reset mail sent successfully.');
+      openModal('Success', 'Password has been reset successfully.');
     } catch (error) {
       openModal('Error', `${(error as Error).message}`);
     }

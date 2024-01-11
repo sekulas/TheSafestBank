@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SafestBankServer.Application.Client;
-using SafestBankServer.Application.DTO.Client;
+using SafestBankServer.Application.Features.Client;
+using SafestBankServer.Application.Features.Client.DTO;
 using SafestBankServer.Web.Configuration.Session;
 
 namespace SafestBankServer.Web.Controllers;
