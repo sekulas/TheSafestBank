@@ -24,7 +24,6 @@ public static class Extensions
         //TODO - USUN ENABLE SENSITIVE DATA LOGGING
         services.AddDbContext<SafestBankDbContext>(o =>
             o.UseNpgsql(dbSettings.ConnectionString)
-                .EnableSensitiveDataLogging()
         );
 
         return services;

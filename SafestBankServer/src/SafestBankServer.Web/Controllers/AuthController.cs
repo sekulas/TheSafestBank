@@ -1,12 +1,8 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Memory;
 using SafestBankServer.Application.Auth;
 using SafestBankServer.Application.DTO.Auth;
-using SafestBankServer.Web.Configuration.CookieAuth;
 using SafestBankServer.Web.Configuration.Session;
-using System.Security.Claims;
 
 namespace SafestBankServer.Web.Auth;
 

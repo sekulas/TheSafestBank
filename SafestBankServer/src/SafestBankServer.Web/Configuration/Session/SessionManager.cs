@@ -30,7 +30,7 @@ public class SessionManager
     }
     public async Task RefreshSession(HttpContext httpContext)
     {
-        var clientId = GetClientId(httpContext);
+        var clientId = await GetClientId(httpContext);
         await EndSession(httpContext);
         await GenerateSession(httpContext, clientId);
     }
@@ -41,7 +41,7 @@ public class SessionManager
         await httpContext.SignOutAsync("Session");
     }
 
-    public Guid GetClientId(HttpContext httpContext)
+    public Task<Guid> GetClientId(HttpContext httpContext)
     {
         var sessionId = httpContext.User.Claims.FirstOrDefault(c => c.Type == "id")?.Value;
 
@@ -60,7 +60,7 @@ public class SessionManager
             throw new UnauthorizedAccessException("Your session has expired - please log in.");
         }
 
-        return Guid.Parse(clientNumber);
+        return Task.FromResult(Guid.Parse(clientNumber));
     }
 
     private async Task SignInUserAsync(string sessionId, HttpContext httpContext)

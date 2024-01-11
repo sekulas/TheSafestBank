@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Memory;
 using SafestBankServer.Application.Client;
 using SafestBankServer.Application.DTO.Client;
 using SafestBankServer.Web.Configuration.Session;
@@ -23,7 +22,7 @@ public class ClientController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<BankClientDto>> GetClient()
     {
-        var clientId = _sessionManager.GetClientId(HttpContext);
+        var clientId = await _sessionManager.GetClientId(HttpContext);
         await _sessionManager.RefreshSession(HttpContext);
 
         var result = await _clientService.GetClientAsync(clientId);

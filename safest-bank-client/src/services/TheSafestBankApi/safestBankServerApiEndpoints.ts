@@ -6,6 +6,7 @@ const API_ENDPOINTS = {
   LOGOUT: `${API_BASE_URL}/auth/logout`,
   GET_CLIENT: `${API_BASE_URL}/client`,
   MAKE_TRANSACTION: `${API_BASE_URL}/transaction`,
+  RESET_PASSWORD: `${API_BASE_URL}/password-reset`,
 };
 
 export default API_ENDPOINTS;
@@ -23,4 +24,15 @@ export interface IMakeTransactionRequest {
   recipientAccountNumber: string;
   amount: number;
   title: string;
+};
+
+export interface ISendResetMailRequest {
+  clientNumber: string;
+  email: string;
+};
+
+export interface IResetPasswordRequest {
+  password: string;
+  confirmPassword: string;
+  token: string;
 };

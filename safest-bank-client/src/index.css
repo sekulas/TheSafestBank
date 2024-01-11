@@ -328,3 +328,18 @@ input {
 .hiding-block > * {
   margin-right: 10px;
 }
+
+#password-reset-page {
+  padding: 10px;
+}
+
+#password-reset-page > * {
+  margin: 20px;
+}
+
+#error-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

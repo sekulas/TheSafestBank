@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Memory;
 using SafestBankServer.Application.DTO.Transaction;
 using SafestBankServer.Application.Transaction;
 using SafestBankServer.Web.Configuration.Session;
@@ -23,7 +22,7 @@ public class TransactionController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<ClientTransactionDto>> MakeTransaction([FromBody] MakeTransactionDto transaction)
     {
-        var clientId = _sessionManager.GetClientId(HttpContext);
+        var clientId = await _sessionManager.GetClientId(HttpContext);
         await _sessionManager.RefreshSession(HttpContext);
 
         var transactionDto = 

@@ -1,8 +1,14 @@
 ﻿using AutoMapper;
+using Konscious.Security.Cryptography;
+using SafestBankServer.Application.Auth.Passwords;
 using SafestBankServer.Application.DTO.Auth;
+using SafestBankServer.Application.DTO.PasswordReset;
 using SafestBankServer.Application.Exceptions.Auth;
 using SafestBankServer.Core.Auth.Passwords;
 using SafestBankServer.Core.Client;
+using System.Security.Cryptography;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace SafestBankServer.Application.Auth;
 internal sealed class AuthService : IAuthService
@@ -33,7 +39,7 @@ internal sealed class AuthService : IAuthService
         
         if(!_passwordManager.VerifyPassword(clientLoginDto.Password, partialPassword))
         {
-            if(client.LoginAttempts < 4)
+            if(client.LoginAttempts > 3)
             {
                 client.LoginAttempts++;
                 await _clientRepository.UpdateClientAsync(client);

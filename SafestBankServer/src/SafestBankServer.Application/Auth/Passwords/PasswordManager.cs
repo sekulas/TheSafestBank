@@ -4,6 +4,8 @@ using System.Security.Cryptography;
 using System.Text;
 
 namespace SafestBankServer.Application.Auth.Passwords;
+
+//TODO - PO ZASEEDOWANIU BAZY ZMIEN TO INTERNAL
 public class PasswordManager : IPasswordManager
 {
     private readonly SecurityOptions _securityOptions;
@@ -12,7 +14,7 @@ public class PasswordManager : IPasswordManager
         _securityOptions = securityOptions;
     }
 
-    public IList<PartialPassword> GenerateHashedPartialPasswords(string password)
+    public List<PartialPassword> GenerateHashedPartialPasswords(string password)
     {
         int passwordLength = password.Length;
         int partialPasswordLength = passwordLength / _securityOptions.PartialPasswordLengthDenominator;

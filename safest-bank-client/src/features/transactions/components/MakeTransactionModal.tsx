@@ -40,7 +40,7 @@ const MakeTransactionModal = ({ closeModal }: { closeModal: () => void }) => {
       const data = await response.json();
 
       if (!response.ok) {
-        handleTransactionError(data.message, response.status);
+        throw new Error(`Failed to make transaction. ${data.message}`);
       } else {
         setTransactions([data, ...transactions]);
         setBalance(balance - Number(amount));
@@ -117,12 +117,9 @@ const MakeTransactionModal = ({ closeModal }: { closeModal: () => void }) => {
     return true;
   };
 
-  const handleTransactionError = (errorMessage: string, statusCode: number | null = null) => {
-    openModal("Error", `Failed to make transaction. ${errorMessage}`);
-    if (statusCode === 401) {
-      logout();
-    }
-    closeModal();
+  const handleTransactionError = (errorMessage: string) => {
+    openModal("Error", `${errorMessage}`);
+    logout();
   };
 
   const getDecimalPlaces = (amount: string) => {

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
 using SafestBankServer.Application.Exceptions.Auth;
+using SafestBankServer.Application.Exceptions.PasswordReset;
 using SafestBankServer.Application.Exceptions.Transaction;
 
 namespace SafestBankServer.Web.Configuration.Exceptions;
@@ -10,10 +11,12 @@ public class GlobalExceptionHandler : IExceptionHandler
     {
         (int statusCode, string message) = exception switch
         {
-            BankClientNotFound e => (404, e.Message),
             InvalidPassword e => (400, e.Message),
+            ResetPasswordException e => (400, e.Message),
+            PasswordResetAttemptsExceeded e => (401, e.Message),
             UnauthorizedAccessException e => (401, e.Message),
             NotEnoughMoney e => (402, e.Message),
+            BankClientNotFound e => (404, e.Message),
             _ => (500, "Internal Server Error")
         };  
 

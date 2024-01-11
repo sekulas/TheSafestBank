@@ -1,5 +1,5 @@
 import { useState, ChangeEvent, useContext } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import AuthContext from '../features/auth/context/AuthContext';
 import API_ENDPOINTS, { IFetchPasswordMaskRequest } from '../services/TheSafestBankApi/safestBankServerApiEndpoints';
 import PartialPasswordForm from '../features/auth/PartialPasswordForm';
@@ -10,6 +10,7 @@ const LoginPage = () => {
   const [passwordMask, setPasswordMask] = useState<number[] | null>(null);
   const { isAuthenticated, login } = useContext(AuthContext);
   const { openModal, openSpinner, closeSpinner } = useContext(ModalContext);
+  const navigate = useNavigate();
 
   const handleSubmitClientNumber = async () => {
     try {
@@ -27,10 +28,10 @@ const LoginPage = () => {
       const data = await response.json();
 
       if (!response.ok) {
-        handleRequestError(data.message);
-      } else {
-        setPasswordMask(data);
+        throw new Error(data.message);
       }
+
+      setPasswordMask(data);
     } catch (error) {
       handleRequestError((error as Error).message);
     } finally {
@@ -50,6 +51,10 @@ const LoginPage = () => {
   const handleLogin = (password: string) => {
     login(clientNumber, password);
   };
+
+  const handleForgotPassword = () => {
+    navigate('/password-reset');
+  }
 
   return (
     <>
@@ -82,6 +87,7 @@ const LoginPage = () => {
                   />
                 </>
               )}
+              <button className="secondary-action-button" onClick={handleForgotPassword}>Forgot Password?</button>
             </div>
           )
       }

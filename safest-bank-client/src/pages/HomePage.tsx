@@ -25,10 +25,11 @@ const HomePage = () => {
         const data = await response.json();
 
         if (!response.ok) {
-          handleError(data.message);
-        } else {
-          setClientData(data);
+          throw new Error(`Failed to get the client data. ${data.message}`);
         }
+
+        setClientData(data);
+
       } catch (error) {
         handleError((error as Error).message);
       } finally {
@@ -40,7 +41,7 @@ const HomePage = () => {
   }, []);
 
   const handleError = (message: string) => {
-    openModal("Error", `Failed to get the client data. ${message}`);
+    openModal("Error", `${message}`);
     logout();
   };
 

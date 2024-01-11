@@ -16,7 +16,6 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [address, setAddress] = useState<IAddress>({ country: "", city: "", street: "", houseNumber: "", zipCode: "" });
   const [identityCard, setIdentityCard] = useState<IIdentityCard>({ type: "", serie: "", number: "", countryOfIssue: "" });
   const [transactions, setTransactions] = useState<ITransaction[]>([]);
-
   const { openModal, openSpinner, closeSpinner } = useContext(ModalContext);
 
   const login = async (clientNumber: string, password: string) => {
@@ -35,16 +34,13 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
       if (!response.ok) {
         const data = await response.json();
-        openModal('Error', `Failed to log in. ${data.message}`);
         throw new Error(`Failed to log in: ${data.message}`);
       }
 
       setIsAuthenticated(true);
-      console.log('Logged in successfully!');
-      console.log(response);
       <Navigate to="/" />
     } catch (error) {
-      console.error(error);
+      openModal('Error', `${(error as Error).message}`);
     }
     finally {
       closeSpinner();
@@ -66,7 +62,7 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       setClientData(null);
       <Navigate to="/login" />
     } catch (error) {
-      console.error(error);
+      openModal('Error', `${(error as Error).message}`);
     }
     finally {
       closeSpinner();

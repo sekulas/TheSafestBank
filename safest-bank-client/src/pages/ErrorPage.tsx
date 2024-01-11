@@ -1,20 +1,14 @@
-import { useRouteError, isRouteErrorResponse } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const ErrorPage = () => {
-  const error = useRouteError();
 
-  if (isRouteErrorResponse(error)) {
-    return (
-      <div>
-        <h1>Oops!</h1>
-        <h2>{error.status}</h2>
-        <p>{error.statusText}</p>
-        {error.data?.message && <p>{error.data.message}</p>}
-      </div>
-    );
-  } else {
-    return <div>Oops</div>;
-  }
+  return (
+    <div id="error-page">
+      <h1>Oops! 404 Not found.</h1>
+      <Link to="/">Go back to the home page.</Link>
+    </div>
+  );
+
 }
 
 export default ErrorPage;

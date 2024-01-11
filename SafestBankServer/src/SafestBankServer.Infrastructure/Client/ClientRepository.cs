@@ -118,7 +118,52 @@ internal sealed class ClientRepository : IClientRepository
         _dbContext.BankClients.Update(client);
         await _dbContext.SaveChangesAsync();
     }
+    public async Task UpdateClientPasswords(BankClient client, List<PartialPassword> partialPasswords)
+    {
+        foreach(var pp in client.PartialPasswords)
+        {
+            _dbContext.PartialPasswords.Remove(pp);
+        }
+        await _dbContext.SaveChangesAsync();
+        foreach(var pp in partialPasswords)
+        {
+            pp.BankClientId = client.Id;
+        }
+        _dbContext.PartialPasswords.AddRange(partialPasswords);
+        await _dbContext.SaveChangesAsync();
+    }
+    public Task<bool> IsTokenGeneratingColisions(byte[] hashedToken)
+    {
+        bool result = _dbContext.BankClients.Where(bc => bc.PasswordResetTokenHash == hashedToken).Any();
+        return Task.FromResult(result);
+    }
+    public async Task<BankClient?> GetClientByHashedToken(byte[] hashedToken)
+    {
+        BankClient? client = null;
+        try
+        {
+             client = await _dbContext.BankClients
+                .Where(bc => bc.PasswordResetTokenHash == hashedToken)
+                .FirstOrDefaultAsync();
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
 
+        if(client is null)
+        {
+            return null;
+        }
+
+        CheckIfClientIsBlocked(client);
+
+        client.PartialPasswords = await _dbContext.PartialPasswords
+            .Where(x => x.BankClientId == client.Id)
+            .ToListAsync();
+
+        return client;
+    }
     private void CheckIfClientIsBlocked(BankClient client)
     {
         if(client.IsBlocked)
