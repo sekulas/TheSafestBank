@@ -18,7 +18,7 @@ public class GlobalExceptionHandler : IExceptionHandler
             UnauthorizedAccessException e => (401, e.Message),
             NotEnoughMoneyException e => (402, e.Message),
             BankClientNotFoundException e => (404, e.Message),
-            DatabaseException e => (500, e.Message),
+            DatabaseException e => (500, "Something went wrong"),
             _ => (500, "Internal Server Error")
         };  
 

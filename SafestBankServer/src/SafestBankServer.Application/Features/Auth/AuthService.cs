@@ -26,7 +26,7 @@ internal sealed class AuthService : IAuthService
     public async Task<Guid> LoginAsync(ClientLoginDto clientLoginDto)
     {
         var client = await _clientRepository.GetClientByClientNumberAsync(clientLoginDto.ClientNumber) 
-            ?? throw new BankClientNotFoundException("Cannot find a client.");
+            ?? throw new BankClientNotFoundException("Invalid credentials.");
 
         var partialPassword = await GetCurrentPartialPasswordForAClient(client);
         
@@ -36,7 +36,7 @@ internal sealed class AuthService : IAuthService
             {
                 client.LoginAttempts++;
                 await _clientRepository.UpdateClientAsync(client);
-                throw new InvalidPasswordException("Invalid password.");
+                throw new InvalidPasswordException("Invalid credentials.");
             }
             else
             {

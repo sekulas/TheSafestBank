@@ -2,17 +2,17 @@ import { useContext } from "react";
 import ModalContext from "./context/ModalContext";
 
 const Modal: React.FC = () => {
-  const { isModalOpen, closeModal, modalTitle, modalContent } = useContext(ModalContext);
+  const { closeModal, modalTitle, modalContent } = useContext(ModalContext);
 
   return (
-    <div className={`error-modal-${isModalOpen ? 'opened' : 'closed'}`}>
+    <div className="global-modal-opened">
       <div className="modal-overlay"></div>
-      <div className="error-modal-content">
+      <div className={`${modalTitle === 'Success' ? 'success' : 'error'}-modal-content`}>
         <h2>{modalTitle}</h2>
         <p>{modalContent}</p>
         <button className="main-action-button" onClick={closeModal}>Close</button>
       </div>
-    </div>
+    </div >
   );
 };
 

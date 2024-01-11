@@ -19,52 +19,88 @@ internal sealed class ClientRepository : IClientRepository
         _transactionRepository = transactionRepository;
     }
 
-    public async Task<BankClient> GetClientByIdAsync(Guid clientId)
+    public async Task<BankClient?> GetClientByIdAsync(Guid clientId)
     {
-        var client = await _dbContext.BankClients
-            .Include(x => x.IdentityCard)
-            .Include(x => x.Address)
-            .Where(x => x.Id == clientId)
-            .FirstOrDefaultAsync()
-                ?? throw new BankClientNotFoundException("Cannot find a client.");
+        try
+        {
+            var client = await _dbContext.BankClients
+                .Include(x => x.IdentityCard)
+                .Include(x => x.Address)
+                .Where(x => x.Id == clientId)
+                .FirstOrDefaultAsync()
+                ?? throw new BankClientNotFoundException("Client with given id doesn't exist.");
 
-        CheckIfClientIsBlocked(client);
+            client.Transactions = await _transactionRepository.GetClientTransactions(client.Id)
+                ?? throw new DatabaseException("Couldn't get client transactions.");
 
-        client.Transactions = await _transactionRepository.GetClientTransactions(client.Id);
-
-        return client;
+            return client;
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            return null;
+        }
     }
 
     public async Task<BankClient?> GetClientByClientNumberAsync(string clientNumber)
     {
-        var client = await _dbContext.BankClients
-            .Where(x => x.ClientNumber == clientNumber)
-            .FirstOrDefaultAsync()
-                ?? throw new BankClientNotFoundException("Cannot find a client.");
+        try
+        {
+            var client = await _dbContext.BankClients
+                .Where(x => x.ClientNumber == clientNumber)
+                .FirstOrDefaultAsync()
+                ?? throw new BankClientNotFoundException("Client with given client number doesn't exist.");
 
-        CheckIfClientIsBlocked(client);
+            client.PartialPasswords = await GetClientPartialPasswords(client.Id)
+                ?? throw new DatabaseException("Couldn't get client partial passwords.");
 
-        client.PartialPasswords = await GetClientPartialPasswords(client.Id) 
-            ?? throw new DatabaseException("Cannot find partial passwords for a client.");
-
-        return client;
+            return client;
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            return null;
+        }
     }
 
     public async Task<BankClient?> GetClientByAccountNumberAsync(string accountNumber)
     {
-        var client = await _dbContext.BankClients
-            .Where(x => x.AccountNumber == accountNumber)
-            .FirstOrDefaultAsync()
-                ?? throw new BankClientNotFoundException("Cannot find a client.");
-
-        if(client.IsBlocked)
+        try
         {
-            throw new InvalidTransactionException("Account you're trying to make transaction with the account which is currently blocked.");
+            var client = await _dbContext.BankClients
+                .Where(x => x.AccountNumber == accountNumber)
+                .FirstOrDefaultAsync()
+                ?? throw new BankClientNotFoundException("Client with given account number doesn't exist.");
+
+            return client;
         }
-
-        return client;
+        catch(Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            return null;
+        }
     }
+    public async Task<BankClient?> GetClientByHashedToken(byte[] hashedToken)
+    {
+        try
+        {
+            var client = await _dbContext.BankClients
+                .Where(bc => bc.PasswordResetTokenHash == hashedToken)
+                .FirstOrDefaultAsync()
+                ?? throw new BankClientNotFoundException("Client with given token doesn't exist.");
 
+
+            client.PartialPasswords = await GetClientPartialPasswords(client.Id)
+                ?? throw new DatabaseException("Couldn't get client partial passwords.");
+
+            return client;
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            return null;
+        }
+    }
     public async Task UpdateClientAsync(BankClient client)
     {
         try
@@ -77,20 +113,7 @@ internal sealed class ClientRepository : IClientRepository
             Console.WriteLine(ex.Message);
         }
     }
-    public async Task<BankClient?> GetClientByHashedToken(byte[] hashedToken)
-    {
-        var client = await _dbContext.BankClients
-            .Where(bc => bc.PasswordResetTokenHash == hashedToken)
-            .FirstOrDefaultAsync()
-                ?? throw new BankClientNotFoundException("Cannot find a client.");
 
-        CheckIfClientIsBlocked(client);
-
-        client.PartialPasswords = await GetClientPartialPasswords(client.Id)
-            ?? throw new DatabaseException("Cannot find partial passwords for a client.");
-
-        return client;
-    }
     public async Task UpdateClientPasswords(BankClient client, List<PartialPassword> partialPasswords)
     {
         try
@@ -125,27 +148,12 @@ internal sealed class ClientRepository : IClientRepository
             return Task.FromResult(true);
         }
     }
-    private void CheckIfClientIsBlocked(BankClient client)
-    {
-        if(client.IsBlocked)
-        {
-            throw new UnauthorizedAccessException("Your account has been blocked. Please contact with the support.");
-        }
-    }
 
     private async Task<List<PartialPassword>?> GetClientPartialPasswords(Guid clientId)
     {
-        try
-        {
-            var partialPasswords = await _dbContext.PartialPasswords
-                .Where(x => x.BankClientId == clientId)
-                .ToListAsync();
-            return partialPasswords;
-        }
-        catch(Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-            return null;
-        }
+        var partialPasswords = await _dbContext.PartialPasswords
+            .Where(x => x.BankClientId == clientId)
+            .ToListAsync();
+        return partialPasswords;
     }
 }
