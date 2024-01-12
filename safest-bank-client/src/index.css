@@ -151,7 +151,7 @@ input {
   z-index: 1;
 }
 
-.error-modal-opened {
+.global-modal-opened {
   display: flex;
   position: fixed;
   top: 0;
@@ -176,6 +176,15 @@ input {
 .error-modal-content {
   background: white;
   border: 3px solid red;
+  padding: 20px;
+  border-radius: 5px;
+  max-width: 400px;
+  text-align: center;
+}
+
+.success-modal-content {
+  background: white;
+  border: 3px solid green;
   padding: 20px;
   border-radius: 5px;
   max-width: 400px;
@@ -327,4 +336,19 @@ input {
 
 .hiding-block > * {
   margin-right: 10px;
+}
+
+#password-reset-page {
+  padding: 10px;
+}
+
+#password-reset-page > * {
+  margin: 20px;
+}
+
+#error-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }

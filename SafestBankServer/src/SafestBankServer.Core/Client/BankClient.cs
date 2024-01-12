@@ -15,7 +15,12 @@ public class BankClient
     public string Email { get; protected set; }
     public Guid AddressId { get; set; }
     public virtual Address Address { get; set; }
+    public int LoginAttempts { get; set; }
+    public bool IsBlocked { get; set; }
     public virtual IList<PartialPassword> PartialPasswords{ get; set; }
+    public int PasswordResetAttempts { get; set; }
+    public DateTime? LastPasswordResetRequestTime { get; set; }
+    public byte[]? PasswordResetTokenHash { get; set; }
     public Guid IdentityCardId { get; set; }
     public virtual IdentityCard IdentityCard { get; set; }
     public virtual IList<ClientTransaction>? Transactions { get; set; }
@@ -29,5 +34,8 @@ public class BankClient
         Surname = surname;
         PESEL = pESEL;
         Email = email;
+        LoginAttempts = 0;
+        IsBlocked = false;
+        PasswordResetAttempts = 0;
     }
 }

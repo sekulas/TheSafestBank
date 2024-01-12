@@ -12,7 +12,7 @@ import LoginPage from "./pages/LoginPage";
 import ProtectedPage from "./pages/ProtectedPage";
 import HomePage from "./pages/HomePage";
 import AuthProvider from "./features/auth/context/AuthProvider";
-import PasswordChangePage from "./pages/PasswordChangePage";
+import PasswordResetPage from "./pages/PasswordResetPage";
 import ClientDetailsPage from "./pages/ClientDetailsPage";
 import ModalProvider from "./features/modal/context/ModalProvider";
 
@@ -20,41 +20,33 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <AppLayout />,
+    errorElement: <ErrorPage />,
     children: [
+
       {
-        errorElement: <ErrorPage />,
+        path: "login",
+        element: <LoginPage />,
+      },
+      {
+        path: "password-reset",
+        element: <PasswordResetPage />
+      },
+      {
+        element: <ProtectedPage />,
         children: [
           {
-            path: "login",
-            element: <LoginPage />,
+            index: true,
+            element: <HomePage />,
           },
           {
-            element: <ProtectedPage />,
-            children: [
-              {
-                index: true,
-                element: <HomePage />,
-                //loader: accountDetailsLoader
-              },
-              {
-                path: "client",
-                element: <ClientDetailsPage />,
-                //loader: clientLoader
-              },
-              {
-                path: "password",
-                element: <PasswordChangePage />
-              },
-              {
-                path: "logout",
-                //action: logoutUser,
-              },
-            ]
-          }
+            path: "client",
+            element: <ClientDetailsPage />,
+          },
+
         ]
       }
     ]
-  },
+  }
 ]);
 
 const root = ReactDOM.createRoot(

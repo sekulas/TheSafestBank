@@ -1,15 +1,16 @@
-﻿using SafestBankServer.Web.Configuration.CookieAuth;
-using SafestBankServer.Web.Configuration.Exceptions;
+﻿using SafestBankServer.Web.Configuration.Exceptions;
+using SafestBankServer.Web.Configuration.Session;
 
 namespace SafestBankServer.Web.Configuration;
-public static class Extensions
+internal static class Extensions
 {
     public static IServiceCollection AddWeb(
         this IServiceCollection services
     )
     {
         services.AddExceptionHandler<GlobalExceptionHandler>();
-        services.AddSingleton<CookieAuthOptions>();
+        services.AddSingleton<SessionConfiguration>();
+        services.AddSingleton<SessionManager>();
 
         return services;
     }

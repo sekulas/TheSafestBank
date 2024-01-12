@@ -40,7 +40,7 @@ const MakeTransactionModal = ({ closeModal }: { closeModal: () => void }) => {
       const data = await response.json();
 
       if (!response.ok) {
-        handleTransactionError(data.message, response.status);
+        throw new Error(`Failed to make transaction. ${data.message}`);
       } else {
         setTransactions([data, ...transactions]);
         setBalance(balance - Number(amount));
@@ -58,12 +58,22 @@ const MakeTransactionModal = ({ closeModal }: { closeModal: () => void }) => {
       !recipientAccountNumber ||
       !amount ||
       !title ||
-      getDecimalPlaces(amount) > 2 ||
-      Number(amount) <= 0
+      !/^[0-9]+$/.test(recipientAccountNumber) ||
+      getDecimalPlaces(amount) > 2
     ) {
       openModal(
         "Not all fields have been filled correctly.",
         "Please fill all the fields and remember - account number and amount of money can only contain numbers and must be positive. Additionally, the amount of money can only contain two decimal places which are separated by the '.' sign."
+      );
+      return false;
+    }
+
+    let amountNumber = Number(amount);
+
+    if (amountNumber <= 0) {
+      openModal(
+        "Amount of money must be at least 0.01 PLN.",
+        "Please provide a proper amount of money."
       );
       return false;
     }
@@ -80,7 +90,7 @@ const MakeTransactionModal = ({ closeModal }: { closeModal: () => void }) => {
       return false;
     }
 
-    if (balance < Number(amount)) {
+    if (balance < amountNumber) {
       openModal(
         "You don't have enough money to make this transaction.",
         "Please provide a smaller amount of money"
@@ -88,15 +98,28 @@ const MakeTransactionModal = ({ closeModal }: { closeModal: () => void }) => {
       return false;
     }
 
+    if (amountNumber > 1000000000) {
+      openModal(
+        "Amount of money must be smaller than 1 000 000 000.",
+        "Please provide a smaller amount of money"
+      );
+      return false;
+    }
+
+    if (title.length > 100 || /[^a-zA-Z0-9 .-]/.test(title)) {
+      openModal(
+        "Title must contain only letters, digits, spaces, dots and dashes and must be shorter than 100 characters.",
+        "Please provide a correct title."
+      );
+      return false;
+    }
+
     return true;
   };
 
-  const handleTransactionError = (errorMessage: string, statusCode: number | null = null) => {
-    openModal("Error", `Failed to make transaction. ${errorMessage}`);
-    if (statusCode === 401) {
-      logout();
-    }
-    closeModal();
+  const handleTransactionError = (errorMessage: string) => {
+    openModal("Error", `${errorMessage}`);
+    logout();
   };
 
   const getDecimalPlaces = (amount: string) => {
@@ -112,6 +135,7 @@ const MakeTransactionModal = ({ closeModal }: { closeModal: () => void }) => {
         <h2>Make a transaction</h2>
         <p>Provide the following information:</p>
         <div id="transaction-form">
+          <input id="RequestVerificationToken" type="hidden" value="@requestToken" />
           <div className="transaction-field">
             <label htmlFor="recipient">Recipient account number:</label>
             <input

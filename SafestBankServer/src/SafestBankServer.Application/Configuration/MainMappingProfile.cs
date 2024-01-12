@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using SafestBankServer.Application.DTO.Client;
-using SafestBankServer.Application.DTO.Transaction;
+using SafestBankServer.Application.Features.Client.DTO;
+using SafestBankServer.Application.Features.Transaction.Transaction;
 using SafestBankServer.Core.Client;
 using SafestBankServer.Core.Transaction;
 

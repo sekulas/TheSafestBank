@@ -1,36 +1,32 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Memory;
-using SafestBankServer.Application.DTO.Transaction;
-using SafestBankServer.Application.Transaction;
-using System.Security.Claims;
+using SafestBankServer.Application.Features.Transaction;
+using SafestBankServer.Application.Features.Transaction.Transaction;
+using SafestBankServer.Web.Configuration.Session;
 
 namespace SafestBankServer.Web.Controllers;
 
 [Route("api/transaction")]
 [ApiController]
-[Authorize(Policy="SessionPolicy")]
+[Authorize]
 public class TransactionController : ControllerBase
 {
-    private readonly IMemoryCache _cache;
     private readonly ITransactionService _transactionService;
-    public TransactionController(IMemoryCache cache, ITransactionService transactionService)
+    private readonly SessionManager _sessionManager;
+    public TransactionController(ITransactionService transactionService, SessionManager sessionManager)
     {
-        _cache = cache;
         _transactionService = transactionService;
+        _sessionManager = sessionManager;
     }
 
     [HttpPost]
     public async Task<ActionResult<ClientTransactionDto>> MakeTransaction([FromBody] MakeTransactionDto transaction)
     {
-        var sid = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "id")?.Value
-            ?? throw new UnauthorizedAccessException("Your session has expired - please log in.");
-
-        var clientNumber = _cache.Get<string>(sid)
-            ?? throw new UnauthorizedAccessException("Your session has expired - please log in.");
+        var clientId = await _sessionManager.GetClientId(HttpContext);
+        await _sessionManager.RefreshSession(HttpContext);
 
         var transactionDto = 
-            await _transactionService.MakeTransaction(clientNumber, transaction.RecipientAccountNumber, transaction.Amount, transaction.Title);
+            await _transactionService.MakeTransaction(clientId, transaction.RecipientAccountNumber, transaction.Amount, transaction.Title);
 
         return Ok(transactionDto);
     }

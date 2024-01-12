@@ -10,7 +10,6 @@ const TransactionList = () => {
       <h1 id="transaction-list-title">TRANSACTIONS:</h1>
       {transactions.length !== 0 ?
         transactions.map((transaction, index) => (
-          console.log(transaction),
           <TransactionItem key={index} transaction={transaction} />
         ))
         :
