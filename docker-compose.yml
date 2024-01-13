@@ -1,0 +1,35 @@
+version: "3.4"
+
+networks:
+  safest-network:
+    driver: bridge
+
+services:
+  db:
+    container_name: thesafestbank-db
+    image: postgres:16.0
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=thesafestbankdb
+    restart: always
+    volumes:
+      - ./dbdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - safest-network
+
+  server:
+    container_name: thesafebank-server
+    image: thesafestbank-server
+    build: ./SafeBankServer
+    depends_on:
+      - db
+    ports:
+      - "5000:80"
+    networks:
+      - safest-network
+
+volumes:
+  dbdata:
