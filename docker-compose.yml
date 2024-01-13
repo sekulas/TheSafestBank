@@ -16,14 +16,17 @@ services:
     volumes:
       - ./dbdata:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - "5432:5432" #TODO - USUN ZEWNETRZNY DOSTEP
     networks:
       - safest-network
 
   server:
     container_name: thesafebank-server
     image: thesafestbank-server
-    build: ./SafeBankServer
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development #TODO - zmienic na Production
+      - ASPNETCORE_URLS=http://+:80
+    build: ./SafestBankServer
     depends_on:
       - db
     ports:

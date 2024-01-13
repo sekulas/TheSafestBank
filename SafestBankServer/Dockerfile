@@ -1,6 +1,6 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS base
 WORKDIR /app
-EXPOSE 5000
+EXPOSE 80
 
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
@@ -31,5 +31,3 @@ COPY --from=publish /app/publish .
 COPY "src/SafestBankServer.Web/*" .
 RUN rm -rf /app/src
 ENTRYPOINT ["dotnet", "SafestBankServer.Web.dll"]
-ENV ASPNETCORE_ENVIRONMENT=Development
-ENV ASPNETCORE_URLS=http://+:5000
