@@ -27,24 +27,9 @@ FROM base AS runtime
 WORKDIR /app
 
 COPY --from=publish /app/publish .
-COPY "src/SafestBankServer.Web/appsettings.json" .
+#TODO - ZMIEN APPSETTINGS I ENV ASPNETCORE_ENVIRONMENT
+COPY "src/SafestBankServer.Web/*" .
 RUN rm -rf /app/src
 ENTRYPOINT ["dotnet", "SafestBankServer.Web.dll"]
-
-#FROM mcr.microsoft.com/dotnet/sdk:8.0-nanoserver-1809 AS build
-#ARG BUILD_CONFIGURATION=Release
-#WORKDIR /src
-#COPY ["src/MyWebApp.csproj", "MyWebApp/"]
-#RUN dotnet restore "./MyWebApp/./MyWebApp.csproj"
-#COPY . .
-#WORKDIR "/src/MyWebApp"
-#RUN dotnet build "./MyWebApp.csproj" -c %BUILD_CONFIGURATION% -o /app/build
-#
-#FROM build AS publish
-#ARG BUILD_CONFIGURATION=Release
-#RUN dotnet publish "./MyWebApp.csproj" -c %BUILD_CONFIGURATION% -o /app/publish /p:UseAppHost=false
-#
-#FROM base AS final
-#WORKDIR /app
-#COPY --from=publish /app/publish .
-#ENTRYPOINT ["dotnet", "MyWebApp.dll"]
+ENV ASPNETCORE_ENVIRONMENT=Development
+ENV ASPNETCORE_URLS=http://+:5000

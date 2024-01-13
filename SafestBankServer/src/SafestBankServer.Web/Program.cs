@@ -6,7 +6,8 @@ using SafestBankServer.Web.Configuration.CookieAuth;
 using SafestBankServer.Web.Configuration.Session;
 
 namespace SafestBankServer.Web;
-public static class Program {
+public static class Program
+{
 
     public static void Main(string[] args)
     {
@@ -17,6 +18,7 @@ public static class Program {
         var configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
             .AddJsonFile("appsettings.json", false)
+            .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", true)
             .Build();
 
         builder.Services.AddMemoryCache();
@@ -60,7 +62,7 @@ public static class Program {
 
         app.UseExceptionHandler(_ => { });
 
-        if(app.Environment.IsDevelopment())
+        if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
             app.UseSwaggerUI();
