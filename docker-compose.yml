@@ -35,11 +35,18 @@ services:
   client:
     container_name: thesafestbank-client
     image: thesafestbank-client
+    environment:
+      - HTTPS=true
+      - SSL_CRT_FILE=/etc/ssl/certs/certificate.crt
+      - SSL_KEY_FILE=/etc/ssl/certs/certificate.key
     build: ./safest-bank-client
     depends_on:
       - server
+    volumes:
+      - ./certificates:/etc/ssl/certs
     ports:
       - "3000:3000"
 
 volumes:
   dbdata:
+  certificates:
