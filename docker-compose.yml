@@ -15,13 +15,11 @@ services:
     restart: always
     volumes:
       - ./dbdata:/var/lib/postgresql/data
-    ports:
-      - "5432:5432" #TODO - USUN ZEWNETRZNY DOSTEP
     networks:
       - safest-network
 
   server:
-    container_name: thesafebank-server
+    container_name: thesafestbank-server
     image: thesafestbank-server
     environment:
       - ASPNETCORE_ENVIRONMENT=Development #TODO - zmienic na Production
@@ -33,6 +31,15 @@ services:
       - "5000:80"
     networks:
       - safest-network
+
+  client:
+    container_name: thesafestbank-client
+    image: thesafestbank-client
+    build: ./safest-bank-client
+    depends_on:
+      - server
+    ports:
+      - "3000:3000"
 
 volumes:
   dbdata:

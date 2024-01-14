@@ -1,3 +1,5 @@
 tests
 obj
 bin
+Dockerfile
+.dockerignore

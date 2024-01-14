@@ -18,7 +18,7 @@ const MakeTransactionModal = ({ closeModal }: { closeModal: () => void }) => {
       return;
     }
 
-    const transaction = {
+    const transaction: IMakeTransactionRequest = {
       recipientAccountNumber,
       amount: Number(amount),
       title,
