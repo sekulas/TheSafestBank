@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://localhost:5000/api";
+const API_BASE_URL = "https://localhost:5000/api";
 
 const API_ENDPOINTS = {
   FETCH_PASSWORD_MASK: `${API_BASE_URL}/auth/password`,

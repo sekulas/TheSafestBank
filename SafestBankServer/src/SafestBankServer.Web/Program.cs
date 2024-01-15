@@ -52,7 +52,7 @@ public static class Program
         {
             options.AddDefaultPolicy(policy =>
             {
-                policy.WithOrigins("https://localhost:3000")
+                policy.WithOrigins("https://localhost:3000", "https://localhost:5000", "https://thesafestbank-reverse-proxy", "https://thesafestbank-client", "https://localhost", "https://thesafestbank-reverse-proxy:5000", "https://thesafestbank-client:3000")
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials();
