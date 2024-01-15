@@ -1,7 +1,9 @@
 version: "3.4"
 
 networks:
-  safest-network:
+  db-network:
+    driver: bridge
+  server-network:
     driver: bridge
 
 services:
@@ -16,7 +18,7 @@ services:
     volumes:
       - ./dbdata:/var/lib/postgresql/data
     networks:
-      - safest-network
+      - db-network
 
   server:
     container_name: thesafestbank-server
@@ -28,9 +30,23 @@ services:
     depends_on:
       - db
     ports:
-      - "5000:80"
+      - "5001:80"
     networks:
-      - safest-network
+      - db-network
+      - server-network
+
+  reverse-proxy:
+    container_name: thesafestbank-reverse-proxy
+    image: nginx:1.23.3
+    ports:
+      - "5000:80"
+    depends_on:
+      - server
+    volumes:
+      - ./certificates:/etc/ssl/certs
+      - ./reverse-proxy-conf:/etc/nginx
+    networks:
+      - server-network
 
   client:
     container_name: thesafestbank-client
@@ -50,3 +66,4 @@ services:
 volumes:
   dbdata:
   certificates:
+  reverse-proxy-conf:

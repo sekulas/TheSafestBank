@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using SafestBankServer.Application;
 using SafestBankServer.Infrastructure;
@@ -61,6 +62,11 @@ public static class Program
         var app = builder.Build();
 
         app.UseExceptionHandler(_ => { });
+
+        app.UseForwardedHeaders(new ForwardedHeadersOptions
+        {
+            ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+        });
 
         if (app.Environment.IsDevelopment())
         {
