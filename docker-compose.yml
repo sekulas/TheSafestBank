@@ -32,7 +32,7 @@ services:
     depends_on:
       - db
     ports:
-      - "5001:443"
+      - "5001:443" ##TODO - USUN PERFORACJE
     volumes:
       - ./certificates:/https
     networks:
