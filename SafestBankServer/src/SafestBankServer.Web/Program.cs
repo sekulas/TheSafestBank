@@ -47,7 +47,6 @@ public static class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
-        //TODO - LEPSZE CORSY
         builder.Services.AddCors(options =>
         {
             options.AddDefaultPolicy(policy =>
@@ -55,7 +54,8 @@ public static class Program
                 policy.WithOrigins("https://localhost:3000")
                 .AllowAnyHeader()
                 .AllowAnyMethod()
-                .AllowCredentials();
+                .AllowCredentials()
+                .SetPreflightMaxAge(TimeSpan.FromMinutes(10));
             });
         });
 
