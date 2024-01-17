@@ -1,0 +1,73 @@
+version: "3.4"
+
+networks:
+  db-network:
+    driver: bridge
+  server-network:
+    driver: bridge
+
+services:
+  db:
+    container_name: thesafestbank-db
+    image: postgres:16.0
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=thesafestbankdb
+    restart: always
+    volumes:
+      - ./dbdata:/var/lib/postgresql/data
+    networks:
+      - db-network
+
+  server:
+    container_name: thesafestbank-server
+    image: thesafestbank-server
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development #TODO - zmienic na Production
+      - ASPNETCORE_URLS=https://+:443
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/certificate.crt
+      - ASPNETCORE_Kestrel__Certificates__Default__KeyPath=/https/certificate.key
+    build: ./SafestBankServer
+    depends_on:
+      - db
+    ports:
+      - "5001:443" ##TODO - USUN PERFORACJE
+    volumes:
+      - ./certificates:/https
+    networks:
+      - db-network
+      - server-network
+
+  reverse-proxy:
+    container_name: thesafestbank-reverse-proxy
+    image: nginx:1.23.3
+    ports:
+      - "5000:443"
+    depends_on:
+      - server
+    volumes:
+      - ./certificates:/etc/ssl/certs
+      - ./reverse-proxy-conf:/etc/nginx
+    networks:
+      - server-network
+
+  client:
+    container_name: thesafestbank-client
+    image: thesafestbank-client
+    environment:
+      - HTTPS=true
+      - SSL_CRT_FILE=/etc/ssl/certs/certificate.crt
+      - SSL_KEY_FILE=/etc/ssl/certs/certificate.key
+    build: ./safest-bank-client
+    depends_on:
+      - server
+    volumes:
+      - ./certificates:/etc/ssl/certs
+    ports:
+      - "3000:3000"
+
+volumes:
+  dbdata:
+  certificates:
+  reverse-proxy-conf:
