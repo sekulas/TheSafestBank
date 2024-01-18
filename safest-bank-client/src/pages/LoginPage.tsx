@@ -15,6 +15,7 @@ const LoginPage = () => {
   const handleSubmitClientNumber = async () => {
     try {
       openSpinner();
+      validateClientNumber();
       const requestBody: IFetchPasswordMaskRequest = { clientNumber };
 
       const response = await fetch(API_ENDPOINTS.FETCH_PASSWORD_MASK, {
@@ -36,6 +37,16 @@ const LoginPage = () => {
       handleRequestError((error as Error).message);
     } finally {
       closeSpinner();
+    }
+  };
+
+  const validateClientNumber = () => {
+    if (!clientNumber) {
+      throw new Error('Client number is required.');
+    }
+
+    if (!/^[0-9]+$/.test(clientNumber)) {
+      throw new Error('Client number must be a number.');
     }
   };
 

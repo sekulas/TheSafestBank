@@ -13,11 +13,13 @@ const PasswordResetPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const urlSearchParams = new URLSearchParams(window.location.search);
-    const urlParams = Object.fromEntries(urlSearchParams.entries());
-    const parsedToken = urlParams.token;
-    console.log(parsedToken)
+    const tokenFromUrl = new URLSearchParams(window.location.search).get('token');
+    const parsedToken = tokenFromUrl;
+
+    if (parsedToken === null) return;
+
     setToken(parsedToken);
+    window.history.pushState({}, '', '/password-reset');
   }, []);
 
   const handleSendPasswordResetMail = async () => {
@@ -36,22 +38,23 @@ const PasswordResetPage = () => {
 
       if (!response.ok) {
         const data = await response.json();
-        throw new Error(`Failed send password reset mail. ${data.message}`);
+        throw new Error(`Failed reset password. ${data.message}`);
       }
 
       openModal('Success', 'Password reset mail sent successfully.');
+      navigate('/login')
     } catch (error) {
       openModal('Error', `${(error as Error).message}`);
     }
     finally {
       closeSpinner();
-      navigate('/login')
     }
   };
 
   const handleResetPassword = async () => {
     try {
       openSpinner();
+      validatePassword();
       const requestBody: IResetPasswordRequest = { password: password, confirmPassword: confirmPassword, token: encodeURIComponent(token) };
       console.log(requestBody.token)
       const response = await fetch(API_ENDPOINTS.RESET_PASSWORD, {
@@ -68,14 +71,55 @@ const PasswordResetPage = () => {
         throw new Error(`Failed reset password. ${data.message}`);
       }
       openModal('Success', 'Password has been reset successfully.');
+      navigate('/login')
     } catch (error) {
       openModal('Error', `${(error as Error).message}`);
     }
     finally {
       closeSpinner();
-      navigate('/login')
     }
   };
+
+  const validatePassword = () => {
+    if (password !== confirmPassword) {
+      throw new Error('Passwords do not match.');
+    }
+
+    if (password.length < 16 || password.length > 64) {
+      throw new Error('Password must be at least 16 characters long. (Max 64)');
+    }
+
+    if (/^(?=.*[a-z])(?=.*[A-Z].*[A-Z])(?=.*\d.*\d)(?=.*[!@#$%^&*()\-_+. ])[a-zA-Z\d!@#$%^&*()\-_+. ]{16,64}$/.test(password) === false) {
+      throw new Error('Password must contain at least two uppercase letter, one lowercase letter, \
+                      two numbers and two special signs [!@#$%^&*()\-_+. ]. No special letters are allowed.');
+    }
+
+    if (calculateEntropy(password) < 4) {
+      throw new Error('Password entropy is too low. Please choose a different password.');
+    }
+  };
+
+  const calculateEntropy = (password: string) => {
+    let chars: { [index: number]: number } = {};
+    for (let c of password) {
+      let i = c.charCodeAt(0);
+      if (chars[i]) {
+        chars[i]++;
+      }
+      else {
+        chars[i] = 1;
+      }
+    }
+
+    let len = password.length;
+    let res = 0;
+    let tmp = 0;
+    for (let i in chars) {
+      tmp = chars[i] / len;
+      res -= tmp * Math.log2(tmp);
+    }
+    return res;
+  }
 
   const handleClientNumberChange = (event: ChangeEvent<HTMLInputElement>) => {
     setClientNumber(event.target.value);
@@ -95,7 +139,7 @@ const PasswordResetPage = () => {
 
   return (
     <div id="password-reset-page">
-      {token === undefined ? (
+      {token === '' ? (
         <>
           <h1>Change Password</h1>
           <h3>Provide the client number:</h3>
