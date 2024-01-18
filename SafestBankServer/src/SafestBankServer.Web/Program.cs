@@ -74,8 +74,6 @@ public static class Program
         app.UseAuthentication();
         app.UseAuthorization();
 
-        //app.UseSession();
-
         app.MapControllers();
 
         app.Run();

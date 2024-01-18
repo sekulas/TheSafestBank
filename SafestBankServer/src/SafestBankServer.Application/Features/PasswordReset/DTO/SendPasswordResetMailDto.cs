@@ -1,10 +1,14 @@
-﻿namespace SafestBankServer.Application.Features.PasswordReset.DTO;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace SafestBankServer.Application.Features.PasswordReset.DTO;
 public class SendPasswordResetMailDto
 {
     //TODO: zmiana ilosci znakow
+    [Required]
     //[RegularExpression(@"^[0-9]{1}")]
     public string ClientNumber { get; set; }
 
+    [Required]
     //[RegularExpression(@"^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,}$")]
     public string Email { get; set; }
 }
