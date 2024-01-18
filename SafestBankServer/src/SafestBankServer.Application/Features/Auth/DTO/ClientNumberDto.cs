@@ -5,6 +5,7 @@ namespace SafestBankServer.Application.Features.Auth.DTO;
 public class ClientNumberDto
 {
     //TODO - zmien odpowiednio ilosc znakow
-    [RegularExpression(@"^[0-9]{1}")]
+    [Required]
+    [RegularExpression(@"^[0-9]{1}$")]
     public string ClientNumber { get; set; }
 }

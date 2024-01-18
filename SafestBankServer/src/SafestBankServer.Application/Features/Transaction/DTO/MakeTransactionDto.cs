@@ -3,13 +3,15 @@
 namespace SafestBankServer.Application.Features.Transaction.Transaction;
 public class MakeTransactionDto
 {
-
-    [RegularExpression(@"^[0-9]{26}")]
+    [Required]
+    [RegularExpression(@"^[0-9]{26}$")]
     public string RecipientAccountNumber { get; set; }
 
+    [Required]
     [Range(0.01, 1000000000)]
     public decimal Amount { get; set; }
 
+    [Required]
     [RegularExpression(@"^[a-zA-Z0-9 .-]{1,100}$")]
     public string Title { get; set; }
 }
