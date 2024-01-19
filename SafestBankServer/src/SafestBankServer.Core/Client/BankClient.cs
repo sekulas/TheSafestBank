@@ -24,8 +24,9 @@ public class BankClient
     public Guid IdentityCardId { get; set; }
     public virtual IdentityCard IdentityCard { get; set; }
     public virtual IList<ClientTransaction>? Transactions { get; set; }
+    public byte[] Salt { get; protected set; }
 
-    public BankClient(string clientNumber, string accountNumber, decimal balance, string name, string surname, string pESEL, string email)
+    public BankClient(string clientNumber, string accountNumber, decimal balance, string name, string surname, string pESEL, string email, byte[] salt)
     {
         ClientNumber = clientNumber;
         AccountNumber = accountNumber;
@@ -37,5 +38,6 @@ public class BankClient
         LoginAttempts = 0;
         IsBlocked = false;
         PasswordResetAttempts = 0;
+        Salt = salt;
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SafestBankServer.Application.Auth.Passwords;
+using SafestBankServer.Application.Features.Encryption;
 using SafestBankServer.Core.Auth.Passwords;
 using SafestBankServer.Core.Client;
 using SafestBankServer.Core.Client.Data;
@@ -19,7 +20,9 @@ internal sealed class SafestBankDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        //TODO - USUN TO
         var _passwordManager = new PasswordManager(new SecurityOptions());
+        var _encryptionManager = new EncryptionManager();
 
         modelBuilder.Entity<BankClient>()
             .HasMany(bc => bc.PartialPasswords)
@@ -36,17 +39,28 @@ internal sealed class SafestBankDbContext : DbContext
             .WithOne()
             .HasForeignKey<IdentityCard>(ic => ic.BankClientId);
 
+        var salt = _encryptionManager.GenerateIV();
         var clientNumber = "1";
         var accountNumber = "12345678901234567890123456";
         var balance = 1000.0m;
         var clientName = "Sebastian";
         var clientSurname = "Sekula";
-        var clientPESEL = "12345678901";
+        var clientPESEL = _encryptionManager.Encrypt("12345678901", salt);
         var clientEmail = "sekula.sebastian.kontakt@gmail.com";
         var clientPassword = "01234567890"; //TODO - LEPSZE HASLO
-        var address = new Address("Poland", "Warszawa", "Grójecka", "39", "12-102");
+        var address = new Address("Poland", _encryptionManager.Encrypt("Warszawa", salt), _encryptionManager.Encrypt("Grójecka", salt), _encryptionManager.Encrypt("39", salt), _encryptionManager.Encrypt("12-102", salt));
+        var encryptedType = _encryptionManager.Encrypt("DOWÓD POLSKI", salt);
+        var encryptedSerie = _encryptionManager.Encrypt("12121212", salt);
+        var encryptedNumber = _encryptionManager.Encrypt("Polska", salt);
 
-        var identityCard = new IdentityCard("DOWÓD POLSKI", "RXA", "12121212", "Polska");
+        var identityCard = new IdentityCard(
+             encryptedType,
+             encryptedSerie,
+             encryptedNumber,
+             "Poland"
+             );
+
+        //TODO ENCRYPT ANOTHER CLIENT DATA
 
         var bankClient = new BankClient(
                 clientNumber,
@@ -55,7 +69,8 @@ internal sealed class SafestBankDbContext : DbContext
                 clientName,
                 clientSurname,
                 clientPESEL,
-                clientEmail
+                clientEmail,
+                salt
             );
 
         bankClient.AddressId = address.Id;
@@ -80,7 +95,7 @@ internal sealed class SafestBankDbContext : DbContext
         }
 
         modelBuilder.Entity<PartialPassword>().HasData(
-            partialPasswordList 
+            partialPasswordList
         );
 
         modelBuilder.Entity<IdentityCard>().HasData(
@@ -96,6 +111,7 @@ internal sealed class SafestBankDbContext : DbContext
         var bclientEmail = "bob@gmail.com";
         var bclientPassword = "01234567890"; //TODO - LEPSZE HASLO
         var baddress = new Address("Poland", "Warszawa", "Grójecka", "39", "12-102");
+        var bsalt = _encryptionManager.GenerateIV();
 
         var bidentityCard = new IdentityCard("DOWÓD POLSKI", "RXA", "22121212", "Polska");
 
@@ -106,7 +122,8 @@ internal sealed class SafestBankDbContext : DbContext
                 bclientName,
                 bclientSurname,
                 bclientPESEL,
-                bclientEmail
+                bclientEmail,
+                bsalt
             );
 
         bbankClient.AddressId = baddress.Id;
