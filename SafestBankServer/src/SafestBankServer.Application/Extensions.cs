@@ -3,6 +3,7 @@ using SafestBankServer.Application.Auth;
 using SafestBankServer.Application.Auth.Passwords;
 using SafestBankServer.Application.Configuration;
 using SafestBankServer.Application.Features.Client;
+using SafestBankServer.Application.Features.Encryption;
 using SafestBankServer.Application.Features.PasswordReset;
 using SafestBankServer.Application.Features.Transaction;
 using SafestBankServer.Core.Auth.Passwords;
@@ -21,6 +22,7 @@ public static class Extensions
         services.AddScoped<IClientService, ClientService>();
         services.AddScoped<ITransactionService, TransactionService>();
         services.AddScoped<IPasswordResetService, PasswordResetService>();
+        services.AddScoped<IEncryptionManager, EncryptionManager>();
 
         return services;
     }
