@@ -11,7 +11,6 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [balance, setBalance] = useState(0);
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
-  const [pesel, setPesel] = useState("");
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState<IAddress>({ country: "", city: "", street: "", houseNumber: "", zipCode: "" });
   const [identityCard, setIdentityCard] = useState<IIdentityCard>({ type: "", serie: "", number: "", countryOfIssue: "" });
@@ -77,7 +76,6 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       setBalance(0);
       setName("");
       setSurname("");
-      setPesel("");
       setEmail("");
       setAddress({ country: "", city: "", street: "", houseNumber: "", zipCode: "" });
       setIdentityCard({ type: "", serie: "", number: "", countryOfIssue: "" });
@@ -90,7 +88,6 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     setBalance(data.balance);
     setName(data.name);
     setSurname(data.surname);
-    setPesel(data.pesel);
     setEmail(data.email);
     setAddress(data.address);
     setIdentityCard(data.identityCard);
@@ -104,7 +101,6 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     balance,
     name,
     surname,
-    pesel,
     email,
     address,
     identityCard,
