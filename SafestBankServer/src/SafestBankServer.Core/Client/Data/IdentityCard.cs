@@ -2,9 +2,9 @@
 public class IdentityCard
 {
     public Guid Id { get; protected set; } = Guid.NewGuid();
-    public string Type { get; protected set; }
-    public string Serie { get; protected set; }
-    public string Number { get; protected set; }
+    public string Type { get; set; }
+    public string Serie { get; set; }
+    public string Number { get; set; }
     public string CountryOfIssue { get; protected set; }
     public Guid BankClientId { get; set; }
 

@@ -9,7 +9,6 @@ public class BankClientDto
     public decimal Balance { get; set; }
     public string Name { get; set; }
     public string Surname { get; set; }
-    public string PESEL { get; set; }
     public string Email { get; set; }
     public Address Address { get; set; }
     public IdentityCard IdentityCard { get; set; }

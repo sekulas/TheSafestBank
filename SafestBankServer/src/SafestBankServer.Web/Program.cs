@@ -119,5 +119,4 @@ public static class Program
             options.AddServerHeader = false;
         });
     }
-
 }

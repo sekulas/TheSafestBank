@@ -7,7 +7,6 @@ export interface IAuthContext {
   balance: number;
   name: string;
   surname: string;
-  pesel: string;
   email: string;
   address: IAddress;
   identityCard: IIdentityCard;
@@ -25,7 +24,6 @@ export interface IBankClient {
   balance: number;
   name: string;
   surname: string;
-  pesel: string;
   email: string;
   address: IAddress;
   identityCard: IIdentityCard;
@@ -66,7 +64,6 @@ const AuthContext = createContext<IAuthContext>({
   balance: 0,
   name: "",
   surname: "",
-  pesel: "",
   email: "",
   address: { country: "", city: "", street: "", houseNumber: "", zipCode: "" },
   identityCard: { type: "", serie: "", number: "", countryOfIssue: "" },
