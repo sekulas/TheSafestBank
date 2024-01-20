@@ -119,7 +119,6 @@ const MakeTransactionModal = ({ closeModal }: { closeModal: () => void }) => {
 
   const handleTransactionError = (errorMessage: string) => {
     openModal("Error", `${errorMessage}`);
-    logout();
   };
 
   const getDecimalPlaces = (amount: string) => {

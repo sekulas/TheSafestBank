@@ -12,6 +12,7 @@ public class GlobalExceptionHandler : IExceptionHandler
     {
         (int statusCode, string message) = exception switch
         {
+            InvalidTransactionException e => (400, e.Message),
             InvalidPasswordException e => (400, e.Message),
             ResetPasswordException e => (400, e.Message),
             PasswordResetAttemptsExceeded e => (401, e.Message),

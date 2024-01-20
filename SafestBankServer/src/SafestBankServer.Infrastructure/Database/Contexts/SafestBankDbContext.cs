@@ -40,7 +40,7 @@ internal sealed class SafestBankDbContext : DbContext
             .HasForeignKey<IdentityCard>(ic => ic.BankClientId);
 
         var salt = _encryptionManager.GenerateIV();
-        var clientNumber = "1";
+        var clientNumber = "";
         var accountNumber = "12345678901234567890123456";
         var balance = 1000.0m;
         var clientName = "Sebastian";
@@ -48,15 +48,18 @@ internal sealed class SafestBankDbContext : DbContext
         var clientPESEL = _encryptionManager.Encrypt("12345678901", salt);
         var clientEmail = "sekula.sebastian.kontakt@gmail.com";
         var clientPassword = "01234567890"; //TODO - LEPSZE HASLO
-        var address = new Address("Poland", _encryptionManager.Encrypt("Warszawa", salt), _encryptionManager.Encrypt("Grójecka", salt), _encryptionManager.Encrypt("39", salt), _encryptionManager.Encrypt("12-102", salt));
-        var encryptedType = _encryptionManager.Encrypt("DOWÓD POLSKI", salt);
-        var encryptedSerie = _encryptionManager.Encrypt("12121212", salt);
-        var encryptedNumber = _encryptionManager.Encrypt("Polska", salt);
+
+        var address = new Address("Poland", 
+            _encryptionManager.Encrypt("Warszawa", salt), 
+            _encryptionManager.Encrypt("Grójecka", salt), 
+            _encryptionManager.Encrypt("39", salt), 
+            _encryptionManager.Encrypt("12-102", salt)
+            );
 
         var identityCard = new IdentityCard(
-             encryptedType,
-             encryptedSerie,
-             encryptedNumber,
+             _encryptionManager.Encrypt("DOWÓD POLSKI", salt),
+             _encryptionManager.Encrypt("12121212", salt),
+             _encryptionManager.Encrypt("Polska", salt),
              "Poland"
              );
 
