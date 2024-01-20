@@ -10,7 +10,7 @@ const MakeTransactionModal = ({ closeModal }: { closeModal: () => void }) => {
   const [amount, setAmount] = useState("");
   const [title, setTitle] = useState("");
   const { openModal, openSpinner, closeSpinner } = useContext(ModalContext);
-  const { balance, transactions, setTransactions, setBalance, logout } =
+  const { balance, transactions, setTransactions, setBalance } =
     useContext(AuthContext);
 
   const makeTransaction = async () => {
