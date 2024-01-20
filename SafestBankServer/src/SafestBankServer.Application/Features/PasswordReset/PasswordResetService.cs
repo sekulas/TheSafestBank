@@ -56,10 +56,10 @@ internal class PasswordResetService : IPasswordResetService
 
         if(client.LastPasswordResetRequestTime != null)
         {
-            var passwordResetRequest = (DateTime) client.LastPasswordResetRequestTime;
+            var passwordResetRequest = (DateTime)client.LastPasswordResetRequestTime;
             var timeDifference = DateTime.UtcNow - passwordResetRequest;
 
-            if(timeDifference.TotalMinutes < 5)
+            if (timeDifference.TotalMinutes < 5)
             {
                 throw new PasswordResetRequestTimeNotExpiredException("You have to wait 5 minutes before sending another request.");
             }
@@ -85,7 +85,7 @@ internal class PasswordResetService : IPasswordResetService
 
         string base64UrlToken = Convert.ToBase64String(tokenBytes);
         string encodedToken = HttpUtility.UrlEncode(base64UrlToken);
-        string resetUrl = $"https://localhost:3000/password-reset?token={encodedToken}";
+        string resetUrl = $"https://localhost/password-reset?token={encodedToken}";
 
         //TODO: LOGGING THIS
         Console.WriteLine($"Sending \n RESET URL:{resetUrl} \nTO {client.Email}");
@@ -102,7 +102,7 @@ internal class PasswordResetService : IPasswordResetService
         {
             int charCode = character;
 
-            if(characterCounts.ContainsKey(charCode))
+            if (characterCounts.ContainsKey(charCode))
             {
                 characterCounts[charCode]++;
             }
@@ -114,7 +114,7 @@ internal class PasswordResetService : IPasswordResetService
 
         foreach(KeyValuePair<int, int> characterCount in characterCounts)
         {
-            double probability = (double) characterCount.Value / password.Length;
+            double probability = (double)characterCount.Value / password.Length;
             entropy -= probability * Math.Log2(probability);
         }
 
