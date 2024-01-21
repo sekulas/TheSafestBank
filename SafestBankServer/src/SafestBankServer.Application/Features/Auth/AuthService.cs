@@ -32,19 +32,24 @@ internal sealed class AuthService : IAuthService
         
         if(!_passwordManager.VerifyPassword(clientLoginDto.Password, partialPassword))
         {
+            client.LoginAttempts++;
+
             if(client.LoginAttempts < 4)
             {
-                client.LoginAttempts++;
                 await _clientRepository.UpdateClientAsync(client);
                 throw new InvalidPasswordException("Invalid credentials.");
             }
             else
             {
-                client.LoginAttempts = 0;
                 client.IsBlocked = true;
                 await _clientRepository.UpdateClientAsync(client);
-                throw new UnauthorizedAccessException("Your account has been blocked. Please contact with the support.");
+                throw new UnauthorizedAccessException("Your account has been blocked. Please contact with the support or change the password using email.");
             }
+        }
+
+        if(client.IsBlocked)
+        {
+            throw new UnauthorizedAccessException("Your account has been blocked. Please contact with the support or change the password using email.");
         }
 
         partialPassword.PasswordStatus = PasswordStatus.USED;

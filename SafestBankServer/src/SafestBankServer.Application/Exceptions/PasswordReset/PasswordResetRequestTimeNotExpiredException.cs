@@ -1,4 +1,4 @@
 ﻿namespace SafestBankServer.Application.Exceptions.PasswordReset;
-internal class PasswordResetRequestTimeNotExpiredException(string message) : Exception(message)
+public class PasswordResetRequestTimeNotExpiredException(string message) : Exception(message)
 {
 }

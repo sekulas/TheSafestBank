@@ -33,6 +33,11 @@ internal sealed class TransactionService : ITransactionService
         var sender = await _clientRepository.GetClientByIdAsync(senderId)
             ?? throw new UnauthorizedAccessException("Your session has expired - please log in.");
 
+        if(sender.IsBlocked)
+        {
+            throw new UnauthorizedAccessException("Your account has been blocked. Please contact with the support or change the password using email.");
+        }
+
         if (sender.Balance < amount)
         {
             throw new NotEnoughMoneyException("You don't have enough money to make this transaction.");

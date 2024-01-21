@@ -40,30 +40,28 @@ internal sealed class SafestBankDbContext : DbContext
             .HasForeignKey<IdentityCard>(ic => ic.BankClientId);
 
         var salt = _encryptionManager.GenerateIV();
-        var clientNumber = "";
+        var clientNumber = "123456789012";
         var accountNumber = "12345678901234567890123456";
         var balance = 1000.0m;
         var clientName = "Sebastian";
         var clientSurname = "Sekula";
         var clientPESEL = _encryptionManager.Encrypt("12345678901", salt);
         var clientEmail = "sekula.sebastian.kontakt@gmail.com";
-        var clientPassword = "01234567890"; //TODO - LEPSZE HASLO
+        var clientPassword = "1234QWER!@#$qwer";
 
         var address = new Address("Poland", 
-            _encryptionManager.Encrypt("Warszawa", salt), 
-            _encryptionManager.Encrypt("Grójecka", salt), 
+            _encryptionManager.Encrypt("Warsaw", salt), 
+            _encryptionManager.Encrypt("Grojecka", salt), 
             _encryptionManager.Encrypt("39", salt), 
             _encryptionManager.Encrypt("12-102", salt)
             );
 
         var identityCard = new IdentityCard(
-             _encryptionManager.Encrypt("DOWÓD POLSKI", salt),
-             _encryptionManager.Encrypt("12121212", salt),
-             _encryptionManager.Encrypt("Polska", salt),
+             _encryptionManager.Encrypt("Polish Identity Card", salt),
+             _encryptionManager.Encrypt("CDE", salt),
+             _encryptionManager.Encrypt("123456", salt),
              "Poland"
              );
-
-        //TODO ENCRYPT ANOTHER CLIENT DATA
 
         var bankClient = new BankClient(
                 clientNumber,
@@ -105,57 +103,132 @@ internal sealed class SafestBankDbContext : DbContext
             identityCard
         );
 
-        var bclientNumber = "2";
-        var baccountNumber = "22345678901234567890123456";
-        var bbalance = 1000.0m;
-        var bclientName = "Bob";
-        var bclientSurname = "Bobowski";
-        var bclientPESEL = "22345678901";
-        var bclientEmail = "bob@gmail.com";
-        var bclientPassword = "01234567890"; //TODO - LEPSZE HASLO
-        var baddress = new Address("Poland", "Warszawa", "Grójecka", "39", "12-102");
-        var bsalt = _encryptionManager.GenerateIV();
+        salt = _encryptionManager.GenerateIV();
+        clientNumber = "223456789012";
+        accountNumber = "22345678901234567890123456";
+        balance = 1000.0m;
+        clientName = "Bob";
+        clientSurname = "Bobkins";
+        clientPESEL = _encryptionManager.Encrypt("22345678901", salt);
+        clientEmail = "bob.bobkins@gmail.com";
+        clientPassword = "ZXCV!@#$qwer1234";
 
-        var bidentityCard = new IdentityCard("DOWÓD POLSKI", "RXA", "22121212", "Polska");
-
-        var bbankClient = new BankClient(
-                bclientNumber,
-                baccountNumber,
-                bbalance,
-                bclientName,
-                bclientSurname,
-                bclientPESEL,
-                bclientEmail,
-                bsalt
+        address = new Address("Poland",
+            _encryptionManager.Encrypt("Lapy", salt),
+            _encryptionManager.Encrypt("Lapska", salt),
+            _encryptionManager.Encrypt("16", salt),
+            _encryptionManager.Encrypt("18-100", salt)
             );
 
-        bbankClient.AddressId = baddress.Id;
-        bbankClient.IdentityCardId = bidentityCard.Id;
+        identityCard = new IdentityCard(
+             _encryptionManager.Encrypt("Polish Identity Card", salt),
+             _encryptionManager.Encrypt("CDE", salt),
+             _encryptionManager.Encrypt("223456", salt),
+             "Poland"
+             );
 
-        baddress.BankClientId = bbankClient.Id;
-        bidentityCard.BankClientId = bbankClient.Id;
+        bankClient = new BankClient(
+                clientNumber,
+                accountNumber,
+                balance,
+                clientName,
+                clientSurname,
+                clientPESEL,
+                clientEmail,
+                salt
+            );
+
+        bankClient.AddressId = address.Id;
+        bankClient.IdentityCardId = identityCard.Id;
+
+        address.BankClientId = bankClient.Id;
+        identityCard.BankClientId = bankClient.Id;
 
 
         modelBuilder.Entity<BankClient>().HasData(
-            bbankClient
+            bankClient
         );
 
         modelBuilder.Entity<Address>().HasData(
-            baddress
+            address
         );
 
-        var bpartialPasswordList = _passwordManager.GenerateHashedPartialPasswords(bclientPassword);
-        foreach(var pp in bpartialPasswordList)
+        partialPasswordList = _passwordManager.GenerateHashedPartialPasswords(clientPassword);
+        foreach(var pp in partialPasswordList)
         {
-            pp.BankClientId = bbankClient.Id;
+            pp.BankClientId = bankClient.Id;
         }
 
         modelBuilder.Entity<PartialPassword>().HasData(
-            bpartialPasswordList
+            partialPasswordList
         );
 
         modelBuilder.Entity<IdentityCard>().HasData(
-            bidentityCard
+            identityCard
+        );
+
+        salt = _encryptionManager.GenerateIV();
+        clientNumber = "323456789012";
+        accountNumber = "32345678901234567890123456";
+        balance = 1000.0m;
+        clientName = "Scott";
+        clientSurname = "Scottkins";
+        clientPESEL = _encryptionManager.Encrypt("32345678901", salt);
+        clientEmail = "scotty123@gmail.com";
+        clientPassword = "!QAZ@WSX1qaz2wsx";
+
+        address = new Address("Poland",
+            _encryptionManager.Encrypt("Bialystok", salt),
+            _encryptionManager.Encrypt("Bialostocka", salt),
+            _encryptionManager.Encrypt("1", salt),
+            _encryptionManager.Encrypt("12-356", salt)
+            );
+
+        identityCard = new IdentityCard(
+             _encryptionManager.Encrypt("Polish Identity Card", salt),
+             _encryptionManager.Encrypt("CDE", salt),
+             _encryptionManager.Encrypt("323456", salt),
+             "Poland"
+             );
+
+        bankClient = new BankClient(
+                clientNumber,
+                accountNumber,
+                balance,
+                clientName,
+                clientSurname,
+                clientPESEL,
+                clientEmail,
+                salt
+            );
+
+        bankClient.AddressId = address.Id;
+        bankClient.IdentityCardId = identityCard.Id;
+
+        address.BankClientId = bankClient.Id;
+        identityCard.BankClientId = bankClient.Id;
+
+
+        modelBuilder.Entity<BankClient>().HasData(
+            bankClient
+        );
+
+        modelBuilder.Entity<Address>().HasData(
+            address
+        );
+
+        partialPasswordList = _passwordManager.GenerateHashedPartialPasswords(clientPassword);
+        foreach(var pp in partialPasswordList)
+        {
+            pp.BankClientId = bankClient.Id;
+        }
+
+        modelBuilder.Entity<PartialPassword>().HasData(
+            partialPasswordList
+        );
+
+        modelBuilder.Entity<IdentityCard>().HasData(
+            identityCard
         );
     }
 }

@@ -15,6 +15,7 @@ public class GlobalExceptionHandler : IExceptionHandler
             InvalidTransactionException e => (400, e.Message),
             InvalidPasswordException e => (400, e.Message),
             ResetPasswordException e => (400, e.Message),
+            PasswordResetRequestTimeNotExpiredException e => (400, e.Message),
             PasswordResetAttemptsExceeded e => (401, e.Message),
             UnauthorizedAccessException e => (401, e.Message),
             NotEnoughMoneyException e => (402, e.Message),

@@ -51,7 +51,7 @@ public static class Program
         {
             options.AddDefaultPolicy(policy =>
             {
-                policy.WithOrigins("https://localhost")
+                policy.WithOrigins("https://localhost:3000")
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials()

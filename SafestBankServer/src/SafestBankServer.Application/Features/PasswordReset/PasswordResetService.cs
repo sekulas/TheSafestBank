@@ -36,6 +36,8 @@ internal class PasswordResetService : IPasswordResetService
         }
 
         client.PasswordResetAttempts = 0;
+        client.IsBlocked = false;
+        client.LoginAttempts = 0;
 
         var partialPasswordList = _passwordManager.GenerateHashedPartialPasswords(passwordResetDto.Password);
         await _clientRepository.UpdateClientPasswords(client, partialPasswordList);
