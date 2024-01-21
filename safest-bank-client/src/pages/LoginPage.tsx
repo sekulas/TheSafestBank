@@ -41,12 +41,8 @@ const LoginPage = () => {
   };
 
   const validateClientNumber = () => {
-    if (!clientNumber) {
-      throw new Error('Client number is required.');
-    }
-
-    if (!/^[0-9]+$/.test(clientNumber)) {
-      throw new Error('Client number must be a number.');
+    if (!/^[0-9]{1,24}$/.test(clientNumber)) {
+      throw new Error('Client number must be at least 1 digit long.');
     }
   };
 

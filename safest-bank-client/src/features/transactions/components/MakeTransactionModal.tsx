@@ -14,18 +14,19 @@ const MakeTransactionModal = ({ closeModal }: { closeModal: () => void }) => {
     useContext(AuthContext);
 
   const makeTransaction = async () => {
-    if (!isValidTransaction()) {
-      return;
-    }
-
-    const transaction: IMakeTransactionRequest = {
-      recipientAccountNumber,
-      amount: Number(amount),
-      title,
-    };
-
     try {
       openSpinner();
+
+      if (!validateTransactionInput()) {
+        return;
+      }
+
+      const transaction: IMakeTransactionRequest = {
+        recipientAccountNumber,
+        amount: Number(amount),
+        title,
+      };
+
       const requestBody = transaction;
 
       const response = await fetch(API_ENDPOINTS.MAKE_TRANSACTION, {
@@ -53,11 +54,11 @@ const MakeTransactionModal = ({ closeModal }: { closeModal: () => void }) => {
     }
   };
 
-  const isValidTransaction = () => {
+  const validateTransactionInput = () => {
     if (
-      !recipientAccountNumber ||
-      !amount ||
-      !title ||
+      recipientAccountNumber === "" ||
+      amount === "" ||
+      title === "" ||
       !/^[0-9]+$/.test(recipientAccountNumber) ||
       getDecimalPlaces(amount) > 2
     ) {

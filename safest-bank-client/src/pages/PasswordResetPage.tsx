@@ -2,7 +2,6 @@ import { useNavigate } from "react-router-dom";
 import API_ENDPOINTS, { IResetPasswordRequest, ISendResetMailRequest } from "../services/TheSafestBankApi/safestBankServerApiEndpoints";
 import { ChangeEvent, useContext, useEffect, useState } from "react";
 import ModalContext from "../features/modal/context/ModalContext";
-import { parse } from "path";
 
 const PasswordResetPage = () => {
   const [clientNumber, setClientNumber] = useState<string>('');
@@ -67,7 +66,7 @@ const PasswordResetPage = () => {
   const handleResetPassword = async () => {
     try {
       openSpinner();
-      validatePassword();
+      validatePasswordResetInput();
       const requestBody: IResetPasswordRequest = { password: password, confirmPassword: confirmPassword, token: token };
       console.log(requestBody.token)
       const response = await fetch(API_ENDPOINTS.RESET_PASSWORD, {
@@ -93,7 +92,7 @@ const PasswordResetPage = () => {
     }
   };
 
-  const validatePassword = () => {
+  const validatePasswordResetInput = () => {
     if (password !== confirmPassword) {
       throw new Error('Passwords do not match.');
     }
@@ -109,6 +108,12 @@ const PasswordResetPage = () => {
 
     if (calculateEntropy(password) < 4) {
       throw new Error('Password entropy is too low. Please choose a different password.');
+    }
+
+    if (token === '' ||
+      !/^[-A-Za-z0-9+/]{32,64}={0,3}$/.test(token)
+    ) {
+      throw new Error('Invalid token.');
     }
   };
 
