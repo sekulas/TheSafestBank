@@ -48,7 +48,7 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   }
 
   const validateLoginInput = (clientNumber: string, password: string) => {
-    if (!/^[0-9]{1,12}$/.test(clientNumber)) {
+    if (!/^[0-9]{1,256}$/.test(clientNumber)) {
       throw new Error('Invalid client number and remember - it must be at least 1 digit long.');
     }
     if (!/^[a-zA-Z\d!@#$%^&*()\-_+. ]{4,64}$/) {

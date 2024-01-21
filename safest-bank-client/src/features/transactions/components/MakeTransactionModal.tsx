@@ -10,7 +10,7 @@ const MakeTransactionModal = ({ closeModal }: { closeModal: () => void }) => {
   const [amount, setAmount] = useState("");
   const [title, setTitle] = useState("");
   const { openModal, openSpinner, closeSpinner } = useContext(ModalContext);
-  const { balance, transactions, setTransactions, setBalance } =
+  const { balance, transactions, accountNumber, setTransactions, setBalance, logout } =
     useContext(AuthContext);
 
   const makeTransaction = async () => {
@@ -41,6 +41,9 @@ const MakeTransactionModal = ({ closeModal }: { closeModal: () => void }) => {
       const data = await response.json();
 
       if (!response.ok) {
+        if (response.status === 401) {
+          logout();
+        }
         throw new Error(`Failed to make transaction. ${data.message}`);
       } else {
         setTransactions([data, ...transactions]);
@@ -87,6 +90,14 @@ const MakeTransactionModal = ({ closeModal }: { closeModal: () => void }) => {
       openModal(
         "Account number must contain 26 digits.",
         "Please provide a correct account number."
+      );
+      return false;
+    }
+
+    if (recipientAccountNumber === accountNumber) {
+      openModal(
+        "You cannot make a transaction to yourself.",
+        "Please provide a different account number."
       );
       return false;
     }

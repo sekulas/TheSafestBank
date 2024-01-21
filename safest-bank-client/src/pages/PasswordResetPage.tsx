@@ -54,7 +54,7 @@ const PasswordResetPage = () => {
   };
 
   const validateSendPasswordResetMailInput = () => {
-    if (!/^[0-9]{1,12}$/.test(clientNumber)) {
+    if (!/^[0-9]{1,256}$/.test(clientNumber)) {
       throw new Error('Client number must be at least 1 digit long.');
     }
 
