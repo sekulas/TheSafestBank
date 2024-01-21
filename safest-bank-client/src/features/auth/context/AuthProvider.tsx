@@ -20,7 +20,7 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const login = async (clientNumber: string, password: string) => {
     try {
       openSpinner();
-      validateLoginInput();
+      validateLoginInput(clientNumber, password);
       const requestBody: ILoginRequest = { clientNumber: clientNumber, password: password };
 
       const response = await fetch(API_ENDPOINTS.LOGIN, {
@@ -47,9 +47,9 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     }
   }
 
-  const validateLoginInput = () => {
-    if (!/^[0-9]{1,24}$/.test(clientNumber)) {
-      throw new Error('Client number must be at least 1 digit long.');
+  const validateLoginInput = (clientNumber: string, password: string) => {
+    if (!/^[0-9]{1,12}$/.test(clientNumber)) {
+      throw new Error('Invalid client number and remember - it must be at least 1 digit long.');
     }
     if (!/^[a-zA-Z\d!@#$%^&*()\-_+. ]{4,64}$/) {
       throw new Error('Invalid characters in password. Available characters: a-z, A-Z, 0-9, !@#$%^&*()-_+.');

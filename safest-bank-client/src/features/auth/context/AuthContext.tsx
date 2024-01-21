@@ -53,7 +53,7 @@ export interface ITransaction {
   recipientSurname: string;
   recipientAccountNumber: string;
   amount: number;
-  date: string;
+  time: string;
   title: string;
 }
 
