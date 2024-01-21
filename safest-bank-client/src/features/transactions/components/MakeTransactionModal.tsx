@@ -107,7 +107,7 @@ const MakeTransactionModal = ({ closeModal }: { closeModal: () => void }) => {
       return false;
     }
 
-    if (title.length > 100 || /[^a-zA-Z0-9 .-]/.test(title)) {
+    if (title.length > 256 || /[^a-zA-Z0-9 .-]/.test(title)) {
       openModal(
         "Title must contain only letters, digits, spaces, dots and dashes and must be shorter than 100 characters.",
         "Please provide a correct title."

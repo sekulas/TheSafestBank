@@ -12,6 +12,6 @@ public class MakeTransactionDto
     public decimal Amount { get; set; }
 
     [Required]
-    [RegularExpression(@"^[a-zA-Z0-9 .-]{1,100}$")]
+    [RegularExpression(@"^[a-zA-Z0-9 .-]{1,256}$")]
     public string Title { get; set; }
 }

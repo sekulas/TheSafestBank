@@ -51,7 +51,7 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     if (!/^[0-9]{1,24}$/.test(clientNumber)) {
       throw new Error('Client number must be at least 1 digit long.');
     }
-    if (!/^[a-zA-Z\d!@#$%^&*()\-_+. ]{3,64}$/) {
+    if (!/^[a-zA-Z\d!@#$%^&*()\-_+. ]{4,64}$/) {
       throw new Error('Invalid characters in password. Available characters: a-z, A-Z, 0-9, !@#$%^&*()-_+.');
     }
   };
