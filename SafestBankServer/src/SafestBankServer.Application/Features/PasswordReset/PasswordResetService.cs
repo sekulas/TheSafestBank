@@ -21,20 +21,21 @@ internal class PasswordResetService : IPasswordResetService
         {
             throw new ResetPasswordException("Password entropy is too low. Please choose a different password.");
         }
-        string decodedToken = HttpUtility.UrlDecode(passwordResetDto.Token);
-        var tokenBytes = Convert.FromBase64String(decodedToken);
+
+        var tokenBytes = Convert.FromBase64String(passwordResetDto.Token);
         var tokenBytesHashed = SHA512.HashData(tokenBytes);
 
         var client = await _clientRepository.GetClientByHashedToken(tokenBytesHashed)
             ?? throw new ResetPasswordException("Bad request.");
 
         client.PasswordResetTokenHash = null;
-        client.PasswordResetAttempts = 0;
 
         if(client.LastPasswordResetRequestTime > DateTime.UtcNow.AddMinutes(5))
         {
             throw new ResetPasswordException("Token expired.");
         }
+
+        client.PasswordResetAttempts = 0;
 
         var partialPasswordList = _passwordManager.GenerateHashedPartialPasswords(passwordResetDto.Password);
         await _clientRepository.UpdateClientPasswords(client, partialPasswordList);

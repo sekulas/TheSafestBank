@@ -26,7 +26,7 @@ services:
     container_name: thesafestbank-server
     image: thesafestbank-server
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development #TODO - zmienic na Production
+      - ASPNETCORE_ENVIRONMENT=Production #TODO - zmienic na Production
       - ASPNETCORE_URLS=https://+:443
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/certificate.crt
       - ASPNETCORE_Kestrel__Certificates__Default__KeyPath=/https/certificate.key
