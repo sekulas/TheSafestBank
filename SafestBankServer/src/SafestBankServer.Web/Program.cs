@@ -18,7 +18,7 @@ public static class Program
 
         var configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
-            .AddJsonFile("appsettings.json", false)
+            .AddJsonFile("appsettings.json", true)
             .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", true)
             .AddEnvironmentVariables()
             .Build();
@@ -38,9 +38,7 @@ public static class Program
 
                 options.InvalidModelStateResponseFactory = context =>
                 {
-                    //TODO - CHANGE MESSAGE, ADD LOGGING i usun ten interpolated string
-                    context.ModelState.Values.SelectMany(v => v.Errors).ToList().ForEach(e => Console.WriteLine(e.ErrorMessage));
-                    var result = new BadRequestObjectResult(new { message = "Bad request before even getting to the controller." });
+                    var result = new BadRequestObjectResult(new { message = "Bad request" });
                     return result;
                 };
             });

@@ -62,7 +62,7 @@ internal class PasswordResetService : IPasswordResetService
             var passwordResetRequest = (DateTime)client.LastPasswordResetRequestTime;
             var timeDifference = DateTime.UtcNow - passwordResetRequest;
 
-            if (timeDifference.TotalMinutes < 5)
+            if(timeDifference.TotalMinutes < 5)
             {
                 throw new PasswordResetRequestTimeNotExpiredException("You have to wait 5 minutes before sending another request.");
             }
@@ -90,8 +90,7 @@ internal class PasswordResetService : IPasswordResetService
         string encodedToken = HttpUtility.UrlEncode(base64UrlToken);
         string resetUrl = $"https://localhost/password-reset?token={encodedToken}";
 
-        //TODO: LOGGING THIS
-        Console.WriteLine($"Sending \n RESET URL:{resetUrl} \nTO {client.Email}");
+        Console.WriteLine($"SENDING \n RESET URL:{resetUrl} \nTO {client.Email}");
 
         return;
     }

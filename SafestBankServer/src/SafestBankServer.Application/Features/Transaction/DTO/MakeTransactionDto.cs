@@ -8,6 +8,7 @@ public class MakeTransactionDto
     public string RecipientAccountNumber { get; set; }
 
     [Required]
+    [RegularExpression(@"^\d+(\.\d{1,2})?$")]
     [Range(0.01, 1000000000)]
     public decimal Amount { get; set; }
 

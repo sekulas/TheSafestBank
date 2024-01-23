@@ -26,7 +26,5 @@ FROM base AS runtime
 WORKDIR /app
 
 COPY --from=publish /app/publish .
-#TODO - ZMIEN APPSETTINGS I ENV ASPNETCORE_ENVIRONMENT i USUN KOPIOWANIE CALEGO FOLDERU
-COPY "src/SafestBankServer.Web/*" .
 RUN rm -rf /app/src
 ENTRYPOINT ["dotnet", "SafestBankServer.Web.dll"]
