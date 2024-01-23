@@ -30,6 +30,7 @@ services:
       - ASPNETCORE_URLS=https://+:443
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/certificate.crt
       - ASPNETCORE_Kestrel__Certificates__Default__KeyPath=/https/certificate.key
+      - KEY=bA3EOFZKtlQvsGkM
     build: ./SafestBankServer
     depends_on:
       - db

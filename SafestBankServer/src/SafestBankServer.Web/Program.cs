@@ -20,6 +20,7 @@ public static class Program
             .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
             .AddJsonFile("appsettings.json", false)
             .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", true)
+            .AddEnvironmentVariables()
             .Build();
 
         builder.Services.AddMemoryCache();
@@ -86,7 +87,7 @@ public static class Program
         services.AddAuthentication("Session")
             .AddCookie("Session", opt =>
             {
-                opt.Cookie.Name = ".TheSafestBank.Session";
+                opt.Cookie.Name = "usr";
                 opt.Cookie.Domain = "localhost";
                 opt.Cookie.Path = "/";
                 opt.Cookie.HttpOnly = true;
