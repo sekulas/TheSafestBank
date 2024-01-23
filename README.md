@@ -48,16 +48,19 @@ localhost
 #### 1. Sebastian
 - Client Number: 123456789012
 - Password: 1234QWER!@#$qwer
+- Email: sekula.sebastian.kontakt@gmail.com
 
 #### 2. John
 
 - Client Number: 223456789012
 - Password: ZXCV!@#$qwer1234
+- Email: bob.bobkins@gmail.com
 
 #### 3. Jane
 
 - Client Number: 323456789012
 - Password: !QAZ@WSX1qaz2wsx
+- Email: scotty123@gmail.com
 
 ### 5. Reset password link:
 Shows in the console after running the docker-compose command.
