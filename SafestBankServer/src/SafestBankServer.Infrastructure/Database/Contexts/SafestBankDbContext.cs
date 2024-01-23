@@ -22,7 +22,7 @@ internal sealed class SafestBankDbContext : DbContext
     {
         //TODO - USUN TO
         var _passwordManager = new PasswordManager(new SecurityOptions());
-        var _encryptionManager = new EncryptionManager();
+        var _encryptionManager = new EncryptionManager("bA3EOFZKtlQvsGkM");
 
         modelBuilder.Entity<BankClient>()
             .HasMany(bc => bc.PartialPasswords)

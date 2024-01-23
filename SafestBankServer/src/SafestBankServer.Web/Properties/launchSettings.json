@@ -28,7 +28,7 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "KEY": "bA3EOFZKtlQvsGkM",
-        "DB_CONNECTION_STRING": "Server=localhost;Database=thesafestbankdb;Port=5432;User Id=postgres;Password=postgres;"
+        "DB_CONNECTION_STRING": "Server=localhost;Database=thesafestbankdb;Port=5432;User Id=thesafestbank-server;Password=Vch6mSw0rKjcGlBZCbvu;"
       }
     },
     "IIS Express": {

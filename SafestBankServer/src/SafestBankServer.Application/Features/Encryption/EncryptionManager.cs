@@ -8,9 +8,17 @@ namespace SafestBankServer.Application.Features.Encryption;
 public class EncryptionManager : IEncryptionManager
 {
     private readonly byte[] _encryptionKey;
-    public EncryptionManager()
+    public EncryptionManager(string key = null)
     {
-        _encryptionKey = Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("KEY")!);
+        //TODO USUN TO JAK USUNIESZ W SEEDERZE
+        if(key == null)
+        {
+            _encryptionKey = Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("KEY")!);
+        }
+        else
+        {
+            _encryptionKey = Encoding.ASCII.GetBytes(key);
+        }
     }
 
     //TODO - DO USUNIECIA

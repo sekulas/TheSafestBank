@@ -16,7 +16,7 @@ public static class Extensions
         services.AddScoped<ITransactionRepository, TransactionRepository>();
 
         services.AddDbContext<SafestBankDbContext>(o =>
-            o.UseNpgsql(Environment.GetEnvironmentVariable("DB_CONNECTION_STRING"))
+            o.UseNpgsql("Server=localhost;Database=thesafestbankdb;Port=5432;User Id=thesafestbank-server;Password=Vch6mSw0rKjcGlBZCbvu;")
         );
 
         return services;
