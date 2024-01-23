@@ -26,7 +26,7 @@ public static class Program
         builder.Services.AddMemoryCache();
 
         builder.Services.AddApplication();
-        builder.Services.AddInfrastructure(configuration);
+        builder.Services.AddInfrastructure();
         builder.Services.AddWeb();
 
         builder.Services.AddCookieAuth();
