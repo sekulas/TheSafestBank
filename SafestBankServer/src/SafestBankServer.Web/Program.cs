@@ -86,10 +86,8 @@ public static class Program
             .AddCookie("Session", opt =>
             {
                 opt.Cookie.Name = "usr";
-                opt.Cookie.Domain = "localhost";
                 opt.Cookie.Path = "/";
                 opt.Cookie.HttpOnly = true;
-                opt.Cookie.IsEssential = true;
                 opt.Cookie.SameSite = SameSiteMode.Strict;
                 opt.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                 opt.LoginPath = "/api/auth/login";
