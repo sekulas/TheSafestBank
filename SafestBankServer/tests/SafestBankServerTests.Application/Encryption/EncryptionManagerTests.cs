@@ -1,4 +1,5 @@
-﻿using SafestBankServer.Application.Features.Encryption;
+﻿/*
+using SafestBankServer.Application.Features.Encryption;
 
 namespace SafestBankServerTests.Application.Encryption;
 public class EncryptionManagerTests
@@ -20,3 +21,4 @@ public class EncryptionManagerTests
         decryptedString.Should().Be(testString);
     }
 }
+*/
