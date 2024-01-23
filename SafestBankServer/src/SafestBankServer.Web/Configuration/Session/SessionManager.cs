@@ -37,7 +37,10 @@ public class SessionManager
     public async Task EndSession(HttpContext httpContext)
     {
         var sessionId = GetClientId(httpContext).ToString();
-        _cache.Remove(sessionId);
+        if(sessionId != null)
+        {
+            _cache.Remove(sessionId);
+        }
         await httpContext.SignOutAsync("Session");
     }
 

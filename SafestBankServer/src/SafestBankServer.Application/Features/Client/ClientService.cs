@@ -21,6 +21,11 @@ internal sealed class ClientService : IClientService
         var client = await _clientRepository.GetClientByIdAsync(clientId)
             ?? throw new BankClientNotFoundException("Cannot find a client.");
 
+        if(client.IsBlocked)
+        {
+            throw new UnauthorizedAccessException("Your account has been blocked. Please contact with the support.");
+        }
+
         var decryptedClient = DecryptClient(client);
 
         var clientDto = _mapper.Map<BankClientDto>(decryptedClient);

@@ -10,22 +10,23 @@ const MakeTransactionModal = ({ closeModal }: { closeModal: () => void }) => {
   const [amount, setAmount] = useState("");
   const [title, setTitle] = useState("");
   const { openModal, openSpinner, closeSpinner } = useContext(ModalContext);
-  const { balance, transactions, setTransactions, setBalance, logout } =
+  const { balance, transactions, accountNumber, setTransactions, setBalance, logout } =
     useContext(AuthContext);
 
   const makeTransaction = async () => {
-    if (!isValidTransaction()) {
-      return;
-    }
-
-    const transaction: IMakeTransactionRequest = {
-      recipientAccountNumber,
-      amount: Number(amount),
-      title,
-    };
-
     try {
       openSpinner();
+
+      if (!validateTransactionInput()) {
+        return;
+      }
+
+      const transaction: IMakeTransactionRequest = {
+        recipientAccountNumber,
+        amount: Number(amount),
+        title,
+      };
+
       const requestBody = transaction;
 
       const response = await fetch(API_ENDPOINTS.MAKE_TRANSACTION, {
@@ -40,6 +41,9 @@ const MakeTransactionModal = ({ closeModal }: { closeModal: () => void }) => {
       const data = await response.json();
 
       if (!response.ok) {
+        if (response.status === 401) {
+          logout();
+        }
         throw new Error(`Failed to make transaction. ${data.message}`);
       } else {
         setTransactions([data, ...transactions]);
@@ -53,11 +57,11 @@ const MakeTransactionModal = ({ closeModal }: { closeModal: () => void }) => {
     }
   };
 
-  const isValidTransaction = () => {
+  const validateTransactionInput = () => {
     if (
-      !recipientAccountNumber ||
-      !amount ||
-      !title ||
+      recipientAccountNumber === "" ||
+      amount === "" ||
+      title === "" ||
       !/^[0-9]+$/.test(recipientAccountNumber) ||
       getDecimalPlaces(amount) > 2
     ) {
@@ -90,6 +94,14 @@ const MakeTransactionModal = ({ closeModal }: { closeModal: () => void }) => {
       return false;
     }
 
+    if (recipientAccountNumber === accountNumber) {
+      openModal(
+        "You cannot make a transaction to yourself.",
+        "Please provide a different account number."
+      );
+      return false;
+    }
+
     if (balance < amountNumber) {
       openModal(
         "You don't have enough money to make this transaction.",
@@ -106,7 +118,7 @@ const MakeTransactionModal = ({ closeModal }: { closeModal: () => void }) => {
       return false;
     }
 
-    if (title.length > 100 || /[^a-zA-Z0-9 .-]/.test(title)) {
+    if (title.length > 256 || /[^a-zA-Z0-9 .-]/.test(title)) {
       openModal(
         "Title must contain only letters, digits, spaces, dots and dashes and must be shorter than 100 characters.",
         "Please provide a correct title."
@@ -119,7 +131,6 @@ const MakeTransactionModal = ({ closeModal }: { closeModal: () => void }) => {
 
   const handleTransactionError = (errorMessage: string) => {
     openModal("Error", `${errorMessage}`);
-    logout();
   };
 
   const getDecimalPlaces = (amount: string) => {

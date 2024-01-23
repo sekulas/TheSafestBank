@@ -13,7 +13,7 @@ const HomePage = () => {
     const fetchData = async () => {
       try {
         openSpinner();
-        console.log("Fetching data...");
+
         const response = await fetch(API_ENDPOINTS.GET_CLIENT, {
           method: "GET",
           headers: {
@@ -25,6 +25,9 @@ const HomePage = () => {
         const data = await response.json();
 
         if (!response.ok) {
+          if (response.status === 401) {
+            logout();
+          }
           throw new Error(`Failed to get the client data. ${data.message}`);
         }
 

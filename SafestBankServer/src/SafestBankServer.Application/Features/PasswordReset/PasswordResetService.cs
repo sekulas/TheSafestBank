@@ -21,20 +21,23 @@ internal class PasswordResetService : IPasswordResetService
         {
             throw new ResetPasswordException("Password entropy is too low. Please choose a different password.");
         }
-        string decodedToken = HttpUtility.UrlDecode(passwordResetDto.Token);
-        var tokenBytes = Convert.FromBase64String(decodedToken);
+
+        var tokenBytes = Convert.FromBase64String(passwordResetDto.Token);
         var tokenBytesHashed = SHA512.HashData(tokenBytes);
 
         var client = await _clientRepository.GetClientByHashedToken(tokenBytesHashed)
             ?? throw new ResetPasswordException("Bad request.");
 
         client.PasswordResetTokenHash = null;
-        client.PasswordResetAttempts = 0;
 
         if(client.LastPasswordResetRequestTime > DateTime.UtcNow.AddMinutes(5))
         {
             throw new ResetPasswordException("Token expired.");
         }
+
+        client.PasswordResetAttempts = 0;
+        client.IsBlocked = false;
+        client.LoginAttempts = 0;
 
         var partialPasswordList = _passwordManager.GenerateHashedPartialPasswords(passwordResetDto.Password);
         await _clientRepository.UpdateClientPasswords(client, partialPasswordList);
@@ -56,7 +59,7 @@ internal class PasswordResetService : IPasswordResetService
 
         if(client.LastPasswordResetRequestTime != null)
         {
-            var passwordResetRequest = (DateTime) client.LastPasswordResetRequestTime;
+            var passwordResetRequest = (DateTime)client.LastPasswordResetRequestTime;
             var timeDifference = DateTime.UtcNow - passwordResetRequest;
 
             if(timeDifference.TotalMinutes < 5)
@@ -85,10 +88,9 @@ internal class PasswordResetService : IPasswordResetService
 
         string base64UrlToken = Convert.ToBase64String(tokenBytes);
         string encodedToken = HttpUtility.UrlEncode(base64UrlToken);
-        string resetUrl = $"https://localhost:3000/password-reset?token={encodedToken}";
+        string resetUrl = $"https://localhost/password-reset?token={encodedToken}";
 
-        //TODO: LOGGING THIS
-        Console.WriteLine($"Sending \n RESET URL:{resetUrl} \nTO {client.Email}");
+        Console.WriteLine($"SENDING \n RESET URL:{resetUrl} \nTO {client.Email}");
 
         return;
     }
@@ -102,7 +104,7 @@ internal class PasswordResetService : IPasswordResetService
         {
             int charCode = character;
 
-            if(characterCounts.ContainsKey(charCode))
+            if (characterCounts.ContainsKey(charCode))
             {
                 characterCounts[charCode]++;
             }
@@ -114,7 +116,7 @@ internal class PasswordResetService : IPasswordResetService
 
         foreach(KeyValuePair<int, int> characterCount in characterCounts)
         {
-            double probability = (double) characterCount.Value / password.Length;
+            double probability = (double)characterCount.Value / password.Length;
             entropy -= probability * Math.Log2(probability);
         }
 

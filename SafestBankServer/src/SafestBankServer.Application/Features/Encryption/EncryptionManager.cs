@@ -1,17 +1,14 @@
-﻿using SafestBankServer.Core.Client;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
 
 namespace SafestBankServer.Application.Features.Encryption;
 
-//TODO - ZMIEN NA INTERNAL JAK USUNIESZ W SEEDERZE
-public class EncryptionManager : IEncryptionManager
+internal class EncryptionManager : IEncryptionManager
 {
     private readonly byte[] _encryptionKey;
-    public EncryptionManager(string key = "bA3EOFZKtlQvsGkM")
+    public EncryptionManager(string? key = null)
     {
-        //TODO USUN TO JAK USUNIESZ W SEEDERZE
-        if(key != "bA3EOFZKtlQvsGkM")
+        if(key == null)
         {
             _encryptionKey = Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("KEY")!);
         }
@@ -21,7 +18,6 @@ public class EncryptionManager : IEncryptionManager
         }
     }
 
-    //TODO - DO USUNIECIA
     public byte[] GenerateIV()
     {
         using var rng = RandomNumberGenerator.Create();

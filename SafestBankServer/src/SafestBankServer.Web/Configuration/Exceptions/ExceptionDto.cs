@@ -1,6 +1,6 @@
 ﻿namespace SafestBankServer.Web.Configuration.Exceptions;
 
-public class ExceptionDto
+internal class ExceptionDto
 {
-    public string message { get; set; }
+    public string Message { get; set; }
 }

@@ -5,8 +5,7 @@ using System.Text;
 
 namespace SafestBankServer.Application.Auth.Passwords;
 
-//TODO - PO ZASEEDOWANIU BAZY ZMIEN TO INTERNAL
-public class PasswordManager : IPasswordManager
+internal class PasswordManager : IPasswordManager
 {
     private readonly SecurityOptions _securityOptions;
     public PasswordManager(SecurityOptions securityOptions)

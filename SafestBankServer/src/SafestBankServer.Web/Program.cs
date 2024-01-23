@@ -18,14 +18,15 @@ public static class Program
 
         var configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
-            .AddJsonFile("appsettings.json", false)
+            .AddJsonFile("appsettings.json", true)
             .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", true)
+            .AddEnvironmentVariables()
             .Build();
 
         builder.Services.AddMemoryCache();
 
         builder.Services.AddApplication();
-        builder.Services.AddInfrastructure(configuration);
+        builder.Services.AddInfrastructure();
         builder.Services.AddWeb();
 
         builder.Services.AddCookieAuth();
@@ -37,9 +38,7 @@ public static class Program
 
                 options.InvalidModelStateResponseFactory = context =>
                 {
-                    //TODO - CHANGE MESSAGE, ADD LOGGING i usun ten interpolated string
-                    context.ModelState.Values.SelectMany(v => v.Errors).ToList().ForEach(e => Console.WriteLine(e.ErrorMessage));
-                    var result = new BadRequestObjectResult(new { message = "Bad request before even getting to the controller." });
+                    var result = new BadRequestObjectResult(new { message = "Bad request" });
                     return result;
                 };
             });
@@ -51,7 +50,7 @@ public static class Program
         {
             options.AddDefaultPolicy(policy =>
             {
-                policy.WithOrigins("https://localhost:3000")
+                policy.WithOrigins("https://localhost")
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials()
@@ -86,11 +85,9 @@ public static class Program
         services.AddAuthentication("Session")
             .AddCookie("Session", opt =>
             {
-                opt.Cookie.Name = ".TheSafestBank.Session";
-                opt.Cookie.Domain = "localhost";
+                opt.Cookie.Name = "usr";
                 opt.Cookie.Path = "/";
                 opt.Cookie.HttpOnly = true;
-                opt.Cookie.IsEssential = true;
                 opt.Cookie.SameSite = SameSiteMode.Strict;
                 opt.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                 opt.LoginPath = "/api/auth/login";

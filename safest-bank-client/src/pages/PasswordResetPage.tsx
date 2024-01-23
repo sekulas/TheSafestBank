@@ -13,10 +13,11 @@ const PasswordResetPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const tokenFromUrl = new URLSearchParams(window.location.search).get('token');
-    const parsedToken = tokenFromUrl;
+    const parsedToken = new URLSearchParams(window.location.search).get('token');
 
-    if (parsedToken === null) return;
+    if (parsedToken === null ||
+      !/^[-A-Za-z0-9+/]{32,64}={0,3}$/.test(parsedToken)
+    ) return;
 
     setToken(parsedToken);
     window.history.pushState({}, '', '/password-reset');
@@ -25,6 +26,7 @@ const PasswordResetPage = () => {
   const handleSendPasswordResetMail = async () => {
     try {
       openSpinner();
+      validateSendPasswordResetMailInput();
       const requestBody: ISendResetMailRequest = { clientNumber: clientNumber, email: email };
 
       const response = await fetch(API_ENDPOINTS.RESET_PASSWORD, {
@@ -51,12 +53,22 @@ const PasswordResetPage = () => {
     }
   };
 
+  const validateSendPasswordResetMailInput = () => {
+    if (!/^[0-9]{1,256}$/.test(clientNumber)) {
+      throw new Error('Client number must be at least 1 digit long.');
+    }
+
+    if (!/^[a-zA-Z0-9_+&*-]{1,64}(?:\.[a-zA-Z0-9_+&*-]{1,64})*@(?:[a-zA-Z0-9-]+\.){1,64}[a-zA-Z]{1,64}$/.test(email)) {
+      throw new Error('Invalid email address.');
+    }
+  }
+
   const handleResetPassword = async () => {
     try {
       openSpinner();
-      validatePassword();
-      const requestBody: IResetPasswordRequest = { password: password, confirmPassword: confirmPassword, token: encodeURIComponent(token) };
-      console.log(requestBody.token)
+      validatePasswordResetInput();
+      const requestBody: IResetPasswordRequest = { password: password, confirmPassword: confirmPassword, token: token };
+
       const response = await fetch(API_ENDPOINTS.RESET_PASSWORD, {
         method: 'PUT',
         headers: {
@@ -80,7 +92,7 @@ const PasswordResetPage = () => {
     }
   };
 
-  const validatePassword = () => {
+  const validatePasswordResetInput = () => {
     if (password !== confirmPassword) {
       throw new Error('Passwords do not match.');
     }
@@ -96,6 +108,12 @@ const PasswordResetPage = () => {
 
     if (calculateEntropy(password) < 4) {
       throw new Error('Password entropy is too low. Please choose a different password.');
+    }
+
+    if (token === '' ||
+      !/^[-A-Za-z0-9+/]{32,64}={0,3}$/.test(token)
+    ) {
+      throw new Error('Invalid token.');
     }
   };
 

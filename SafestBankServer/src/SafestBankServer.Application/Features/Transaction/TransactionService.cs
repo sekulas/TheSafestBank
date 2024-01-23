@@ -19,19 +19,13 @@ internal sealed class TransactionService : ITransactionService
     }
     public async Task<ClientTransactionDto> MakeTransaction(Guid senderId, string recipantAccountNumber, decimal amount, string title)
     {
-        //TODO CZY NIE SPRAWDZAC TEGO W DTO?
-        if (recipantAccountNumber.Length != 26)
-        {
-            throw new InvalidTransactionException("Invalid recipant of the transaction.");
-        }
-
-        if (GetDecimalPlaces(amount) > 2)
-        {
-            throw new InvalidTransactionException("You can't make a transaction with more than 2 decimal places.");
-        }
-
         var sender = await _clientRepository.GetClientByIdAsync(senderId)
             ?? throw new UnauthorizedAccessException("Your session has expired - please log in.");
+
+        if(sender.IsBlocked)
+        {
+            throw new UnauthorizedAccessException("Your account has been blocked. Please contact with the support or change the password using email.");
+        }
 
         if (sender.Balance < amount)
         {
@@ -71,21 +65,5 @@ internal sealed class TransactionService : ITransactionService
         var transactionDto = _mapper.Map<ClientTransactionDto>(transaction);
 
         return transactionDto;
-    }
-
-    private static int GetDecimalPlaces(decimal value)
-    {
-        string valueAsString = value.ToString();
-
-        int decimalPointIndex = valueAsString.IndexOf('.');
-
-        if (decimalPointIndex == -1)
-        {
-            return 0;
-        }
-
-        int decimalPlaces = valueAsString.Length - decimalPointIndex - 1;
-
-        return decimalPlaces;
     }
 }

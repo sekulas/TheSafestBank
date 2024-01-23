@@ -13,5 +13,6 @@ public class ResetPasswordDto
     public string ConfirmPassword { get; set; }
 
     [Required]
+    [RegularExpression(@"^[-A-Za-z0-9+/]{32,64}={0,3}$")]
     public string Token { get; set; }
 }
