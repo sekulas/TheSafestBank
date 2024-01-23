@@ -68,7 +68,7 @@ const PasswordResetPage = () => {
       openSpinner();
       validatePasswordResetInput();
       const requestBody: IResetPasswordRequest = { password: password, confirmPassword: confirmPassword, token: token };
-      console.log(requestBody.token)
+
       const response = await fetch(API_ENDPOINTS.RESET_PASSWORD, {
         method: 'PUT',
         headers: {

@@ -13,7 +13,7 @@ const HomePage = () => {
     const fetchData = async () => {
       try {
         openSpinner();
-        console.log("Fetching data...");
+
         const response = await fetch(API_ENDPOINTS.GET_CLIENT, {
           method: "GET",
           headers: {

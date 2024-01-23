@@ -15,8 +15,6 @@ services:
       - POSTGRES_PASSWORD=Vch6mSw0rKjcGlBZCbvu
       - POSTGRES_DB=thesafestbankdb
     restart: always
-    ports:
-      - "5432:5432" ##TODO - USUN PERFORACJE
     volumes:
       - ./dbdata:/var/lib/postgresql/data
     networks:
@@ -26,7 +24,7 @@ services:
     container_name: thesafestbank-server
     image: thesafestbank-server
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production #TODO - zmienic na Production
+      - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=https://+:443
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/certificate.crt
       - ASPNETCORE_Kestrel__Certificates__Default__KeyPath=/https/certificate.key
@@ -35,8 +33,6 @@ services:
     build: ./SafestBankServer
     depends_on:
       - db
-    ports:
-      - "5001:443" ##TODO - USUN PERFORACJE
     volumes:
       - ./certificates:/https
     networks:

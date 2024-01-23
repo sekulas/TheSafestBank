@@ -1,7 +1,6 @@
 ﻿namespace SafestBankServer.Application.Auth.Passwords;
 
-//TODO CHANGE SECURITY SETTINGS TO INTERNAL
-public record SecurityOptions
+internal record SecurityOptions
 {
     public int AmoutOfPartialPasswords { get; } = 10;
     public int PartialPasswordLengthDenominator { get; } = 3;

@@ -3,7 +3,7 @@ using Microsoft.Extensions.Caching.Memory;
 
 namespace SafestBankServer.Web.Configuration.CookieAuth;
 
-public class SessionAuthenticationEvent : CookieAuthenticationEvents
+internal class SessionAuthenticationEvent : CookieAuthenticationEvents
 {
     private readonly IMemoryCache _cache;
     public SessionAuthenticationEvent(IMemoryCache cache)

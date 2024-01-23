@@ -6,7 +6,7 @@ using SafestBankServer.Application.Exceptions.Transaction;
 
 namespace SafestBankServer.Web.Configuration.Exceptions;
 
-public class GlobalExceptionHandler : IExceptionHandler
+internal class GlobalExceptionHandler : IExceptionHandler
 {
     public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
     {
@@ -25,7 +25,7 @@ public class GlobalExceptionHandler : IExceptionHandler
         };  
 
         httpContext.Response.StatusCode = statusCode;
-        await httpContext.Response.WriteAsJsonAsync(new ExceptionDto { message = message });
+        await httpContext.Response.WriteAsJsonAsync(new ExceptionDto { Message = message });
 
         return true;
     }
